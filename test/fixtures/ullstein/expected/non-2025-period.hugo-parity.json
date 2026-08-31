@@ -1,0 +1,201 @@
+{
+  "sourceType": "Text/PDF heuristic digest",
+  "profile": "ullstein",
+  "state": {
+    "statementDate": "28 Feb 2025",
+    "periodStart": "01 Jan 2024",
+    "periodEnd": "31 Dec 2024",
+    "licensorName": "Amelia Hart",
+    "licenseeName": "Ullstein Buchverlage GmbH",
+    "licenseeAddress": "Friedrichstraße 126, 10117 Berlin",
+    "licenseeContractId": "401877",
+    "contributorNames": "Hart, Amelia",
+    "licenseeTitle": "Der lange Sommerweg",
+    "openingBalance": "55",
+    "statementNotes": "Ullstein current-period verrechenbare Honorare: €168.15.\nUllstein Neuer Vortrag / new carried-forward balance: €223.15."
+  },
+  "products": [
+    {
+      "form": "Paperback",
+      "isbn": "978-3-548-06612-3",
+      "pubDate": "15 Mar 2023",
+      "listPrice": "",
+      "basis": "Net List Price (NLP)",
+      "rate": "5",
+      "priorUnits": "",
+      "periodUnits": "",
+      "basisAmount": "€11.21 per copy (NLP)",
+      "earnings": "",
+      "titleLine": "55,00",
+      "periodStart": "",
+      "periodEnd": ""
+    }
+  ],
+  "reserves": [],
+  "sublicenses": [],
+  "detections": [
+    {
+      "target": "statementDate",
+      "value": "28 Feb 2025",
+      "confidence": "High",
+      "source": "Date/Datum label",
+      "reason": "Direct label match",
+      "bisg": "SS2_RoyStmntDate",
+      "category": "Required"
+    },
+    {
+      "target": "periodStart",
+      "value": "01 Jan 2024",
+      "confidence": "High",
+      "source": "Accounting period / Abrechnungszeitraum",
+      "reason": "Direct label match",
+      "bisg": "SS7_RoyRptStartDt",
+      "category": "Required"
+    },
+    {
+      "target": "periodEnd",
+      "value": "31 Dec 2024",
+      "confidence": "High",
+      "source": "Accounting period / Abrechnungszeitraum",
+      "reason": "Direct label match",
+      "bisg": "SS12_RoyRptEndDt",
+      "category": "Required"
+    },
+    {
+      "target": "licensorName",
+      "value": "Amelia Hart",
+      "confidence": "High",
+      "source": "Rechtegeber / Copyright Holder",
+      "reason": "Direct label match",
+      "bisg": "Con31_LicensorName",
+      "category": "Required"
+    },
+    {
+      "target": "licenseeName",
+      "value": "Ullstein Buchverlage GmbH",
+      "confidence": "High",
+      "source": "Publisher heading",
+      "reason": "Profile/label match",
+      "bisg": "Con1_LicName",
+      "category": "Required"
+    },
+    {
+      "target": "licenseeAddress",
+      "value": "Friedrichstraße 126, 10117 Berlin",
+      "confidence": "Medium",
+      "source": "Address-like line",
+      "reason": "Pattern match",
+      "bisg": "Con6_LicConInfo",
+      "category": "Required"
+    },
+    {
+      "target": "licenseeContractId",
+      "value": "401877",
+      "confidence": "High",
+      "source": "Internal contract number / Interne VertragsNr.",
+      "reason": "Direct/profile label match",
+      "bisg": "Con26_LicContID",
+      "category": "Required"
+    },
+    {
+      "target": "contributorNames",
+      "value": "Hart, Amelia",
+      "confidence": "Medium",
+      "source": "Name-like title block",
+      "reason": "Pattern match",
+      "bisg": "Con41_ContribNames",
+      "category": "Required"
+    },
+    {
+      "target": "licenseeTitle",
+      "value": "Der lange Sommerweg",
+      "confidence": "High",
+      "source": "Title block",
+      "reason": "Profile/pattern match",
+      "bisg": "Con51_LicWorkTitle",
+      "category": "Required"
+    },
+    {
+      "target": "openingBalance",
+      "value": "168.15",
+      "confidence": "High",
+      "source": "Brought forward / Vortrag",
+      "reason": "Mapped to opening balance",
+      "bisg": "SS17_OpenBal",
+      "category": "Required"
+    },
+    {
+      "target": "licenseeContractId",
+      "value": "401877",
+      "confidence": "High",
+      "source": "Interne VertragsNr. statement 1",
+      "reason": "Used to split the imported statement into separate contract statements.",
+      "bisg": "Con26_LicContID",
+      "category": "Required"
+    }
+  ],
+  "unmappedLines": [
+    "Ullstein Buchverlage GmbH",
+    "Friedrichstraße 126, 10117 Berlin",
+    "Honorarabrechnung",
+    "Datum: 28.02.2025",
+    "Abrechnungszeitraum 01.01.2024 - 31.12.2024",
+    "Rechtegeber: Frau Amelia Hart",
+    "Hart, Amelia, Der lange Sommerweg",
+    "Interne VertragsNr. 401877",
+    "Honorar 5,0000 %; NLP 11,21",
+    "honorarpflichtige Menge Gesamt per 01.01.2024",
+    "honorarpflichtige Menge Gesamt per 31.12.2024",
+    "Vortrag lt. letzter Abrechnung",
+    "Verrechenbare Honorare lt. Abrechnung",
+    "Neuer Vortrag"
+  ],
+  "calcInferences": [],
+  "notes": [
+    "Ullstein/Bonnier profile applied: Hugo used German labels such as Abrechnungszeitraum, Interne VertragsNr., Honorar, honorarpflichtige Menge, Berechnung in EUR/Guthaben in EUR, Vortrag and Neuer Vortrag.",
+    "1 separate Ullstein contract statement detected by Interne VertragsNr.",
+    "11 statement-level fields detected.",
+    "1 product row detected across 1 contract statement.",
+    "Abbreviation dictionary hits: ET = Publication Date / Erscheinungstermin.",
+    "Review all detected values before applying them; publisher statement layouts vary significantly."
+  ],
+  "contractStatements": [
+    {
+      "contractId": "401877",
+      "title": "Der lange Sommerweg",
+      "state": {
+        "statementDate": "28 Feb 2025",
+        "periodStart": "01 Jan 2024",
+        "periodEnd": "31 Dec 2024",
+        "licensorName": "Amelia Hart",
+        "licenseeName": "Ullstein Buchverlage GmbH",
+        "licenseeAddress": "Friedrichstraße 126, 10117 Berlin",
+        "licenseeContractId": "401877",
+        "contributorNames": "Hart, Amelia",
+        "licenseeTitle": "Der lange Sommerweg",
+        "openingBalance": "55",
+        "statementNotes": "Ullstein current-period verrechenbare Honorare: €168.15.\nUllstein Neuer Vortrag / new carried-forward balance: €223.15."
+      },
+      "products": [
+        {
+          "form": "Paperback",
+          "isbn": "978-3-548-06612-3",
+          "pubDate": "15 Mar 2023",
+          "listPrice": "",
+          "basis": "Net List Price (NLP)",
+          "rate": "5",
+          "priorUnits": "",
+          "periodUnits": "",
+          "basisAmount": "€11.21 per copy (NLP)",
+          "earnings": "",
+          "titleLine": "55,00",
+          "periodStart": "",
+          "periodEnd": ""
+        }
+      ],
+      "openingBalance": "55",
+      "currentRoyalty": "168.15",
+      "newBalance": "223.15"
+    }
+  ]
+}

@@ -1,0 +1,207 @@
+{
+  "sourceType": "Text/PDF heuristic digest",
+  "profile": "ullstein",
+  "state": {
+    "statementDate": "31 Jan 2026",
+    "periodStart": "01 Jan 2025",
+    "periodEnd": "31 Dec 2025",
+    "licensorName": "Jonas Feldmann",
+    "licenseeName": "Ullstein Buchverlage GmbH",
+    "licenseeAddress": "Friedrichstraße 126, 10117 Berlin",
+    "licenseeContractId": "502344",
+    "contributorNames": "Feldmann, Jonas",
+    "licenseeTitle": "Nachtzug nach Marseille",
+    "openingBalance": "-88",
+    "statementNotes": "Ullstein current-period verrechenbare Honorare: €263.68.\nUllstein Neuer Vortrag / new carried-forward balance: €175.68."
+  },
+  "products": [
+    {
+      "form": "Paperback",
+      "isbn": "978-3-548-29981-1",
+      "pubDate": "12 Sep 2024",
+      "listPrice": "12.99",
+      "basis": "Net List Price (NLP)",
+      "rate": "6",
+      "priorUnits": "",
+      "periodUnits": "362",
+      "basisAmount": "€12.14 per copy (NLP)",
+      "earnings": "263.68",
+      "titleLine": "362 Honorar 6,0000 %; NLP 12,14; BLP 12,99 263,68",
+      "periodStart": "",
+      "periodEnd": ""
+    }
+  ],
+  "reserves": [],
+  "sublicenses": [],
+  "detections": [
+    {
+      "target": "statementDate",
+      "value": "31 Jan 2026",
+      "confidence": "High",
+      "source": "Date/Datum label",
+      "reason": "Direct label match",
+      "bisg": "SS2_RoyStmntDate",
+      "category": "Required"
+    },
+    {
+      "target": "periodStart",
+      "value": "01 Jan 2025",
+      "confidence": "High",
+      "source": "Accounting period / Abrechnungszeitraum",
+      "reason": "Direct label match",
+      "bisg": "SS7_RoyRptStartDt",
+      "category": "Required"
+    },
+    {
+      "target": "periodEnd",
+      "value": "31 Dec 2025",
+      "confidence": "High",
+      "source": "Accounting period / Abrechnungszeitraum",
+      "reason": "Direct label match",
+      "bisg": "SS12_RoyRptEndDt",
+      "category": "Required"
+    },
+    {
+      "target": "licensorName",
+      "value": "Jonas Feldmann",
+      "confidence": "High",
+      "source": "Rechtegeber / Copyright Holder",
+      "reason": "Direct label match",
+      "bisg": "Con31_LicensorName",
+      "category": "Required"
+    },
+    {
+      "target": "licenseeName",
+      "value": "Ullstein Buchverlage GmbH",
+      "confidence": "High",
+      "source": "Publisher heading",
+      "reason": "Profile/label match",
+      "bisg": "Con1_LicName",
+      "category": "Required"
+    },
+    {
+      "target": "licenseeAddress",
+      "value": "Friedrichstraße 126, 10117 Berlin",
+      "confidence": "Medium",
+      "source": "Address-like line",
+      "reason": "Pattern match",
+      "bisg": "Con6_LicConInfo",
+      "category": "Required"
+    },
+    {
+      "target": "licenseeContractId",
+      "value": "502344",
+      "confidence": "High",
+      "source": "Internal contract number / Interne VertragsNr.",
+      "reason": "Direct/profile label match",
+      "bisg": "Con26_LicContID",
+      "category": "Required"
+    },
+    {
+      "target": "contributorNames",
+      "value": "Feldmann, Jonas",
+      "confidence": "Medium",
+      "source": "Name-like title block",
+      "reason": "Pattern match",
+      "bisg": "Con41_ContribNames",
+      "category": "Required"
+    },
+    {
+      "target": "licenseeTitle",
+      "value": "Nachtzug nach Marseille",
+      "confidence": "High",
+      "source": "Title block",
+      "reason": "Profile/pattern match",
+      "bisg": "Con51_LicWorkTitle",
+      "category": "Required"
+    },
+    {
+      "target": "openingBalance",
+      "value": "263.68",
+      "confidence": "High",
+      "source": "Brought forward / Vortrag",
+      "reason": "Mapped to opening balance",
+      "bisg": "SS17_OpenBal",
+      "category": "Required"
+    },
+    {
+      "target": "licenseeContractId",
+      "value": "502344",
+      "confidence": "High",
+      "source": "Interne VertragsNr. statement 1",
+      "reason": "Used to split the imported statement into separate contract statements.",
+      "bisg": "Con26_LicContID",
+      "category": "Required"
+    }
+  ],
+  "unmappedLines": [
+    "Ullstein Buchverlage GmbH",
+    "Friedrichstraße 126, 10117 Berlin",
+    "Honorarabrechnung",
+    "Datum: 31.01.2026",
+    "Abrechnungszeitraum 01.01.2025 - 31.12.2025",
+    "Rechtegeber: Herr Jonas Feldmann",
+    "Feldmann, Jonas, Nachtzug nach Marseille",
+    "Interne VertragsNr. 502344",
+    "362 Honorar 6,0000 %; NLP 12,14; BLP 12,99 263,68",
+    "Vortrag lt. letzter Abrechnung",
+    "Verrechenbare Honorare lt. Abrechnung",
+    "Neuer Vortrag"
+  ],
+  "calcInferences": [
+    {
+      "product": "Paperback",
+      "calculation": "€12.14 per copy (NLP) × 6% × 362 units = 263.68",
+      "reported": "263.68",
+      "status": "matches"
+    }
+  ],
+  "notes": [
+    "Ullstein/Bonnier profile applied: Hugo used German labels such as Abrechnungszeitraum, Interne VertragsNr., Honorar, honorarpflichtige Menge, Berechnung in EUR/Guthaben in EUR, Vortrag and Neuer Vortrag.",
+    "1 separate Ullstein contract statement detected by Interne VertragsNr.",
+    "11 statement-level fields detected.",
+    "1 product row detected across 1 contract statement.",
+    "Abbreviation dictionary hits: ET = Publication Date / Erscheinungstermin.",
+    "1 royalty calculation inference detected.",
+    "Review all detected values before applying them; publisher statement layouts vary significantly."
+  ],
+  "contractStatements": [
+    {
+      "contractId": "502344",
+      "title": "Nachtzug nach Marseille",
+      "state": {
+        "statementDate": "31 Jan 2026",
+        "periodStart": "01 Jan 2025",
+        "periodEnd": "31 Dec 2025",
+        "licensorName": "Jonas Feldmann",
+        "licenseeName": "Ullstein Buchverlage GmbH",
+        "licenseeAddress": "Friedrichstraße 126, 10117 Berlin",
+        "licenseeContractId": "502344",
+        "contributorNames": "Feldmann, Jonas",
+        "licenseeTitle": "Nachtzug nach Marseille",
+        "openingBalance": "-88",
+        "statementNotes": "Ullstein current-period verrechenbare Honorare: €263.68.\nUllstein Neuer Vortrag / new carried-forward balance: €175.68."
+      },
+      "products": [
+        {
+          "form": "Paperback",
+          "isbn": "978-3-548-29981-1",
+          "pubDate": "12 Sep 2024",
+          "listPrice": "12.99",
+          "basis": "Net List Price (NLP)",
+          "rate": "6",
+          "priorUnits": "",
+          "periodUnits": "362",
+          "basisAmount": "€12.14 per copy (NLP)",
+          "earnings": "263.68",
+          "titleLine": "362 Honorar 6,0000 %; NLP 12,14; BLP 12,99 263,68",
+          "periodStart": "",
+          "periodEnd": ""
+        }
+      ],
+      "openingBalance": "-88",
+      "currentRoyalty": "263.68",
+      "newBalance": "175.68"
+    }
+  ]
+}
