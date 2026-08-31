@@ -58,6 +58,8 @@ describe('shell chrome', () => {
   });
 
   it('Clear all wipes statement storage keys and returns to Statement data', async () => {
+    // PR 19 added the confirm dialog (SHOULD); accept it.
+    window.confirm = () => true;
     const storage = renderShell();
     storage.setItem(KEYS.customImportProfiles, '[]');
     await userEvent.click(screen.getByRole('button', { name: 'Load sample' }));

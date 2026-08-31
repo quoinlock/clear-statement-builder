@@ -53,7 +53,17 @@ export function AppBar() {
         <h1 className="app-title">Clear Statement Builder</h1>
         <span className="version-badge">{APP_VERSION}</span>
         <div className="appbar-buttons">
-          <button type="button" className="btn btn-danger" onClick={() => store.clearAll()}>
+          <button
+            type="button"
+            className="btn btn-danger"
+            onClick={() => {
+              // Confirm-on-clear is a v1 SHOULD (PR 19); custom profiles
+              // survive regardless.
+              if (window.confirm('Clear all statement fields? Custom import profiles are kept.')) {
+                store.clearAll();
+              }
+            }}
+          >
             Clear all fields
           </button>
           <button type="button" className="btn" onClick={() => store.loadSample()}>

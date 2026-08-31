@@ -51,6 +51,13 @@ export function StatementForms() {
                 <input value={state[field.key]} onChange={e => store.setState(field.key, e.target.value)} />
               )}
             </label>
+            {field.key === 'openingBalance' ? (
+              <p className="panel-sub" style={{ margin: '4px 0 0' }}>
+                A negative opening balance usually means part of the advance is still unearned and carries
+                forward. Payment Due = Opening Balance + Closing Balance, so an unearned advance reduces the
+                payment.
+              </p>
+            ) : null}
           </div>
         ))}
       </div>
