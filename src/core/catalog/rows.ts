@@ -1,0 +1,38 @@
+// Row/state factories. Hugo v1.7 parity is deliberately inconsistent (PRD
+// "In-memory + persistence"): Clear all resets repeaters to one row of empty
+// strings, while Add row seeds numeric-ish fields with '0'. Both behaviors
+// are preserved.
+import type { ProductRow, ReserveRow, StatementState, SublicenseRow } from '../types.ts';
+import { STATEMENT_STATE_KEYS } from './groups.ts';
+
+export function emptyState(): StatementState {
+  const out = {} as Record<keyof StatementState, string>;
+  for (const key of STATEMENT_STATE_KEYS) out[key] = '';
+  return out as StatementState;
+}
+
+/** Clear-all repeater row: all empty strings. */
+export function emptyProductRow(): ProductRow {
+  return { form: '', isbn: '', pubDate: '', listPrice: '', basis: '', rate: '', priorUnits: '', periodUnits: '', basisAmount: '', earnings: '' };
+}
+
+export function emptyReserveRow(): ReserveRow {
+  return { form: '', rate: '', withheld: '', released: '' };
+}
+
+export function emptySublicenseRow(): SublicenseRow {
+  return { name: '', type: '', income: '', share: '', amountDue: '' };
+}
+
+/** Add-row defaults: '0' in numeric-ish fields (parity with Hugo's add buttons). */
+export function newProductRow(): ProductRow {
+  return { form: '', isbn: '', pubDate: '', listPrice: '0', basis: '', rate: '0', priorUnits: '0', periodUnits: '0', basisAmount: '', earnings: '0' };
+}
+
+export function newReserveRow(): ReserveRow {
+  return { form: '', rate: '', withheld: '0', released: '0' };
+}
+
+export function newSublicenseRow(): SublicenseRow {
+  return { name: '', type: '', income: '0', share: '0', amountDue: '0' };
+}
