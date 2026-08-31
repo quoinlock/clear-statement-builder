@@ -4,6 +4,7 @@ import { SideNav } from './SideNav.tsx';
 import { PanelHost } from './PanelHost.tsx';
 import { AppStoreProvider, useAppStore } from './store.tsx';
 import { Preview } from '../preview/Preview.tsx';
+import { HelpModal } from '../help/HelpModal.tsx';
 
 const storage = browserStorage();
 
@@ -32,6 +33,7 @@ export function App() {
         </div>
         <Preview />
       </div>
+      <HelpModal />
     </AppStoreProvider>
   );
 }

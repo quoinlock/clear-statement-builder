@@ -7,6 +7,8 @@ import { ValidationPanel } from '../validation/ValidationPanel.tsx';
 import { ReviewPanel } from '../review/ReviewPanel.tsx';
 import { ImportPanel } from '../import/ImportPanel.tsx';
 import { ProfileBuilderPanel } from '../profiles/ProfileBuilderPanel.tsx';
+import { AboutPanel } from './AboutPanel.tsx';
+import { VersionHistoryPanel } from './VersionHistoryPanel.tsx';
 import type { ComponentType } from 'react';
 
 function Stub({ name }: { name: string }) {
@@ -27,6 +29,8 @@ const PANELS: Partial<Record<Section, ComponentType>> = {
   'Review my statement': ReviewPanel,
   'Import / digest': ImportPanel,
   'Custom import profiles': ProfileBuilderPanel,
+  About: AboutPanel,
+  'Version history': VersionHistoryPanel,
 };
 
 export function PanelHost() {
