@@ -15,13 +15,25 @@ import {
 } from './helpers.ts';
 import { parseUllsteinProductSegment } from './productSegment.ts';
 import { parseUllsteinContracts } from './ullstein.ts';
+import { runCustomProfileDigest } from './customProfiles.ts';
 import type { CalcInference, CustomImportProfile, StatementState } from '../types.ts';
 
 export function digestStatementText(
   rawText: string,
   requestedProfile?: string,
-  _customProfiles?: CustomImportProfile[],
+  customProfiles?: CustomImportProfile[],
 ): DetectionResult {
+  // custom:<id> routes through the profile engine, which wraps generic
+  // digests and never calls parseUllsteinContracts (AC-IMP-14). An unknown
+  // id falls back to a plain generic digest (Hugo parity).
+  if (requestedProfile?.startsWith('custom:')) {
+    const id = requestedProfile.slice(7);
+    const profile = (customProfiles ?? []).find(p => p.id === id);
+    if (profile) {
+      return runCustomProfileDigest(rawText, profile, (t, p) => digestStatementText(t, p));
+    }
+    return digestStatementText(rawText, 'generic');
+  }
   const text = normalizeText(rawText);
   const lower = text.toLowerCase();
   const profile = profileFromText(text, requestedProfile || 'auto');

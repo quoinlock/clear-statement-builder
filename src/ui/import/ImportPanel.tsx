@@ -35,7 +35,7 @@ export function ImportPanel() {
 
   function digest(text: string) {
     setStatus(null);
-    store.setDetectedImport(digestStatementText(text, profile));
+    store.setDetectedImport(digestStatementText(text, profile, store.customProfiles));
   }
 
   async function readFile() {
@@ -55,11 +55,11 @@ export function ImportPanel() {
       } else if (name.endsWith('.pdf')) {
         const txt = await extractPdfText(await file.arrayBuffer());
         setPasted(txt);
-        parsed = digestStatementText(txt, profile);
+        parsed = digestStatementText(txt, profile, store.customProfiles);
       } else {
         const txt = await file.text();
         setPasted(txt);
-        parsed = digestStatementText(txt, profile);
+        parsed = digestStatementText(txt, profile, store.customProfiles);
       }
       store.setDetectedImport(parsed);
       setStatus(null);

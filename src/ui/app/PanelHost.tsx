@@ -6,6 +6,7 @@ import { ProductRows, ReserveRows, SublicenseRows } from '../statement/RepeaterP
 import { ValidationPanel } from '../validation/ValidationPanel.tsx';
 import { ReviewPanel } from '../review/ReviewPanel.tsx';
 import { ImportPanel } from '../import/ImportPanel.tsx';
+import { ProfileBuilderPanel } from '../profiles/ProfileBuilderPanel.tsx';
 import type { ComponentType } from 'react';
 
 function Stub({ name }: { name: string }) {
@@ -25,6 +26,7 @@ const PANELS: Partial<Record<Section, ComponentType>> = {
   Validation: ValidationPanel,
   'Review my statement': ReviewPanel,
   'Import / digest': ImportPanel,
+  'Custom import profiles': ProfileBuilderPanel,
 };
 
 export function PanelHost() {
