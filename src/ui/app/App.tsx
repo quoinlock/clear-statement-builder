@@ -1,3 +1,37 @@
+import { browserStorage } from '../../persist/localStorage.ts';
+import { AppBar } from './AppBar.tsx';
+import { SideNav } from './SideNav.tsx';
+import { PanelHost } from './PanelHost.tsx';
+import { AppStoreProvider, useAppStore } from './store.tsx';
+import { Preview } from '../preview/Preview.tsx';
+
+const storage = browserStorage();
+
+function PersistenceToast() {
+  const { persistenceIssue, dismissPersistenceIssue } = useAppStore();
+  if (!persistenceIssue) return null;
+  return (
+    <div role="alert" className="panel no-print" style={{ borderColor: 'var(--red)', margin: '0 22px' }}>
+      <strong>Storage problem:</strong> {persistenceIssue}{' '}
+      <button type="button" className="btn" onClick={dismissPersistenceIssue}>
+        Dismiss
+      </button>
+    </div>
+  );
+}
+
 export function App() {
-  return <div>Clear Statement Builder</div>;
+  return (
+    <AppStoreProvider storage={storage}>
+      <AppBar />
+      <PersistenceToast />
+      <div className="shell">
+        <SideNav />
+        <div>
+          <PanelHost />
+        </div>
+        <Preview />
+      </div>
+    </AppStoreProvider>
+  );
 }
