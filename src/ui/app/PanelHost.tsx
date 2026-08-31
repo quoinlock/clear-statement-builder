@@ -1,6 +1,8 @@
 // Hosts the currently selected sidebar panel (one visible at a time, Hugo
 // parity). Panels are filled in across PR 8-18; unbuilt ones render a stub.
 import { useAppStore, type Section } from './store.tsx';
+import { StatementForms } from '../statement/StatementForms.tsx';
+import { ProductRows, ReserveRows, SublicenseRows } from '../statement/RepeaterPanels.tsx';
 import type { ComponentType } from 'react';
 
 function Stub({ name }: { name: string }) {
@@ -12,7 +14,12 @@ function Stub({ name }: { name: string }) {
   );
 }
 
-const PANELS: Partial<Record<Section, ComponentType>> = {};
+const PANELS: Partial<Record<Section, ComponentType>> = {
+  'Statement data': StatementForms,
+  'Product rows': ProductRows,
+  'Reserve rows': ReserveRows,
+  'Sublicense rows': SublicenseRows,
+};
 
 export function PanelHost() {
   const { section } = useAppStore();
