@@ -31,9 +31,11 @@ describe('src/core boundaries', () => {
   it('never references window, document, or localStorage', () => {
     for (const file of coreFiles(CORE)) {
       const src = readFileSync(file, 'utf8');
-      expect(src, file).not.toMatch(/\bwindow\s*\./);
-      expect(src, file).not.toMatch(/\bdocument\s*\./);
-      expect(src, file).not.toMatch(/\blocalStorage\b/);
+      // Property access / call / subscript only, so prose in comments
+      // ("working document. showIds ...") doesn't trip the check.
+      expect(src, file).not.toMatch(/\bwindow\s*[.[(]\s*\w/);
+      expect(src, file).not.toMatch(/\bdocument\s*[.[(]\s*\w/);
+      expect(src, file).not.toMatch(/\blocalStorage\s*[.[(]\s*\w/);
     }
   });
 });
