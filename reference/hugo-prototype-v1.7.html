@@ -1,0 +1,1013 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hugo — BISG Royalty Statement Builder</title>
+  <style>
+    :root{--navy:#09264a;--navy2:#001e3c;--teal:#078b8f;--green:#13795b;--amber:#b7791f;--red:#b42318;--line:#94a3b8;--paper:#fff;--bg:#eef3f7;--text:#102033;--muted:#64748b}
+    *{box-sizing:border-box} body{margin:0;background:var(--bg);font-family:Inter,Arial,Helvetica,sans-serif;color:var(--text)}
+    .appbar{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.96);border-bottom:1px solid #d5dde7;backdrop-filter:blur(8px)}
+    .appbar-inner{max-width:1500px;margin:0 auto;padding:16px 22px;display:flex;gap:18px;align-items:center;justify-content:space-between}.app-title{font-size:24px;font-weight:950;color:var(--navy);letter-spacing:-.02em;margin:0;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}.version{font-size:12px;font-weight:900;color:#64748b;background:#eef2f7;border:1px solid #cbd5e1;border-radius:999px;padding:3px 8px}.app-sub{font-size:13px;margin:3px 0 0;color:#5b6b7d}.button-row{display:flex;gap:10px;flex-wrap:wrap}button{border:0;border-radius:12px;background:var(--navy);color:#fff;font-weight:850;padding:11px 14px;cursor:pointer}button.secondary{background:#fff;color:var(--navy);border:1px solid #c7d1df}button.green{background:var(--green)}button.amber{background:var(--amber)}button.danger{background:var(--red)}button.small{padding:7px 10px;border-radius:9px;font-size:12px}.shell{max-width:1700px;margin:0 auto;display:grid;grid-template-columns:260px 500px minmax(0,1fr);gap:24px;padding:22px;align-items:start}aside.no-print{min-width:0}.preview-wrap{min-width:0}.panel{background:#fff;border:1px solid #d8e0ea;border-radius:18px;box-shadow:0 8px 30px rgba(15,23,42,.06);overflow:hidden}.panel h2{margin:0;padding:16px 18px;background:#f7fafc;border-bottom:1px solid #d8e0ea;font-size:18px;color:var(--navy)}.panel-body{padding:16px 18px}.section-form{display:grid;gap:12px}.field{display:grid;gap:5px}.field label{font-size:12px;font-weight:900;color:#334155;display:flex;align-items:center;gap:6px;flex-wrap:wrap}.field input,.field textarea,.field select{width:100%;border:1px solid #cbd5e1;border-radius:10px;padding:10px 11px;font:inherit;font-size:14px;background:white}.field textarea{min-height:88px;resize:vertical}.tabs{display:flex;flex-wrap:wrap;gap:6px;padding:12px;background:#f8fafc;border-bottom:1px solid #d8e0ea}.tab{background:white;color:var(--navy);border:1px solid #cbd5e1;padding:9px 10px;border-radius:999px;font-size:12px}.tab.active{background:var(--navy);color:white}.row-card{border:1px solid #d8e0ea;border-radius:14px;padding:12px;margin:0 0 12px;background:#fff}.row-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;font-weight:900;color:var(--navy)}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.privacy{border-left:5px solid var(--teal);background:#edfafa;padding:13px 14px;border-radius:14px;font-size:13px;line-height:1.45}.demo{border-left:5px solid var(--amber);background:#fff8e6;padding:13px 14px;border-radius:14px;font-size:13px;line-height:1.45;margin-top:10px}.badge{font-size:10px;padding:2px 7px;border-radius:999px;font-weight:950;text-transform:uppercase;letter-spacing:.02em}.required{background:#e6f4ea;color:#0f6d45}.recommended{background:#fff3d6;color:#8a5a00}.conditional{background:#e8eefc;color:#274690}.remittance{background:#f4e8ff;color:#663399}.idbadge{background:#eef2f7;color:#475569;text-transform:none}.compliance{display:grid;gap:10px}.score{display:flex;align-items:center;justify-content:space-between;gap:12px}.scorebar{height:11px;background:#e2e8f0;border-radius:999px;overflow:hidden;flex:1}.scorebar span{display:block;height:100%;background:var(--teal)}.issue{border:1px solid #e2e8f0;border-radius:12px;padding:10px 12px;font-size:12px}.issue.good{border-color:#a7f3d0;background:#f0fdf4}.issue.warn{border-color:#fde68a;background:#fffbeb}.issue.bad{border-color:#fecaca;background:#fff1f2}.issue-head{display:flex;justify-content:space-between;gap:8px;font-weight:900}.issue p{margin:5px 0 0;color:#475569}.preview-wrap{overflow:auto}.page{width:794px;min-height:1123px;margin:0 auto 26px;background:#fff;padding:30px 32px;box-shadow:0 18px 45px rgba(15,23,42,.16)}.doc-header{border-bottom:4px solid var(--navy);padding-bottom:16px;display:flex;justify-content:space-between;gap:20px}.doc-header h1{margin:0;font-size:34px;line-height:1;color:var(--navy);font-weight:950;letter-spacing:-.04em}.doc-header p{margin:10px 0 0;font-size:17px;color:var(--teal);font-weight:850;font-style:italic}.doc-meta{text-align:right;color:var(--navy);font-weight:850;font-size:14px;white-space:nowrap;line-height:1.9}.block{border:1.5px solid var(--navy);border-radius:7px;margin-top:20px;overflow:hidden}.block.pad{padding:14px;overflow:visible}.two-col{display:grid;grid-template-columns:1fr 1fr}.dark-title{background:var(--navy);color:white;padding:12px 14px;font-size:20px;font-weight:950;display:flex;align-items:center;gap:9px}.contact{padding:13px 14px}.line{display:grid;grid-template-columns:178px 1fr;gap:10px;border-bottom:1px solid #d8e0ea;padding:6px 0;font-size:11.2px;line-height:1.25}.line b{color:var(--navy)}.line .fid{display:block;font-size:8.5px;color:#64748b;font-weight:700;margin-top:2px}.section-title{display:flex;align-items:center;gap:11px;margin:0 0 11px}.icon{width:38px;height:38px;border-radius:50%;background:var(--teal);color:white;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:950}.section-title h2{font-size:25px;letter-spacing:-.03em;margin:0;color:var(--navy);font-weight:950}.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px}.tbl{width:100%;border-collapse:collapse;font-size:9.7px;line-height:1.14}.tbl th{background:var(--navy);color:#fff;border:1px solid #67809d;padding:7px 5px;text-align:center}.tbl td{border:1px solid #94a3b8;padding:6px 5px;vertical-align:top}.right{text-align:right}.center{text-align:center}.summary{margin-top:14px;background:var(--teal);color:white;border-radius:6px;padding:12px 18px;text-align:right;font-size:25px;font-weight:950}.notes{border:1.5px solid var(--teal);border-radius:7px;margin-top:20px;padding:14px}.notes ul{margin:0 0 0 24px;padding:0;font-size:12.5px;line-height:1.45}.footer{margin-top:24px;border-top:4px solid var(--navy);padding-top:14px;display:flex;justify-content:space-between;font-size:14px;color:var(--navy);font-weight:900}.narrow{width:86%;margin-left:auto;margin-right:auto}.teal-row td{background:var(--teal);color:#fff;font-weight:950;font-size:14px}.note-small{font-size:11px;margin:10px auto 0;line-height:1.3}.smalltbl{font-size:12px}.remit-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;font-size:11px}.formula{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:#334155;background:#f8fafc;border-radius:5px;padding:3px 5px;display:inline-block}.helpnote{font-size:11px;color:#64748b;margin-top:4px}.hidden{display:none!important}
+    .left-nav{position:sticky;top:98px;z-index:10;background:#fff;border:1px solid #d8e0ea;border-radius:18px;box-shadow:0 8px 30px rgba(15,23,42,.06);overflow:hidden;margin-bottom:0;align-self:start;min-width:0}
+    .left-nav-title{padding:13px 16px;background:var(--navy);color:white;font-weight:950;display:flex;justify-content:space-between;align-items:center}
+    .left-nav-title span{font-size:12px;color:#c8f6f6;font-weight:800}
+    .left-nav-buttons{padding:10px;display:grid;gap:7px}
+    .left-nav button{width:100%;display:flex;justify-content:space-between;align-items:center;text-align:left;background:#f8fafc;color:var(--navy);border:1px solid #cbd5e1;border-radius:12px;padding:10px 12px;font-size:13px}
+    .left-nav button.active{background:var(--teal);border-color:var(--teal);color:white;box-shadow:0 6px 16px rgba(7,139,143,.18)}
+    .left-nav button .nav-dot{width:8px;height:8px;border-radius:999px;background:currentColor;opacity:.65}
+    aside.no-print>.panel{display:none;margin-top:0!important}
+    aside.no-print>.panel.nav-active{display:block}
+    .panel h2.nav-heading{display:flex;align-items:center;justify-content:space-between;gap:10px}
+    .panel h2.nav-heading:after{content:'Selected';font-size:10px;text-transform:uppercase;letter-spacing:.04em;background:#e6fffb;color:var(--teal);border:1px solid #99f6e4;border-radius:999px;padding:3px 8px}
+    .panel#dataEntryPanel .tabs{border-top:1px solid #d8e0ea}
+
+
+    .import-controls{display:grid;gap:10px}.fileline{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.import-preview{border:1px solid #d8e0ea;background:#f8fafc;border-radius:12px;padding:10px 12px;font-size:12px;line-height:1.4;max-height:280px;overflow:auto}.import-preview table{width:100%;border-collapse:collapse;font-size:11px}.import-preview th,.import-preview td{border:1px solid #d8e0ea;padding:5px;text-align:left}.pill{display:inline-block;border-radius:999px;padding:2px 8px;font-size:10px;font-weight:950;background:#e2e8f0;color:#334155;margin-right:4px}.pill.good{background:#dcfce7;color:#166534}.pill.warn{background:#fef3c7;color:#92400e}.pill.bad{background:#fee2e2;color:#991b1b}.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}.muted{color:#64748b}.textarea-small{min-height:120px!important}
+
+    .help-modal{position:fixed;inset:0;z-index:100;background:rgba(9,38,74,.55);display:none;align-items:flex-start;justify-content:center;padding:26px;overflow:auto}.help-modal.open{display:flex}.help-window{width:min(1180px,100%);background:white;border-radius:22px;box-shadow:0 30px 90px rgba(0,0,0,.28);overflow:hidden;border:1px solid #d8e0ea}.help-head{background:var(--navy);color:white;padding:18px 22px;display:flex;justify-content:space-between;align-items:center;gap:16px}.help-head h2{margin:0;font-size:25px;letter-spacing:-.02em}.help-head p{margin:4px 0 0;color:#c8f6f6;font-size:13px}.help-close{background:white!important;color:var(--navy)!important}.help-body{display:grid;grid-template-columns:270px 1fr;min-height:650px}.help-nav{background:#f8fafc;border-right:1px solid #d8e0ea;padding:14px;display:flex;flex-direction:column;gap:8px}.help-tab{background:white;color:var(--navy);border:1px solid #cbd5e1;border-radius:12px;text-align:left;padding:11px 12px;font-weight:900}.help-tab.active{background:var(--teal);color:white;border-color:var(--teal)}.help-content{padding:20px 24px;max-height:76vh;overflow:auto}.help-section{display:none}.help-section.active{display:block}.help-content h3{font-size:24px;color:var(--navy);margin:0 0 12px}.help-content h4{font-size:16px;color:var(--navy);margin:18px 0 8px}.help-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.help-card{border:1px solid #d8e0ea;border-radius:16px;padding:14px;background:#fff}.help-card.teal{border-left:5px solid var(--teal)}.help-card.amber{border-left:5px solid var(--amber);background:#fffbeb}.help-card.green{border-left:5px solid var(--green);background:#f0fdf4}.help-card.red{border-left:5px solid var(--red);background:#fff1f2}.help-list{margin:8px 0 0 20px;padding:0;line-height:1.55}.help-steps{counter-reset:step;display:grid;gap:10px}.help-step{display:grid;grid-template-columns:38px 1fr;gap:12px;align-items:start}.help-step:before{counter-increment:step;content:counter(step);width:30px;height:30px;border-radius:50%;background:var(--teal);color:white;display:flex;align-items:center;justify-content:center;font-weight:950}.help-mini-table{width:100%;border-collapse:collapse;font-size:13px}.help-mini-table th{background:var(--navy);color:white}.help-mini-table th,.help-mini-table td{border:1px solid #cbd5e1;padding:8px;text-align:left;vertical-align:top}.help-linkrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}.help-link{display:inline-block;background:var(--navy);color:white;text-decoration:none;font-weight:900;border-radius:12px;padding:10px 12px}.help-link.secondary{background:white;color:var(--navy);border:1px solid #cbd5e1}.kbd{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#eef2f7;border:1px solid #cbd5e1;border-radius:6px;padding:1px 5px}.help-figure{border:1px solid #d8e0ea;border-radius:14px;padding:10px;background:#f8fafc;text-align:center}.help-figure img{max-width:100%;border-radius:10px;border:1px solid #d8e0ea}.help-note{font-size:13px;color:#475569;line-height:1.5}.help-quick-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.help-action{border:1px solid #d8e0ea;border-radius:14px;padding:12px;background:#f8fafc}.help-action b{display:block;color:var(--navy);margin-bottom:4px}
+    @media(max-width:900px){.help-body{grid-template-columns:1fr}.help-nav{border-right:0;border-bottom:1px solid #d8e0ea;display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.help-grid,.help-quick-actions{grid-template-columns:1fr}.help-modal{padding:10px}.help-content{max-height:none}}
+
+    @media(max-width:1250px){.shell{grid-template-columns:1fr}.left-nav{position:static}.page{transform-origin:top left}.preview-wrap{padding-bottom:20px}}
+    @media print{body{background:white}.no-print{display:none!important}.shell{display:block;padding:0;max-width:none}.preview-wrap{overflow:visible}.page{box-shadow:none;margin:0;width:auto;min-height:calc(297mm - 20mm);padding:0;page-break-after:always}.page:last-child{page-break-after:auto}@page{size:A4 portrait;margin:10mm}.doc-header h1{font-size:29px}.section-title h2{font-size:21px}.summary{font-size:22px}.block{margin-top:16px}.tbl{font-size:8.7px}.line{font-size:10px;grid-template-columns:154px 1fr}.footer{position:relative}.fid{font-size:7.5px!important}}
+  </style>
+</head>
+<body>
+  <div class="appbar no-print"><div class="appbar-inner"><div><h1 class="app-title">Hugo <span class="version">prototype v1.7 — July 2026</span></h1><p class="app-sub">The BISG Royalty Statement Builder: validation, custom import profiles, Ullstein contract splitting, reviewed imports, BISG review reports, field categories, BISG IDs, formula transparency, exports, and help.</p></div><div class="button-row"><button class="secondary" id="resetBtn">Clear all fields</button><button class="secondary" id="loadSampleBtn">Load sample data</button><button class="green" id="jsonBtn">Export JSON</button><button class="amber" id="csvBtn">Export CSV</button><button class="secondary" id="importJumpBtn">Import statement</button><button class="secondary" id="reviewJumpBtn">Review report</button><button class="secondary" id="helpBtn">Help</button><button id="printBtn">Print / Save as PDF</button></div></div></div>
+  <div class="help-modal no-print" id="helpModal" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+    <div class="help-window">
+      <div class="help-head">
+        <div><h2 id="helpTitle">Hugo Help Center</h2><p>Quick guide, how-to instructions, import guidance, limitations, and BISG-oriented field explanations.</p></div>
+        <button class="help-close small" id="helpCloseBtn" type="button">Close</button>
+      </div>
+      <div class="help-body">
+        <nav class="help-nav" aria-label="Hugo help sections">
+          <button class="help-tab active" data-help="overview" type="button">1. What Hugo is</button>
+          <button class="help-tab" data-help="workflow" type="button">2. How to use Hugo</button>
+          <button class="help-tab" data-help="import" type="button">3. Import statements</button>
+          <button class="help-tab" data-help="interface" type="button">4. Interface guide</button>
+          <button class="help-tab" data-help="validation" type="button">5. Validation & warnings</button>
+          <button class="help-tab" data-help="exports" type="button">6. Export & print</button>
+          <button class="help-tab" data-help="limitations" type="button">7. Demo mode & limits</button>
+          <button class="help-tab" data-help="pdfs" type="button">8. PDF guides</button>
+        </nav>
+        <div class="help-content">
+          <section class="help-section active" data-help-section="overview">
+            <h3>What Hugo is</h3>
+            <div class="help-grid">
+              <div class="help-card teal"><h4>A BISG-focused royalty statement prototype</h4><p>Hugo helps publishers, agents, and rights professionals create, review, import, validate, and export BISG-aligned translation-rights royalty statements.</p></div>
+              <div class="help-card green"><h4>What Hugo helps you do</h4><ul class="help-list"><li>Create structured royalty statements from scratch.</li><li>Import and digest publisher statements, including Ullstein-style PDFs.</li><li>Validate completeness against BISG-oriented fields.</li><li>Review calculation warnings and missing mappings.</li><li>Export as PDF, JSON, or CSV.</li></ul></div>
+              <div class="help-card"><h4>Why it exists</h4><p>Hugo demonstrates how royalty reporting can become clearer, more transparent, and easier to compare by translating the BISG standard into a practical interface.</p></div>
+              <div class="help-card amber"><h4>Prototype status</h4><p>Hugo is a public prototype for discussion and testing. It is not a production accounting system and should not be used for confidential live royalty reporting.</p></div>
+            </div>
+          </section>
+          <section class="help-section" data-help-section="workflow">
+            <h3>How to use Hugo in six steps</h3>
+            <div class="help-steps">
+              <div class="help-step"><div><b>Open Hugo.</b><br><span class="help-note">Use the public prototype URL. No login is required.</span></div></div>
+              <div class="help-step"><div><b>Add data.</b><br><span class="help-note">Click <span class="kbd">Load sample data</span> for a demo or enter contract, party, product, royalty, and payment data manually.</span></div></div>
+              <div class="help-step"><div><b>Import, if useful.</b><br><span class="help-note">Upload a PDF, TXT, CSV, or Hugo JSON file, or paste statement text into the import box.</span></div></div>
+              <div class="help-step"><div><b>Review imported data.</b><br><span class="help-note">Hugo shows detected fields, contract splits, confidence labels, and unmapped lines. Apply only the statement you want to review.</span></div></div>
+              <div class="help-step"><div><b>Check validation and calculation warnings.</b><br><span class="help-note">Resolve missing required fields and review any mismatch between entered values and expected calculations.</span></div></div>
+              <div class="help-step"><div><b>Preview and export.</b><br><span class="help-note">Review the statement preview, then print/save as PDF or export the data as JSON or CSV.</span></div></div>
+            </div>
+          </section>
+          <section class="help-section" data-help-section="import">
+            <h3>Import / digest royalty statements</h3>
+            <div class="help-grid">
+              <div class="help-card teal"><h4>Supported intake</h4><ul class="help-list"><li>PDF royalty statements with extractable text</li><li>TXT files or pasted text</li><li>CSV files</li><li>Hugo JSON exports</li></ul></div>
+              <div class="help-card"><h4>Ullstein-style statements</h4><p>For Ullstein/Bonnier-style statements, Hugo can split a multi-book intake by <b>Interne VertragsNr.</b>, treating Ullstein’s internal contract number as the marker for separate statements.</p></div>
+              <div class="help-card green"><h4>What Hugo now detects</h4><ul class="help-list"><li>Separate internal contract statements</li><li>Book/title blocks</li><li>Product rows such as TB and E-Book</li><li>ISBNs</li><li>Unit values from the left quantity column</li><li>Financial values from <i>Berechnung in EUR</i> / <i>Guthaben in EUR</i></li><li>Opening balance, current royalties, and new carried-forward balance where recognizable</li></ul></div>
+              <div class="help-card amber"><h4>Review before applying</h4><p>Hugo does not silently trust imports. Always review detected fields, confidence labels, calculation inferences, and unmapped lines before applying data to the statement form.</p></div>
+            </div>
+          </section>
+          <section class="help-section" data-help-section="interface">
+            <h3>Interface guide</h3>
+            <div class="help-quick-actions">
+              <div class="help-action"><b>Top toolbar</b>Clear fields, load sample data, import, export, open help, or print/save as PDF.</div>
+              <div class="help-action"><b>Left input area</b>Enter party, contract, product, reserve, sublicense, tax, and payment data.</div>
+              <div class="help-action"><b>Import panel</b>Upload or paste statements, then review detected fields before applying them.</div>
+              <div class="help-action"><b>Validation panel</b>Shows completeness score, missing fields, and field categories.</div>
+              <div class="help-action"><b>Product/reserve/sublicense rows</b>Maintain the rows that drive the statement preview and calculations.</div>
+              <div class="help-action"><b>Right preview panel</b>Shows the royalty statement as it will appear when printed or saved as PDF.</div>
+            </div>
+            <div class="help-figure" style="margin-top:14px"><img src="assets/Hugo_How_To_Guide.png" alt="Hugo interface overview from the how-to guide"></div>
+          </section>
+          <section class="help-section" data-help-section="validation">
+            <h3>Validation and calculation warnings</h3>
+            <div class="help-grid">
+              <div class="help-card green"><h4>Validation checks</h4><p>Hugo checks whether important BISG-oriented fields are filled and categorizes them as required, recommended, conditional, or remittance-related.</p></div>
+              <div class="help-card amber"><h4>Calculation warnings</h4><ul class="help-list"><li>Royalty earnings do not match rate × basis amount.</li><li>Opening balance and current activity do not reconcile.</li><li>Sublicense totals do not match expected calculations.</li><li>Net remittance does not reconcile with balance and payments.</li></ul></div>
+              <div class="help-card"><h4>BISG field IDs</h4><p>Activate <span class="kbd">Show BISG field IDs in preview</span> to display IDs such as <span class="kbd">Con61_SalesTerr</span> or <span class="kbd">SS92_PayDue</span> beside relevant fields.</p></div>
+              <div class="help-card red"><h4>Human review still required</h4><p>Warnings are aids, not audit opinions. Users must review legal, contractual, accounting, tax, and payment details themselves.</p></div>
+            </div>
+          </section>
+          <section class="help-section" data-help-section="exports">
+            <h3>Export and print</h3>
+            <table class="help-mini-table"><thead><tr><th>Action</th><th>Use</th><th>Notes</th></tr></thead><tbody><tr><td><b>Print / Save as PDF</b></td><td>Creates a human-readable royalty statement.</td><td>Uses your browser print settings. Choose A4 portrait and check margins.</td></tr><tr><td><b>Export JSON</b></td><td>Creates structured data for review, archiving, or re-import.</td><td>Best format for moving Hugo data between sessions.</td></tr><tr><td><b>Export CSV</b></td><td>Creates spreadsheet-friendly data.</td><td>Useful for analysis and review, but not as rich as JSON.</td></tr></tbody></table>
+          </section>
+          <section class="help-section" data-help-section="limitations">
+            <h3>Demo mode and limitations</h3>
+            <div class="help-grid">
+              <div class="help-card amber"><h4>Demo mode notice</h4><p>Use sample or anonymized data. Do not enter confidential royalty, tax, contract, bank, or payment information in public testing.</p></div>
+              <div class="help-card"><h4>Browser-only storage</h4><p>Data stays in the browser using localStorage in this static demo. It is not a database-backed production system.</p></div>
+              <div class="help-card red"><h4>Import limitations</h4><p>Results vary depending on PDF quality and layout. Scanned PDFs, unusual publisher formats, or missing labels may require manual mapping or manual entry.</p></div>
+              <div class="help-card"><h4>Professional judgment</h4><p>Hugo supports review and standardization discussions but does not replace accounting, legal, tax, or rights-management expertise.</p></div>
+            </div>
+          </section>
+          <section class="help-section" data-help-section="pdfs">
+            <h3>PDF guides and access</h3>
+            <div class="help-grid">
+              <div class="help-card teal"><h4>Hugo Quick Guide</h4><p>A one-page overview explaining what Hugo is, what it can do, demo mode, limitations, and the import/digest feature.</p><div class="help-linkrow"><a class="help-link" href="assets/Hugo_Quick_Guide.pdf" target="_blank" rel="noopener">Open PDF</a><a class="help-link secondary" href="assets/Hugo_Quick_Guide.png" target="_blank" rel="noopener">Open PNG</a></div></div>
+              <div class="help-card green"><h4>Hugo How-To Guide</h4><p>A one-page instruction guide showing how to use the interface, import statements, check validation, and export results.</p><div class="help-linkrow"><a class="help-link" href="assets/Hugo_How_To_Guide.pdf" target="_blank" rel="noopener">Open PDF</a><a class="help-link secondary" href="assets/Hugo_How_To_Guide.png" target="_blank" rel="noopener">Open PNG</a></div></div>
+              <div class="help-card"><h4>Public prototype</h4><p><b>URL:</b> <a href="https://hugo-prototype.netlify.app/" target="_blank" rel="noopener">https://hugo-prototype.netlify.app/</a><br><b>Access:</b> public prototype — no login required<br><b>Contact:</b> <a href="mailto:sebastian.ritscher@mohrbooks.com">sebastian.ritscher@mohrbooks.com</a></p></div>
+              <div class="help-card amber"><h4>Feedback requested</h4><p>Please share confusing fields, publisher-specific import failures, missing BISG mappings, calculation edge cases, or suggestions for clearer reporting.</p></div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="shell">
+    <aside class="no-print">
+      <div class="panel" id="aboutPanel"><h2>About Hugo</h2><div class="panel-body"><div class="privacy"><b>Privacy notice:</b> Data entered here stays in this browser using localStorage. The static demo does not send statement, bank, tax, or sales data to BISG, Netlify, or a publisher server. Use fictional or anonymized data for public testing.</div><div class="demo"><b>Demo mode:</b> Hugo is a prototype for standards discussion and sample statements. Do not enter confidential royalty, tax, or banking information in public testing.</div><p class="helpnote">Hugo creates BISG-aligned translation-rights royalty statements. Use the validation and calculation warnings below before exporting.</p></div></div>
+      <div class="panel" id="versionHistoryPanel" style="margin-top:18px"><h2>Version history</h2><div class="panel-body"><div class="version-list"><div><b>v1.7</b> — Added Custom Import Profiles / Profile Builder so users can define their own split rules, field mappings, abbreviation dictionaries, product aliases, and shareable profile JSON files.</div><div><b>v1.6</b> — Fixed sidebar layout: navigation now has its own reserved column and no longer overlaps the selected content panel.</div><div><b>v1.5</b> — Finalized the requested navigation order.</div><div><b>v1.4</b> — Set Statement Data as the default section and moved data-entry sections to the top of navigation.</div><div><b>v1.3</b> — Fixed the browser report-window generator.</div><div><b>v1.2</b> — Replaced long left-column box list with compact sidebar navigation; only the selected section is open.</div><div><b>v1.1</b> — Easier review report in a new browser window, PDF-ready report layout, accordion navigation, and visible version history.</div><div><b>v1.0</b> — Added “Review my statement” and BISG standards-completeness report exports.</div><div><b>v0.9</b> — Added integrated Help Center and PDF guide links.</div><div><b>v0.8</b> — Improved Ullstein multi-contract splitting by “Interne VertragsNr.” and better table extraction.</div><div><b>v0.7</b> — Added reviewable imports, confidence labels, unmapped lines, and manual field mapping.</div><div><b>v0.6</b> — Added first import/digest prototype.</div><div><b>v0.5</b> — Added sample data, calculation warnings, demo mode, and field IDs.</div></div></div></div>
+      <div class="panel" id="importPanel" style="margin-top:18px"><h2>Import / digest royalty statement</h2><div class="panel-body"><div class="demo"><b>Prototype import:</b> Hugo can import its own JSON/CSV exports and can heuristically digest PDF or text statements. The v0.7 importer is review-based: detected values receive confidence labels, unmapped lines remain visible, and users decide what to apply.</div><div class="import-controls" style="margin-top:12px"><div class="fileline"><label class="field" style="min-width:180px"><span style="font-size:12px;font-weight:900;color:#334155">Import profile</span><select id="importProfile"><option value="auto">Auto-detect profile</option><option value="ullstein">Ullstein / Bonnier Germany</option><option value="generic">Generic royalty statement</option></select></label><input type="file" id="importFile" accept=".json,.csv,.txt,.pdf,application/json,text/csv,text/plain,application/pdf"><button class="secondary small" id="readImportBtn">Read file</button><button class="secondary small" id="parsePasteBtn">Digest pasted text</button></div><textarea class="textarea-small" id="importText" placeholder="Paste royalty statement text here, or upload JSON, CSV, TXT, or text-based PDF."></textarea><div class="fileline"><button class="green small" id="applyImportBtn">Apply accepted values to Hugo</button><button class="secondary small" id="clearImportBtn">Clear import</button></div><div id="importResult" class="import-preview"><span class="muted">No statement imported yet.</span></div></div></div></div>
+      <div class="panel" id="profileBuilderPanel" style="margin-top:18px"><h2>Custom Import Profiles</h2><div class="panel-body"><div class="privacy"><b>Profile Builder:</b> Create reusable, browser-local import profiles for additional publisher statement layouts. Profiles can define split rules, field mappings, abbreviations, product aliases, and calculation hints. Hugo still shows detected values for review before applying them.</div><div class="demo"><b>Safe design:</b> Custom profiles are deterministic rule sets. They do not use an LLM and they do not send statement data to a server.</div><div id="profileBuilderRoot" class="section-form" style="margin-top:12px"></div></div></div>
+      <div class="panel" id="validationPanel" style="margin-top:18px"><h2>BISG validation / completeness</h2><div class="panel-body"><div class="score"><b id="scoreText">0%</b><div class="scorebar"><span id="scoreBar" style="width:0%"></span></div></div><div id="validationRoot" class="compliance" style="margin-top:12px"></div></div></div>
+      <div class="panel" id="reviewPanel" style="margin-top:18px"><h2>Review my statement</h2><div class="panel-body"><div class="privacy"><b>BISG Statement Review:</b> Generate a publisher-facing standards-completeness report from the current Hugo data. The report identifies fields that are detected, missing, unclear, or not applicable and gives practical improvement suggestions.</div><div id="reviewRoot" class="compliance" style="margin-top:12px"></div><div class="review-actions"><button class="green small" id="generateReviewBtn" type="button">Generate easy-to-read BISG Review Report</button><button class="secondary small" id="reviewJsonBtn" type="button">Export review JSON</button><button class="secondary small" id="reviewCsvBtn" type="button">Export review CSV</button></div><div class="helpnote">This is a standards-completeness review only. It is not an audit, certification, legal opinion, or accounting advice.</div></div></div>
+      <div class="panel" id="dataEntryPanel" style="margin-top:18px"><h2>Statement data entry</h2><div class="tabs" id="tabs"></div><div class="panel-body"><label style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:900;margin-bottom:12px"><input type="checkbox" id="showIds"> Show BISG field IDs in preview</label><div id="formRoot"></div></div></div>
+      <div class="panel" id="productsPanel" style="margin-top:18px"><h2>Product form rows</h2><div class="panel-body"><div id="productsForm"></div><button id="addProduct">+ Add product row</button></div></div>
+      <div class="panel" id="reservesPanel" style="margin-top:18px"><h2>Reserve rows</h2><div class="panel-body"><div id="reservesForm"></div><button id="addReserve">+ Add reserve row</button></div></div>
+      <div class="panel" id="sublicensesPanel" style="margin-top:18px"><h2>Sublicense rows</h2><div class="panel-body"><div id="sublicensesForm"></div><button id="addSublicense">+ Add sublicense row</button></div></div>
+    </aside>
+    <main class="preview-wrap" id="preview"></main>
+  </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+const FIELD_META={
+ licenseeName:['Con1_LicName','Required'],licenseeAddress:['Con6_LicConInfo','Required'],licenseeImprint:['Con11_LicImp','Recommended'],payerName:['Con16_PayName','Conditional'],payerAddress:['Con21_PayConInfo','Conditional'],licenseeContractId:['Con26_LicContID','Required'],licensorName:['Con31_LicensorName','Required'],licensorContractId:['Con36_LicensorContID','Recommended'],contributorNames:['Con41_ContribNames','Required'],licensorTitle:['Con46_LicensorWorkTitle','Required'],licenseeTitle:['Con51_LicWorkTitle','Required'],language:['Con56_LangLicWork','Required'],salesTerritory:['Con61_SalesTerr','Required'],advanceAmount:['Con66_AdvAmount','Required'],advanceCurrency:['Con71_AdvCurr','Required'],statementDate:['SS2_RoyStmntDate','Required'],periodStart:['SS7_RoyRptStartDt','Required'],periodEnd:['SS12_RoyRptEndDt','Required'],openingBalance:['SS17_OpenBal','Required'],priorUnits:['SS22_NetUnitstoBegPer','Required'],isbn:['SS27_LicProdIdentifier','Required'],form:['SS32_ProdFormDtl','Required'],pubDate:['SS37_LicPubDate','Recommended'],listPrice:['SS42_LicListPrice','Recommended'],rate:['SS47_RoyRate','Required'],basis:['SS52_RoyBasis','Required'],periodUnits:['SS57_UnitsSldinPer','Required'],earnings:['SS62_RoyEarnings','Required'],totalRoyalty:['SS67_TotRoyEarnings','Required'],ltdUnits:['SS72_LTDUnitsSold','Required'],reserveWithheld:['SS77_ResWithheld','Required'],reserveReleased:['SS82_ResReleased','Required'],closingBalance:['SS87_ClosingBal','Required'],paymentDue:['SS92_PayDue','Required'],sublicenseeName:['SC3_SubLicName','Conditional'],sublicenseType:['SC8_SubLicType','Conditional'],sublicenseIncome:['SC13_SubLicIncome','Conditional'],licensorShare:['SC18_LicensorShare','Conditional'],licensorAmountDue:['SC23_LicensorAmtInc','Conditional'],remitId:['RA4_RemitIDInfo','Remittance'],coAgentCommissionPercent:['RA9_CoAgentCommPerc','Conditional'],taxId:['RA14_LicTaxID','Remittance'],taxExemptionStatus:['RA19_LicensorTaxExStatus','Remittance'],taxWithheld:['RA24_LicensorTaxHeldAmt','Remittance']
+};
+function badge(cat){const c=cat.toLowerCase().split(' ')[0];return `<span class="badge ${c}">${cat}</span>`}
+function metaBadge(key){const m=FIELD_META[key];return m?`${badge(m[1])}<span class="badge idbadge">${m[0]}</span>`:''}
+function fid(key){return showIds&&FIELD_META[key]?`<span class="fid">${FIELD_META[key][0]}</span>`:''}
+const sample={statementNo:'RS-2026-0142',statementDate:'15 Mar 2026',periodStart:'01 Jan 2025',periodEnd:'31 Dec 2025',preparedBy:'Maria Köhler, Senior Royalties Manager',licenseeName:'Nordlicht Verlag GmbH',licenseeImprint:'Nordlicht Belletristik',licenseeAddress:'Friedrichstraße 88, 10117 Berlin, Germany',licenseePhone:'+49 30 555 018 40',licenseeEmail:'rights@nordlicht-verlag.de',licenseeWebsite:'www.nordlicht-verlag.de',payerName:'Aurora Media Deutschland GmbH',payerAddress:'Friedrichstraße 88, 10117 Berlin, Germany',payerPhone:'+49 30 555 018 99',payerEmail:'finance@auroramedia.de',payerWebsite:'www.auroramedia.de',licenseeContractId:'NV-DE-TR-2024-00981',licensorName:'Cedar Lane Rights LLC, c/o Bright Quill Agency',licensorContractId:'BQA-US-4471',contributorNames:'Amelia Hart (ISNI 0000000123456789)',licensorTitle:'The Long Summer Road',licenseeTitle:'Der lange Sommerweg',language:'German',salesTerritory:'Germany, Austria, Switzerland, Luxembourg',advanceAmount:'8000.00',advanceCurrency:'USD',openingBalance:'-2450.00',reserveWithheld:'236.40',reserveReleased:'95.00',sublicenseIncomeTotal:'600.00',coAgentCommissionPercent:'10',taxId:'DE339221908',taxExemptionStatus:'Waived under Germany–US tax treaty; Form W-8BEN-E valid through 31 Dec 2027',taxWithheld:'0.00',scheduledPaymentDate:'31 Mar 2026',paymentMethod:'International bank transfer (SWIFT)',beneficiary:'Bright Quill Agency Client Account',beneficiaryBank:'Hudson Trust Bank, New York',swiftBic:'HUTBUS33',accountReference:'Client Account ending 0281',statementNotes:'This example is intended as a best-practice template for publisher royalty statements.\nAll BISG core, statement-specific, conditional, and remittance fields are shown.\nAdvance Amount is stated separately from statement currency.\nCo-agent commission is deducted from Payment Due before remittance.\nNo foreign tax was withheld for this payment.'};
+const sampleProducts=[{form:'Hardcover',isbn:'978-3-9812345-1-2',pubDate:'20 May 2024',listPrice:'24.00',basis:'List Price',rate:'8.0',priorUnits:'960',periodUnits:'450',basisAmount:'€24.00 per copy',earnings:'864.00'},{form:'Paperback',isbn:'978-3-9812345-2-9',pubDate:'15 Mar 2025',listPrice:'16.00',basis:'List Price',rate:'7.5',priorUnits:'0',periodUnits:'1250',basisAmount:'€16.00 per copy',earnings:'1500.00'},{form:'E-Book',isbn:'978-3-9812345-3-6',pubDate:'20 May 2024',listPrice:'12.99',basis:'Net Receipts',rate:'25.0',priorUnits:'1640',periodUnits:'780',basisAmount:'€7,140.00 total net receipts',earnings:'1785.00'},{form:'Audiobook Download',isbn:'978-3-9812345-4-3',pubDate:'01 Jun 2024',listPrice:'19.99',basis:'Net Receipts',rate:'25.0',priorUnits:'410',periodUnits:'315',basisAmount:'€4,260.00 total net receipts',earnings:'1065.00'}];
+const sampleReserves=[{form:'Hardcover',rate:'10% of royalty earnings',withheld:'86.40',released:'35.00'},{form:'Paperback',rate:'10% of royalty earnings',withheld:'150.00',released:'60.00'}];
+const sampleSublicenses=[{name:'Lesering Deutschland GmbH',type:'German book club edition',income:'1500.00',share:'40',amountDue:'600.00'}];
+const STORAGE_KEYS=['bisgState','bisgProducts','bisgReserves','bisgSublicenses','bisgShowIds'];
+function cloneData(obj){return JSON.parse(JSON.stringify(obj))}
+function readStored(key,fallback){try{const raw=localStorage.getItem(key);return raw?JSON.parse(raw):cloneData(fallback)}catch(e){return cloneData(fallback)}}
+let state=readStored('bisgState',sample);
+let products=readStored('bisgProducts',sampleProducts);
+let reserves=readStored('bisgReserves',sampleReserves);
+let sublicenses=readStored('bisgSublicenses',sampleSublicenses);
+let active='Statement',showIds=JSON.parse(localStorage.getItem('bisgShowIds')||'false');
+const groups={Statement:[['Statement No.','statementNo'],['Royalty Statement Date','statementDate'],['Reporting Period Start Date','periodStart'],['Reporting Period End Date','periodEnd'],['Prepared By','preparedBy']],Parties:[['Licensee Name','licenseeName'],['Licensee Imprint','licenseeImprint'],['Licensee Contact Information','licenseeAddress'],['Licensee Phone','licenseePhone'],['Licensee Email','licenseeEmail'],['Licensee Website','licenseeWebsite'],['Payer Name','payerName'],['Payer Contact Information','payerAddress'],['Payer Phone','payerPhone'],['Payer Email','payerEmail'],['Payer Website','payerWebsite']],Work:[['Licensee Contract ID','licenseeContractId'],['Licensor Name','licensorName'],['Licensor Contract ID','licensorContractId'],['Contributor Name(s)','contributorNames'],['Licensor Title of Work','licensorTitle'],['Licensee Title of Work','licenseeTitle'],['Language of Licensee Work','language'],['Sales Territory','salesTerritory'],['Advance Amount','advanceAmount'],['Advance Currency','advanceCurrency']],Payment:[['Opening Balance','openingBalance'],['Reserve Withheld','reserveWithheld'],['Reserve Released','reserveReleased'],['Sublicense Income Total','sublicenseIncomeTotal'],['Co-Agent Commission %','coAgentCommissionPercent'],['Licensee VAT / Tax ID','taxId'],['Tax Exemption Status','taxExemptionStatus'],['Tax Withheld','taxWithheld'],['Scheduled Payment Date','scheduledPaymentDate'],['Payment Method','paymentMethod'],['Beneficiary','beneficiary'],['Beneficiary Bank','beneficiaryBank'],['SWIFT / BIC','swiftBic'],['Account Reference','accountReference'],['Statement Notes','statementNotes','textarea']]};
+function esc(s){return String(s??'').replace(/[&<>\"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]))}
+function money(v){let n=Number(v||0),sign=n<0?'-':'';return sign+'€'+Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}
+function num(v){return Number(v||0).toLocaleString('en-US')}
+function save(){localStorage.setItem('bisgState',JSON.stringify(state));localStorage.setItem('bisgProducts',JSON.stringify(products));localStorage.setItem('bisgReserves',JSON.stringify(reserves));localStorage.setItem('bisgSublicenses',JSON.stringify(sublicenses));localStorage.setItem('bisgShowIds',JSON.stringify(showIds))}
+function totals(){const totalRoyalty=products.reduce((s,p)=>s+Number(p.earnings||0),0),opening=Number(state.openingBalance||0),withheld=Number(state.reserveWithheld||0),released=Number(state.reserveReleased||0),sub=Number(state.sublicenseIncomeTotal||0),closing=totalRoyalty-withheld+released+sub,payment=opening+closing,commission=payment>0?payment*(Number(state.coAgentCommissionPercent||0)/100):0,net=payment-commission-Number(state.taxWithheld||0);return{totalRoyalty,opening,withheld,released,sub,closing,payment,commission,net}}
+function notBlank(v){return String(v??'').trim()!==''}
+
+function parseMoneyLike(v){
+ const m=String(v??'').replace(/,/g,'').match(/-?\d+(?:\.\d+)?/);
+ return m?Number(m[0]):0;
+}
+function roughlyEqual(a,b,tol=0.02){return Math.abs(Number(a||0)-Number(b||0))<=tol}
+function expectedProductEarnings(p){
+ const rate=Number(p.rate||0)/100;
+ const basis=String(p.basis||'').toLowerCase();
+ if(!rate) return null;
+ if(basis.includes('list')){
+   const unitBasis=parseMoneyLike(p.listPrice || p.basisAmount);
+   const units=Number(p.periodUnits||0);
+   return unitBasis*units*rate;
+ }
+ if(basis.includes('net')){
+   const totalBasis=parseMoneyLike(p.basisAmount);
+   return totalBasis*rate;
+ }
+ return null;
+}
+function calculationWarnings(){
+ const warnings=[];
+ products.forEach((p,i)=>{
+   const expected=expectedProductEarnings(p);
+   const entered=Number(p.earnings||0);
+   if(expected!==null && notBlank(p.earnings) && !roughlyEqual(expected,entered,0.05)){
+     warnings.push({label:`Product ${i+1} royalty earnings`,detail:`Expected approximately ${money(expected)} from the entered basis, units, and rate; entered ${money(entered)}.`});
+   }
+ });
+ const reserveWithheldRows=reserves.reduce((s,r)=>s+Number(r.withheld||0),0);
+ const reserveReleasedRows=reserves.reduce((s,r)=>s+Number(r.released||0),0);
+ if(reserves.length && !roughlyEqual(reserveWithheldRows,Number(state.reserveWithheld||0),0.05)) warnings.push({label:'Reserve withheld total',detail:`Reserve rows total ${money(reserveWithheldRows)}; payment section shows ${money(state.reserveWithheld)}.`});
+ if(reserves.length && !roughlyEqual(reserveReleasedRows,Number(state.reserveReleased||0),0.05)) warnings.push({label:'Reserve released total',detail:`Reserve rows total ${money(reserveReleasedRows)}; payment section shows ${money(state.reserveReleased)}.`});
+ const sublicenseRows=sublicenses.reduce((s,r)=>s+Number(r.amountDue||0),0);
+ if(sublicenses.length && !roughlyEqual(sublicenseRows,Number(state.sublicenseIncomeTotal||0),0.05)) warnings.push({label:'Sublicense income total',detail:`Sublicense rows total ${money(sublicenseRows)}; payment section shows ${money(state.sublicenseIncomeTotal)}.`});
+ const t=totals();
+ const expectedNet=t.payment-t.commission-Number(state.taxWithheld||0);
+ if(!roughlyEqual(expectedNet,t.net,0.05)) warnings.push({label:'Net remitted calculation',detail:`Net remitted should equal payment due minus co-agent commission and tax withheld.`});
+ return warnings;
+}
+function validation(){
+ const checks=[['Licensee name','licenseeName','Required'],['Licensee contact information','licenseeAddress','Required'],['Licensee imprint','licenseeImprint','Recommended'],['Licensee contract ID','licenseeContractId','Required'],['Licensor name','licensorName','Required'],['Licensor contract ID','licensorContractId','Recommended'],['Contributor name(s)','contributorNames','Required'],['Licensor title','licensorTitle','Required'],['Licensee title','licenseeTitle','Required'],['Language','language','Required'],['Sales territory','salesTerritory','Required'],['Advance amount','advanceAmount','Required'],['Advance currency','advanceCurrency','Required'],['Statement date','statementDate','Required'],['Reporting period start','periodStart','Required'],['Reporting period end','periodEnd','Required'],['Opening balance','openingBalance','Required'],['Reserve withheld','reserveWithheld','Required'],['Reserve released','reserveReleased','Required'],['Co-agent commission percent','coAgentCommissionPercent','Conditional'],['Licensee VAT / Tax ID','taxId','Remittance'],['Tax exemption status','taxExemptionStatus','Remittance'],['Tax withheld amount','taxWithheld','Remittance']].map(c=>({label:c[0],key:c[1],cat:c[2],ok:notBlank(state[c[1]])}));
+ products.forEach((p,i)=>['form','isbn','basis','rate','periodUnits','earnings'].forEach(k=>checks.push({label:`Product ${i+1}: ${k}`,key:k,cat:FIELD_META[k]?.[1]||'Required',ok:notBlank(p[k])}))); 
+ if(products.length===0)checks.push({label:'At least one product-form row',key:'form',cat:'Required',ok:false});
+ if(Number(state.sublicenseIncomeTotal||0)>0 && sublicenses.length===0)checks.push({label:'Sublicense detail rows for sublicense income',key:'sublicenseeName',cat:'Conditional',ok:false});
+ const required=checks.filter(c=>c.cat==='Required'),okReq=required.filter(c=>c.ok).length,score=Math.round(okReq/Math.max(required.length,1)*100);
+ return {checks,score};
+}
+function renderValidation(){
+ const v=validation();
+ const warnings=calculationWarnings();
+ document.getElementById('scoreText').textContent=v.score+'% required complete';
+ document.getElementById('scoreBar').style.width=v.score+'%';
+ const prioritized=v.checks.filter(c=>!c.ok).slice(0,14);
+ const missingHtml=prioritized.length?prioritized.map(c=>`<div class="issue ${c.cat==='Required'?'bad':'warn'}"><div class="issue-head"><span>${esc(c.label)}</span>${badge(c.cat)}</div><p>${FIELD_META[c.key]?FIELD_META[c.key][0]+' — ':''}Missing or blank. Complete this before using the statement as a BISG example.</p></div>`).join(''):`<div class="issue good"><div class="issue-head"><span>Required fields complete</span>${badge('Required')}</div><p>Recommended, conditional, and remittance fields should still be reviewed for applicability.</p></div>`;
+ const warningHtml=warnings.length?`<div class="issue warn"><div class="issue-head"><span>Calculation warnings</span><span class="badge recommended">Review</span></div><p>Hugo found ${warnings.length} calculation issue${warnings.length===1?'':'s'}. These do not block export, but should be reviewed before presenting the statement.</p></div>`+warnings.slice(0,8).map(w=>`<div class="issue warn"><div class="issue-head"><span>${esc(w.label)}</span><span class="badge recommended">Formula</span></div><p>${esc(w.detail)}</p></div>`).join(''):`<div class="issue good"><div class="issue-head"><span>No calculation warnings</span><span class="badge required">OK</span></div><p>Entered totals are consistent with Hugo’s current calculation checks.</p></div>`;
+ document.getElementById('validationRoot').innerHTML=missingHtml+warningHtml+`<div class="issue"><div class="issue-head"><span>Legend</span></div><p><b>Required</b> = core BISG statement field. <b>Recommended</b> = best-practice detail. <b>Conditional</b> = required when applicable. <b>Remittance</b> = payment/tax advice field.</p></div>`;
+}
+function formLabel(label,key){return `${esc(label)} ${metaBadge(key)}`}
+function renderForms(){document.getElementById('tabs').innerHTML=Object.keys(groups).map(g=>`<button class="tab ${g===active?'active':''}" data-tab="${g}">${g}</button>`).join('');document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{active=b.dataset.tab;render()});document.getElementById('showIds').checked=showIds;document.getElementById('showIds').onchange=e=>{showIds=e.target.checked;save();renderPreview()};document.getElementById('formRoot').innerHTML='<div class="section-form">'+groups[active].map(([label,key,type])=>`<div class="field"><label>${formLabel(label,key)}</label>${type==='textarea'?`<textarea data-state="${key}">${esc(state[key])}</textarea>`:`<input data-state="${key}" value="${esc(state[key])}">`}</div>`).join('')+'</div>';document.querySelectorAll('[data-state]').forEach(el=>el.oninput=e=>{state[e.target.dataset.state]=e.target.value;save();renderPreview();renderValidation()});renderRepeater('productsForm',products,[['form','Product Form Detail'],['isbn','ISBN'],['pubDate','Publication Date'],['listPrice','List Price'],['basis','Royalty Basis'],['rate','Royalty Rate %'],['priorUnits','Prior Units'],['periodUnits','Units Sold in Period'],['basisAmount','Royalty Basis Amount'],['earnings','Royalty Earnings']],(i,k,v)=>{products[i][k]=v;save();renderPreview();renderValidation()},i=>{products.splice(i,1);save();render()});renderRepeater('reservesForm',reserves,[['form','Product Form Detail'],['rate','Reserve Rate'],['withheld','Reserve Withheld'],['released','Reserve Released']],(i,k,v)=>{reserves[i][k]=v;save();renderPreview();renderValidation()},i=>{reserves.splice(i,1);save();render()});renderRepeater('sublicensesForm',sublicenses,[['name','Sublicensee Name'],['type','Sublicense Type'],['income','Sublicense Income'],['share','Licensor Share %'],['amountDue','Licensor Amount Due']],(i,k,v)=>{sublicenses[i][k]=v;save();renderPreview();renderValidation()},i=>{sublicenses.splice(i,1);save();render()});}
+function renderRepeater(id,arr,cols,onChange,onDel){document.getElementById(id).innerHTML=arr.map((row,i)=>`<div class="row-card"><div class="row-head"><span>Row ${i+1}</span><button class="danger small" data-del="${id}-${i}">Delete</button></div><div class="grid2">${cols.map(([k,l])=>`<div class="field"><label>${formLabel(l,k)}</label><input data-rep="${id}" data-i="${i}" data-k="${k}" value="${esc(row[k])}"></div>`).join('')}</div></div>`).join('');document.querySelectorAll(`[data-rep="${id}"]`).forEach(el=>el.oninput=e=>onChange(Number(e.target.dataset.i),e.target.dataset.k,e.target.value));document.querySelectorAll(`[data-del^="${id}-"]`).forEach(btn=>btn.onclick=()=>onDel(Number(btn.dataset.del.split('-').pop())))}
+function line(label,val,key=''){return `<div class="line"><b>${esc(label)}${key?fid(key):''}</b><span>${val}</span></div>`}
+function sect(icon,title){return `<div class="section-title"><div class="icon">${icon}</div><h2>${title}</h2></div>`}
+function pageHeader(n){return `<header class="doc-header"><div><h1>Translation Rights Royalty Statement</h1><p>Example of a BISG-compliant publisher royalty statement</p></div><div class="doc-meta"><div>Statement No. ${esc(state.statementNo)}</div><div>Page ${n} of 2</div></div></header>`}
+function footer(n){return `<footer class="footer"><span>Prepared by ${n===2?esc(state.preparedBy):'Rights & Royalties Department'}</span><span>${esc(state.licenseeName)}</span></footer>`}
+function renderPreview(){const t=totals();document.getElementById('preview').innerHTML=`<div class="page">${pageHeader(1)}<section class="notes"><b>Explanatory note:</b> This fictional sample was generated with Hugo to show a fully populated BISG-style royalty statement. It is not legal, accounting, or tax advice.</section><div class="block two-col"><div style="border-right:1px solid var(--navy)"><div class="dark-title">◎ Licensee</div><div class="contact">${line('Licensee Name:',esc(state.licenseeName),'licenseeName')+line('Licensee Imprint:',esc(state.licenseeImprint),'licenseeImprint')+line('Contact Information:',esc(state.licenseeAddress),'licenseeAddress')+line('Phone:',esc(state.licenseePhone))+line('Email:',esc(state.licenseeEmail))+line('Website:',esc(state.licenseeWebsite))}</div></div><div><div class="dark-title">▣ Payer (if different from Licensee)</div><div class="contact">${line('Payer Name:',esc(state.payerName),'payerName')+line('Contact Information:',esc(state.payerAddress),'payerAddress')+line('Phone:',esc(state.payerPhone))+line('Email:',esc(state.payerEmail))+line('Website:',esc(state.payerWebsite))}</div></div></div><section class="block pad">${sect('▤','Contract and Work Information')}<div class="info-grid"><div>${line('Licensee Contract ID:',esc(state.licenseeContractId),'licenseeContractId')+line('Licensor Name:',esc(state.licensorName),'licensorName')+line('Licensor Contract ID:',esc(state.licensorContractId),'licensorContractId')+line('Contributor Name(s):',esc(state.contributorNames),'contributorNames')+line('Licensor Title of Work:','<em>'+esc(state.licensorTitle)+'</em>','licensorTitle')+line('Licensee Title of Work:','<em>'+esc(state.licenseeTitle)+'</em>','licenseeTitle')}</div><div>${line('Language:',esc(state.language),'language')+line('Sales Territory:',esc(state.salesTerritory),'salesTerritory')+line('Advance Amount:',Number(state.advanceAmount||0).toLocaleString('en-US',{minimumFractionDigits:2}),'advanceAmount')+line('Advance Currency:',esc(state.advanceCurrency),'advanceCurrency')+line('Statement Date:',esc(state.statementDate),'statementDate')+line('Period Start Date:',esc(state.periodStart),'periodStart')+line('Period End Date:',esc(state.periodEnd),'periodEnd')}</div></div></section><section class="block pad" style="border:0;padding-left:0;padding-right:0">${sect('▥','Sales and Royalty Detail by Product Form')}<table class="tbl"><thead><tr>${['Product Form Detail','ISBN','Publication Date','List Price','Royalty Basis','Rate','Prior Units','Period Units','LTD Units','Basis Amount','Royalty Earnings'].map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${products.map(p=>`<tr><td><b>${esc(p.form)}</b>${fid('form')}</td><td>${esc(p.isbn)}${fid('isbn')}</td><td>${esc(p.pubDate)}${fid('pubDate')}</td><td class="right">${money(p.listPrice)}${fid('listPrice')}</td><td>${esc(p.basis)}${fid('basis')}</td><td class="right">${esc(p.rate)}%${fid('rate')}</td><td class="right">${num(p.priorUnits)}${fid('priorUnits')}</td><td class="right">${num(p.periodUnits)}${fid('periodUnits')}</td><td class="right">${num(Number(p.priorUnits||0)+Number(p.periodUnits||0))}${fid('ltdUnits')}</td><td class="right">${esc(p.basisAmount)}</td><td class="right"><b>${money(p.earnings)}</b>${fid('earnings')}</td></tr>`).join('')}</tbody></table><div class="summary">Total Royalty Earnings: ${money(t.totalRoyalty)} ${showIds?'<span style="font-size:11px">SS67_TotRoyEarnings</span>':''}</div></section><section class="notes">${sect('ƒ','Formula Transparency')}<ul><li><span class="formula">Life to Date Units = Prior Units + Period Units</span></li><li><span class="formula">Royalty Earnings = Royalty Rate × Royalty Basis Amount</span></li><li><span class="formula">Total Royalty Earnings = Sum of Royalty Earnings across product forms</span></li><li>For list-price rows, the basis amount is usually list price per copy. For net-receipts rows, the basis amount is total net receipts for the period.</li></ul></section>${footer(1)}</div><div class="page">${pageHeader(2)}<section class="block pad">${sect('⚖','Balance Reconciliation')}<table class="tbl smalltbl narrow"><thead><tr><th style="text-align:left">Field</th><th>Amount</th></tr></thead><tbody>${[['Opening Balance (unearned advance carried forward)',money(t.opening),'openingBalance'],['Total Royalty Earnings',money(t.totalRoyalty),'totalRoyalty'],['Reserve Withheld this Period',money(-t.withheld),'reserveWithheld'],['Reserve Released this Period',money(t.released),'reserveReleased'],['Licensor Amount of Sublicense Income',money(t.sub),'licensorAmountDue'],['Closing Balance',money(t.closing),'closingBalance']].map(r=>`<tr><td><b>${r[0]}${fid(r[2])}</b></td><td class="right">${r[1]}</td></tr>`).join('')}<tr class="teal-row"><td>Payment Due (EARNED)${fid('paymentDue')}</td><td class="right">${money(t.payment)}</td></tr></tbody></table><p class="note-small narrow"><span class="formula">Closing Balance = Total Royalty Earnings − Reserve Withheld + Reserve Released + Sublicense Income</span><br><span class="formula">Payment Due = Opening Balance + Closing Balance</span></p></section><section class="block pad">${sect('◔','Reserve Detail')}<table class="tbl smalltbl narrow"><thead><tr>${['Product Form Detail','Reserve Rate','Reserve Withheld','Reserve Released'].map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${reserves.map(r=>`<tr><td>${esc(r.form)}</td><td>${esc(r.rate)}</td><td class="right">${money(r.withheld)}</td><td class="right">${money(r.released)}</td></tr>`).join('')}<tr class="teal-row"><td>Total</td><td class="center">—</td><td class="right">${money(t.withheld)}</td><td class="right">${money(t.released)}</td></tr></tbody></table></section><section class="block pad">${sect('▤','Sublicense Income')}<table class="tbl smalltbl"><thead><tr>${['Sublicensee Name','Sublicense Type','Sublicense Income','Licensor Share','Licensor Amount Due'].map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${sublicenses.map(s=>`<tr><td>${esc(s.name)}${fid('sublicenseeName')}</td><td>${esc(s.type)}${fid('sublicenseType')}</td><td class="right">${money(s.income)}${fid('sublicenseIncome')}</td><td class="right">${esc(s.share)}%${fid('licensorShare')}</td><td class="right">${money(s.amountDue)}${fid('licensorAmountDue')}</td></tr>`).join('')}</tbody></table><p class="note-small" style="margin-left:20px"><em>If no sublicense income applies, enter 0.00 and state “not applicable.”</em></p></section><section class="block pad">${sect('▥','Remittance Advice and Tax Information')}<div class="remit-grid"><div>${line('Remit ID Information:',`${esc(state.licensorContractId)} | ${esc(state.contributorNames.split(' (')[0])} | <em>${esc(state.licensorTitle)}</em> | ${esc(state.statementNo)}`,'remitId')+line('Co-Agent Commission %:',esc(state.coAgentCommissionPercent)+'%','coAgentCommissionPercent')+line('Co-Agent Commission:',money(-t.commission),'coAgentCommissionPercent')+line('Licensee VAT / Tax ID:',esc(state.taxId),'taxId')+line('Tax Exemption Status:',esc(state.taxExemptionStatus),'taxExemptionStatus')+line('Tax Withheld Amount:',money(state.taxWithheld),'taxWithheld')+line('Net Amount Remitted:',money(t.net))}</div><div>${line('Scheduled Payment Date:',esc(state.scheduledPaymentDate))+line('Payment Method:',esc(state.paymentMethod))+line('Beneficiary:',esc(state.beneficiary))+line('Beneficiary Bank:',esc(state.beneficiaryBank))+line('SWIFT / BIC:',esc(state.swiftBic))+line('Account Reference:',esc(state.accountReference))}</div></div></section><section class="notes">${sect('•','Statement Notes')}<ul>${esc(state.statementNotes).split('\n').filter(Boolean).map(n=>`<li>${n}</li>`).join('')}</ul></section>${footer(2)}</div>`}
+function dataPackage(){return {version:'0.9',generatedAt:new Date().toISOString(),state,products,reserves,sublicenses,totals:totals(),validation:validation(),calculationWarnings:calculationWarnings()}}
+function download(name,type,content){const blob=new Blob([content],{type});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),500)}
+function exportJSON(){download(`hugo-royalty-statement-${state.statementNo||'draft'}.json`,'application/json',JSON.stringify(dataPackage(),null,2))}
+function csvEscape(v){return '"'+String(v??'').replace(/"/g,'""')+'"'}
+function exportCSV(){let rows=[];rows.push(['Section','Field','Value','BISG ID','Category']);Object.entries(state).forEach(([k,v])=>rows.push(['Statement',k,v,FIELD_META[k]?.[0]||'',FIELD_META[k]?.[1]||'']));products.forEach((p,i)=>Object.entries(p).forEach(([k,v])=>rows.push([`Product ${i+1}`,k,v,FIELD_META[k]?.[0]||'',FIELD_META[k]?.[1]||''])));reserves.forEach((r,i)=>Object.entries(r).forEach(([k,v])=>rows.push([`Reserve ${i+1}`,k,v,FIELD_META[k]?.[0]||'',FIELD_META[k]?.[1]||''])));sublicenses.forEach((s,i)=>Object.entries(s).forEach(([k,v])=>rows.push([`Sublicense ${i+1}`,k,v,FIELD_META[k]?.[0]||'',FIELD_META[k]?.[1]||''])));download(`hugo-royalty-statement-${state.statementNo||'draft'}.csv`,'text/csv;charset=utf-8',rows.map(r=>r.map(csvEscape).join(',')).join('\n'))}
+function emptyObjectFrom(obj){const out={};Object.keys(obj).forEach(k=>out[k]='');return out}
+function clearAllFields(){
+  STORAGE_KEYS.forEach(key=>localStorage.removeItem(key));
+  state=emptyObjectFrom(sample);
+  products=[{form:'',isbn:'',pubDate:'',listPrice:'',basis:'',rate:'',priorUnits:'',periodUnits:'',basisAmount:'',earnings:''}];
+  reserves=[{form:'',rate:'',withheld:'',released:''}];
+  sublicenses=[{name:'',type:'',income:'',share:'',amountDue:''}];
+  active='Statement';
+  showIds=false;
+  save();
+  render();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function loadSampleData(){
+  state=cloneData(sample);
+  products=cloneData(sampleProducts);
+  reserves=cloneData(sampleReserves);
+  sublicenses=cloneData(sampleSublicenses);
+  active='Statement';
+  showIds=false;
+  save();
+  render();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+let detectedImport=null;
+const ABBREVIATIONS={
+  'NR':'Net Receipts','GR':'Gross Receipts','GRP':'Gross Retail Price','NRP':'Net Retail Price','UT':'Unit Price','ET':'Publication Date / Erscheinungstermin','Gutschrift':'Credit Note','Brought forward':'Opening Balance','Carried forward':'Closing Balance','Royalty Contract-No.':'Contract royalty / balance line','Accounting period':'Reporting Period','Tax exemption until':'Tax exemption status / expiry date'
+};
+const IMPORT_FIELD_OPTIONS=['statementDate','periodStart','periodEnd','licenseeName','licenseeImprint','licenseeAddress','licenseePhone','licenseeEmail','licenseeWebsite','payerName','payerAddress','payerPhone','payerEmail','payerWebsite','licenseeContractId','licensorName','licensorContractId','contributorNames','licensorTitle','licenseeTitle','language','salesTerritory','advanceAmount','advanceCurrency','openingBalance','reserveWithheld','reserveReleased','sublicenseIncomeTotal','coAgentCommissionPercent','taxId','taxExemptionStatus','taxWithheld','scheduledPaymentDate','paymentMethod','beneficiary','beneficiaryBank','swiftBic','accountReference','statementNotes'];
+function setImportResult(html){document.getElementById('importResult').innerHTML=html}
+function setImportText(txt){document.getElementById('importText').value=txt||''}
+function currentImportProfile(){return document.getElementById('importProfile')?.value||'auto'}
+function normalizeText(txt){return String(txt||'').replace(/\r/g,'').replace(/[ \t]+/g,' ').replace(/\n{3,}/g,'\n\n')}
+function parseDateToDisplay(s){
+  s=String(s||'').trim();
+  const m=s.match(/(\d{1,2})[\.\/\-](\d{1,2})[\.\/\-](\d{2,4})/); if(!m) return s;
+  let y=m[3].length===2?'20'+m[3]:m[3]; const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']; return String(m[1]).padStart(2,'0')+' '+months[Number(m[2])-1]+' '+y;
+}
+function findFirst(text,patterns){for(const p of patterns){const m=text.match(p); if(m) return (m[1]||m[0]||'').trim()} return ''}
+function detectCurrencyValue(raw){return String(raw||'').replace(/[^0-9,\.\-]/g,'').replace(/\.(?=\d{3}(\D|$))/g,'').replace(',','.')}
+function addDetection(list,target,value,confidence,source,reason){ if(notBlank(value)) list.push({target,value:String(value),confidence,source:source||'',reason:reason||'',bisg:FIELD_META[target]?.[0]||'',category:FIELD_META[target]?.[1]||''}); }
+function confidencePill(c){const cls=c==='High'?'good':c==='Medium'?'warn':'bad';return `<span class="pill ${cls}">${esc(c)}</span>`}
+function profileFromText(text,requested){const lower=text.toLowerCase(); if(requested&&requested!=='auto') return requested; if(lower.includes('ullstein')||lower.includes('bonnier')||lower.includes('royalty contract-no.')||lower.includes('interne vertragsnr')||lower.includes('honorarabrechnung')) return 'ullstein'; return 'generic';}
+function lineLooksMapped(line){
+  const pats=[/date:/i,/royalty statement/i,/accounting period/i,/copyright holder/i,/internal contract number/i,/royalty contract-no/i,/total sales until/i,/royalty\s+[0-9,.]+\s*%/i,/sales within accounting period/i,/brought forward/i,/carried forward/i,/amount of payment/i,/iban|bic|bank:/i,/ust-id|vat/i,/^\s*(hardcover|paperback|e-?book|audiobook|taschenbuch)/i,/97[89][\d\- ]{10,17}/i,/contact:|phone:|email:/i,/tax exemption/i,/et\s*\d/i];
+  return pats.some(p=>p.test(line));
+}
+function unmappedImportantLines(text){
+  const lines=text.split('\n').map(x=>x.trim()).filter(x=>x.length>6 && x.length<180);
+  const seen=new Set(), out=[];
+  for(const line of lines){
+    const key=line.toLowerCase(); if(seen.has(key)) continue; seen.add(key);
+    if(!lineLooksMapped(line) && !/^[-–—]+ page/i.test(line) && !/^page \d+/i.test(line)) out.push(line);
+    if(out.length>=80) break;
+  }
+  return out;
+}
+function parseImportedCSV(csv){
+  const lines=csv.split(/\r?\n/).filter(Boolean); if(!lines.length) return null;
+  function split(line){const out=[];let cur='',q=false;for(let i=0;i<line.length;i++){const ch=line[i];if(ch==='"'&&line[i+1]==='"'){cur+='"';i++;continue}if(ch==='"'){q=!q;continue}if(ch===','&&!q){out.push(cur);cur='';continue}cur+=ch}out.push(cur);return out}
+  const rows=lines.map(split); const header=rows[0].map(x=>x.toLowerCase());
+  if(header.includes('section')&&header.includes('field')&&header.includes('value')){
+    const fieldIdx=header.indexOf('field'), valueIdx=header.indexOf('value'), sectionIdx=header.indexOf('section');
+    const newState={}, prodMap={}, resMap={}, subMap={}, detections=[];
+    rows.slice(1).forEach(r=>{const sec=r[sectionIdx]||'', field=r[fieldIdx]||'', val=r[valueIdx]||''; if(sec==='Statement'){newState[field]=val; addDetection(detections,field,val,'High',sec,'Hugo CSV export')} else if(sec.startsWith('Product')){const i=Number(sec.match(/\d+/)?.[0]||1)-1; prodMap[i]=prodMap[i]||{}; prodMap[i][field]=val}else if(sec.startsWith('Reserve')){const i=Number(sec.match(/\d+/)?.[0]||1)-1; resMap[i]=resMap[i]||{}; resMap[i][field]=val}else if(sec.startsWith('Sublicense')){const i=Number(sec.match(/\d+/)?.[0]||1)-1; subMap[i]=subMap[i]||{}; subMap[i][field]=val}});
+    return {sourceType:'Hugo CSV export',profile:'structured',state:newState,products:Object.values(prodMap),reserves:Object.values(resMap),sublicenses:Object.values(subMap),detections,unmappedLines:[],calcInferences:[],notes:['Recognized Hugo CSV export format.']};
+  }
+  return {sourceType:'Generic CSV',profile:'generic',state:{},products:[],reserves:[],sublicenses:[],detections:[],unmappedLines:lines.slice(0,80),calcInferences:[],notes:['CSV did not match Hugo export format. Paste statement text or use Hugo JSON/CSV for structured import.']};
+}
+function parseGermanNumber(raw){
+  let s=String(raw||'').trim();
+  if(!s) return '';
+  s=s.replace(/[€$£\s]/g,'');
+  const neg=/^-/.test(s); s=s.replace(/^[+\-]/,'');
+  if(s.includes(',') && s.includes('.')) s=s.replace(/\./g,'').replace(',','.');
+  else if(s.includes(',')) s=s.replace(',','.');
+  const n=Number((neg?'-':'')+s);
+  return Number.isFinite(n)?String(n):'';
+}
+function formatBasisCurrency(raw){
+  const n=Number(parseGermanNumber(raw));
+  if(!Number.isFinite(n)) return '';
+  return '€'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+}
+function isIntegerLikeLine(s){return /^\s*[-+]?\d{1,3}(?:\.\d{3})*\s*$|^\s*[-+]?\d+\s*$/.test(String(s||''));}
+function isMoneyLikeLine(s){return /^\s*[-+]?\d{1,3}(?:\.\d{3})*,\d{2}\s*$|^\s*[-+]?\d+,\d{2}\s*$/.test(String(s||''));}
+function cleanUnit(raw){return String(raw||'').trim().replace(/\./g,'');}
+function valueAfterOrBefore(lines, idx, direction, predicate, maxSteps){
+  for(let off=1; off<=(maxSteps||5); off++){
+    const j=idx+(direction==='before'?-off:off);
+    if(j<0||j>=lines.length) continue;
+    const val=String(lines[j]||'').trim();
+    if(predicate(val)) return val;
+  }
+  return '';
+}
+function findValueForLabel(lines, labelRegex, predicate){
+  for(let i=0;i<lines.length;i++){
+    const line=String(lines[i]||'').trim();
+    let m=line.match(labelRegex);
+    if(m && m[1]) return m[1].trim();
+    if(labelRegex.test(line)){
+      const before=valueAfterOrBefore(lines,i,'before',predicate||(()=>true),3);
+      if(before) return before;
+      const after=valueAfterOrBefore(lines,i,'after',predicate||(()=>true),3);
+      if(after) return after;
+    }
+  }
+  return '';
+}
+function findValueAfterLabel(lines, labelRegex, predicate){
+  for(let i=0;i<lines.length;i++){
+    const line=String(lines[i]||'').trim();
+    const m=line.match(labelRegex);
+    if(m && m[1]) return m[1].trim();
+    if(labelRegex.test(line)){
+      const after=valueAfterOrBefore(lines,i,'after',predicate||(()=>true),4);
+      if(after) return after;
+      const before=valueAfterOrBefore(lines,i,'before',predicate||(()=>true),3);
+      if(before) return before;
+    }
+  }
+  return '';
+}
+function parseUllsteinProductSegment(segText, contractTitle){
+  const lines=segText.split('\n').map(x=>x.trim()).filter(Boolean);
+  const first=(lines[0]||'');
+  let formRaw='', isbn='';
+  let m=first.match(/^(TB|Taschenbuch|E-?Book|Standard E-?Book|Hardcover|Paperback)\s+(97[89][\d\- ]{10,17})/i);
+  if(m){formRaw=m[1]; isbn=m[2];}
+  else {
+    formRaw=first.match(/^(TB|Taschenbuch|E-?Book|Standard E-?Book|Hardcover|Paperback)$/i)?.[1]||'';
+    isbn=(lines.find(l=>/^97[89][\d\- ]{10,17}$/.test(l))||segText.match(/97[89][\d\- ]{10,17}/)?.[0]||'');
+  }
+  const formMap={'TB':'Paperback','Taschenbuch':'Paperback','Standard E-Book':'E-Book','EBook':'E-Book','E-Book':'E-Book'};
+  const form=formMap[formRaw]||formRaw||'Book';
+  const pub=parseDateToDisplay(findFirst(segText,[/ET\s*([0-9\.\-\/]+)/i,/Publication Date:\s*([^\n]+)/i]));
+  const periodStart=parseDateToDisplay(findFirst(segText,[/Abrechnungszeitraum\s+([0-9\.\-\/]+)\s*[-–]/i,/Accounting period\s+([0-9\.\-\/]+)\s*[-–]/i]));
+  const periodEnd=parseDateToDisplay(findFirst(segText,[/Abrechnungszeitraum\s+[0-9\.\-\/]+\s*[-–]\s*([0-9\.\-\/]+)/i,/Accounting period\s+[0-9\.\-\/]+\s*[-–]\s*([0-9\.\-\/]+)/i]));
+  let rate='', earnings='', periodUnits='', nve='', nlp='', blp='', basis='', basisAmount='', listPrice='';
+  // Inline form used by some PDF text extractors:
+  // "362 Honorar 6,0000 %; NLP 12,14; BLP 12,99 263,68".
+  // This is intentionally line-based so basis amounts such as NLP 12,14 are not mistaken for the final royalty amount.
+  for(const oneLine of lines){
+    const inlineHon=oneLine.match(/^\s*([-+]?\d{1,3}(?:\.\d{3})*|[-+]?\d+)\s+Honorar\s+([0-9.,]+)\s*%\s*;\s*((?:(?:NVE|NLP|BLP|BVE|STP)\s+[0-9.,]+(?:;\s*)?)+)\s+([-+]?\d{1,3}(?:\.\d{3})*,\d{2}|[-+]?\d+,\d{2})\s*$/i);
+    if(inlineHon){periodUnits=cleanUnit(inlineHon[1]); rate=parseGermanNumber(inlineHon[2]); earnings=parseGermanNumber(inlineHon[4]); const basisText=inlineHon[3]; nve=findFirst(basisText,[/NVE\s*([0-9.,]+)/i]); nlp=findFirst(basisText,[/NLP\s*([0-9.,]+)/i]); blp=findFirst(basisText,[/BLP\s*([0-9.,]+)/i]);}
+  }
+  for(let i=0;i<lines.length;i++){
+    const line=lines[i];
+    const hm=line.match(/Honorar\s+([0-9.,]+)\s*%\s*;\s*(.*)$/i);
+    if(hm){
+      rate=rate||parseGermanNumber(hm[1]);
+      const basisText=hm[2]||'';
+      nve=nve||findFirst(basisText,[/NVE\s*([0-9.,]+)/i]);
+      nlp=nlp||findFirst(basisText,[/NLP\s*([0-9.,]+)/i]);
+      blp=blp||findFirst(basisText,[/BLP\s*([0-9.,]+)/i]);
+      periodUnits=periodUnits||cleanUnit(valueAfterOrBefore(lines,i,'before',isIntegerLikeLine,4));
+      earnings=earnings||parseGermanNumber(valueAfterOrBefore(lines,i,'before',isMoneyLikeLine,4));
+    }
+    if(/keine honorarpflichtigen Verkäufe|no sales/i.test(line)){
+      periodUnits=periodUnits||cleanUnit(valueAfterOrBefore(lines,i,'before',isIntegerLikeLine,4))||'0';
+      earnings=earnings||parseGermanNumber(valueAfterOrBefore(lines,i,'before',isMoneyLikeLine,4))||'0';
+    }
+    if(/Honorarpflichtige Menge im Abrechnungszeitraum/i.test(line)){
+      periodUnits=periodUnits||cleanUnit(valueAfterOrBefore(lines,i,'before',isIntegerLikeLine,3));
+      earnings=earnings||parseGermanNumber(valueAfterOrBefore(lines,i,'after',isMoneyLikeLine,3));
+    }
+  }
+  const priorRaw=findValueAfterLabel(lines,/honorarpflichtige Menge Gesamt per\s+01\.01\.2025(?:\s+([\d.]+))?/i,isIntegerLikeLine) || findFirst(segText,[/([0-9.]+)\s+honorarpflichtige Menge Gesamt per\s+01\.01\.2025/i]);
+  const ltdRaw=findValueAfterLabel(lines,/honorarpflichtige Menge Gesamt per\s+31\.12\.2025(?:\s+([\d.]+))?/i,isIntegerLikeLine) || findFirst(segText,[/([0-9.]+)\s+honorarpflichtige Menge Gesamt per\s+31\.12\.2025/i]);
+  const priorUnits=cleanUnit(priorRaw); const ltdUnits=cleanUnit(ltdRaw);
+  if(!periodUnits && priorUnits && ltdUnits) periodUnits=String(Number(ltdUnits)-Number(priorUnits));
+  if(nve){basis='Net Receipts (NVE)'; basisAmount=`${formatBasisCurrency(nve)} total net receipts`;}
+  else if(nlp){basis='Net List Price (NLP)'; basisAmount=`${formatBasisCurrency(nlp)} per copy (NLP)`;}
+  if(blp) listPrice=parseGermanNumber(blp);
+  if(!basis && /NLP/i.test(segText)) basis='Net List Price (NLP)';
+  if(!basis && /NVE/i.test(segText)) basis='Net Receipts (NVE)';
+  const titleLine=lines.find(l=>l.includes(',') && !/^Interne VertragsNr/i.test(l) && !/^Honorar/i.test(l) && !/^Abrechnungszeitraum/i.test(l)) || contractTitle || '';
+  return {form,isbn:isbn.trim().replace(/\s+/g,''),pubDate:pub,listPrice,basis,rate,priorUnits,periodUnits,basisAmount,earnings,titleLine,periodStart,periodEnd,sourceText:segText};
+}
+function findUllsteinContractMarkers(lines){
+  const markers=[];
+  for(let i=0;i<lines.length;i++){
+    const line=String(lines[i]||'').trim();
+    let m=line.match(/Interne VertragsNr\.?\s*([0-9]+)/i);
+    if(m){markers.push({idx:i,contractId:m[1]}); continue;}
+    if(/^Interne VertragsNr\.?$/i.test(line)){
+      let id='';
+      if(i>0 && /^\d{6,}$/.test(lines[i-1].trim())) id=lines[i-1].trim();
+      else if(i+1<lines.length && /^\d{6,}$/.test(lines[i+1].trim())) id=lines[i+1].trim();
+      if(id) markers.push({idx:i,contractId:id});
+    }
+  }
+  return markers;
+}
+function findContractTitle(lines, markerIdx){
+  for(let i=markerIdx-1;i>=Math.max(0,markerIdx-12);i--){
+    const l=String(lines[i]||'').trim();
+    if(/^[A-ZÄÖÜ][^\n,]+,\s*[^\n,]+,\s*[^\n]+/.test(l)) return l;
+  }
+  return '';
+}
+function parseUllsteinContracts(text, baseState){
+  const lines=text.split('\n').map(x=>x.trim()).filter(Boolean);
+  const markers=findUllsteinContractMarkers(lines);
+  if(!markers.length) return [];
+  const contracts=[];
+  for(let mi=0; mi<markers.length; mi++){
+    const marker=markers[mi];
+    const nextIdx=mi+1<markers.length?markers[mi+1].idx:lines.length;
+    const start=Math.max(0, marker.idx-10);
+    const segLines=lines.slice(start,nextIdx);
+    const seg=segLines.join('\n');
+    const title=findContractTitle(lines, marker.idx);
+    const st=Object.assign({}, baseState||{});
+    st.licenseeContractId=marker.contractId;
+    if(title){
+      const parts=title.split(',').map(x=>x.trim());
+      if(parts.length>=2) st.contributorNames=`${parts[0]}, ${parts[1]}`;
+      if(parts.length>=3) st.licenseeTitle=parts.slice(2).join(', ');
+      else st.licenseeTitle=title;
+    }
+    const productStarts=[];
+    for(let i=0;i<segLines.length;i++){
+      const l=segLines[i];
+      if(/^(TB|Taschenbuch|E-?Book|Standard E-?Book|Hardcover|Paperback)(\s+97[89][\d\- ]{10,17})?$/i.test(l) || /^(TB|Taschenbuch|E-?Book|Standard E-?Book|Hardcover|Paperback)\s+97[89]/i.test(l)){
+        productStarts.push(i);
+      }
+    }
+    const products=[];
+    for(let pi=0; pi<productStarts.length; pi++){
+      const ps=productStarts[pi]; const pe=pi+1<productStarts.length?productStarts[pi+1]:segLines.length;
+      const pseg=segLines.slice(ps,pe).join('\n');
+      const p=parseUllsteinProductSegment(pseg, title);
+      if(p.isbn || p.form) products.push(p);
+      if(!st.periodStart && p.periodStart) st.periodStart=p.periodStart;
+      if(!st.periodEnd && p.periodEnd) st.periodEnd=p.periodEnd;
+    }
+    const balanceLines=lines.slice(marker.idx,nextIdx);
+    const opening=parseGermanNumber(findValueForLabel(balanceLines,/Vortrag lt\. letzter Abrechnung(?:\s+([-+]?\d[\d.]*,\d{2}))?/i,isMoneyLikeLine));
+    const current=parseGermanNumber(findValueForLabel(balanceLines,/Verrechenbare Honorare lt\. Abrechnung(?:\s+([-+]?\d[\d.]*,\d{2}))?/i,isMoneyLikeLine));
+    const newBal=parseGermanNumber(findValueForLabel(balanceLines,/Neuer Vortrag(?:\s+([-+]?\d[\d.]*,\d{2}))?/i,isMoneyLikeLine));
+    if(opening) st.openingBalance=opening;
+    const notes=[];
+    if(current) notes.push(`Ullstein current-period verrechenbare Honorare: €${Number(current).toLocaleString('en-US',{minimumFractionDigits:2})}.`);
+    if(newBal) notes.push(`Ullstein Neuer Vortrag / new carried-forward balance: €${Number(newBal).toLocaleString('en-US',{minimumFractionDigits:2})}.`);
+    if(notes.length) st.statementNotes=(st.statementNotes?st.statementNotes+'\n':'')+notes.join('\n');
+    contracts.push({contractId:marker.contractId,title:st.licenseeTitle||title||`Contract ${marker.contractId}`,state:st,products,sourceText:seg,openingBalance:opening,currentRoyalty:current,newBalance:newBal});
+  }
+  return contracts;
+}
+function digestStatementText(text,requestedProfile){
+  text=normalizeText(text); const lower=text.toLowerCase(); const profile=profileFromText(text,requestedProfile||currentImportProfile()); const st={}; const products=[]; const notes=[]; const detections=[]; const calcInferences=[];
+  const isUllstein=profile==='ullstein';
+  function put(key,value,conf,source,reason){ if(notBlank(value)){st[key]=String(value); addDetection(detections,key,value,conf,source,reason);} }
+  put('statementDate',parseDateToDisplay(findFirst(text, [/\bDate:\s*([0-9\.\-\/]+)/i,/\bDatum:\s*([0-9\.\-\/]+)/i,/Royalty Statement Date:\s*([^\n]+)/i])), 'High', 'Date/Datum label', 'Direct label match');
+  put('periodStart',parseDateToDisplay(findFirst(text,[/Accounting period\s+([0-9\.\-\/]+)\s*[-–]/i,/Abrechnungszeitraum\s+([0-9\.\-\/]+)\s*[-–]/i,/Reporting Period Start Date:\s*([^\n]+)/i])), 'High','Accounting period / Abrechnungszeitraum','Direct label match');
+  put('periodEnd',parseDateToDisplay(findFirst(text,[/Accounting period\s+[0-9\.\-\/]+\s*[-–]\s*([0-9\.\-\/]+)/i,/Abrechnungszeitraum\s+[0-9\.\-\/]+\s*[-–]\s*([0-9\.\-\/]+)/i,/Reporting Period End Date:\s*([^\n]+)/i,/as of\s+([0-9\.\-\/]+)/i,/per\s+([0-9\.\-\/]+)/i])), 'High','Accounting period / Abrechnungszeitraum','Direct label match');
+  const rightsHolder=findFirst(text,[/Rechtegeber:\s*(?:Frau|Herr|Mrs\.?|Mr\.?)?\s*([^\n]+)/i,/Copyright Holder:\s*([^\n]+)/i,/Licensor Name:\s*([^\n]+)/i,/Royalty Statement for\s+(.+?)\s+as of/i]);
+  put('licensorName',rightsHolder&&rightsHolder.length>2?rightsHolder:findFirst(text,[/Rechtegeber:\s*(?:Frau|Herr)?\s*\n\s*([^\n]+)/i]), 'High','Rechtegeber / Copyright Holder','Direct label match');
+  put('licenseeName',findFirst(text,[/^([^\n]+?(?:Verlag|Publisher|Press|Buchverlage|Publishing)[^\n]*)/im,/Licensee Name:\s*([^\n]+)/i]), isUllstein?'High':'Medium','Publisher heading','Profile/label match');
+  put('licenseeAddress',findFirst(text,[/([A-Za-zÄÖÜäöüß\.\- ]+str(?:aße|\.)\s*\d+[^\n]+)/i]), 'Medium','Address-like line','Pattern match');
+  put('licenseePhone',findFirst(text,[/(?:phone|Telefon)\s*:?\s*([^\n]+)/i]), 'High','Phone/Telefon label','Direct label match');
+  put('licenseeEmail',findFirst(text,[/(?:email|E-Mail)\s*:?\s*([A-Z0-9._%+\-]+@[A-Z0-9.\-]+\.[A-Z]{2,})/i,/([A-Z0-9._%+\-]+@[A-Z0-9.\-]+\.[A-Z]{2,})/i]), 'High','Email/E-Mail label','Direct label match');
+  put('licenseeWebsite',findFirst(text,[/(www\.[^\s]+)/i]), 'Medium','Website pattern','Pattern match');
+  let cId=findFirst(text,[/Internal contract number\s*([A-Z0-9\-]+)/i,/Interne VertragsNr\.?\s*([0-9]+)/i,/([0-9]{6,})\s*\n\s*Interne VertragsNr\.?/i,/Royalty Contract-No\.\s*([A-Z0-9\-]+)/i,/Licensee Contract ID:\s*([^\n]+)/i]);
+  put('licenseeContractId',cId, 'High','Internal contract number / Interne VertragsNr.','Direct/profile label match');
+  put('contributorNames',findFirst(text,[/^([A-ZÄÖÜ][A-Za-zÄÖÜäöüß\-]+,\s*[A-ZÄÖÜ][A-Za-zÄÖÜäöüß\-]+)/m,/Contributor Name\(s\):\s*([^\n]+)/i]), 'Medium','Name-like title block','Pattern match');
+  put('licenseeTitle',findFirst(text, [/^[A-ZÄÖÜ][A-Za-zÄÖÜäöüß\-]+,\s*[A-ZÄÖÜ][A-Za-zÄÖÜäöüß\-]+,\s*([^\n]+)/m,/Licensee Title of Work:\s*([^\n]+)/i]), isUllstein?'High':'Medium','Title block','Profile/pattern match');
+  put('licensorTitle',findFirst(text, [/\n(The [^\n]+|A [^\n]+|An [^\n]+)\n/i,/Licensor Title of Work:\s*([^\n]+)/i]), 'Medium','Original title line','Pattern match');
+  put('language',lower.includes('deutsche')||lower.includes('german')?'German':'', lower.includes('deutsche')?'High':'Medium','Language cue','Inferred from “Deutsche” or “German”');
+  put('taxId',findFirst(text,[/(?:UST-ID|VAT|Tax Identification Number)\s*:?\s*([A-Z]{2}\s*[0-9 ]+)/i,/Steuernummer:\s*([^\n]+)/i]), 'High','Tax/VAT label','Direct label match');
+  put('taxExemptionStatus',findFirst(text,[/Tax exemption until:\s*([^\n]*)/i,/Tax Exemption Status:\s*([^\n]+)/i]), 'Medium','Tax exemption label','Direct label; may be blank');
+  put('openingBalance',parseGermanNumber(findFirst(text,[/Brought forward\s*([-0-9.,]+)/i,/Vortrag lt\. letzter Abrechnung\s*([-0-9.,]+)/i,/Opening Balance[^\n]*?([-€$£0-9.,]+)/i])), 'High','Brought forward / Vortrag','Mapped to opening balance');
+  put('reserveWithheld',parseGermanNumber(findFirst(text,[/Reserve Withheld[^\n]*?([-€$£0-9.,]+)/i])), 'High','Reserve Withheld','Direct label match');
+  put('reserveReleased',parseGermanNumber(findFirst(text,[/Reserve Released[^\n]*?([-€$£0-9.,]+)/i])), 'High','Reserve Released','Direct label match');
+  put('sublicenseIncomeTotal',parseGermanNumber(findFirst(text,[/Licensor Amount of Sublicense Income[^\n]*?([-€$£0-9.,]+)/i])), 'High','Sublicense income','Direct label match');
+  put('taxWithheld',parseGermanNumber(findFirst(text,[/Tax Withheld[^\n]*?([-€$£0-9.,]+)/i])), 'High','Tax withheld','Direct label match');
+  if(isUllstein){
+    notes.push('Ullstein/Bonnier profile applied: Hugo used German labels such as Abrechnungszeitraum, Interne VertragsNr., Honorar, honorarpflichtige Menge, Berechnung in EUR/Guthaben in EUR, Vortrag and Neuer Vortrag.');
+    put('payerName',findFirst(text,[/c\/o\s*([^,\n]+(?:GmbH|AG|Ltd\.?|Inc\.?))/i]), 'Medium','c/o payer line','Ullstein profile inference');
+  }
+  let contractStatements=[];
+  if(isUllstein){
+    contractStatements=parseUllsteinContracts(text,st);
+    if(contractStatements.length){
+      notes.push(`${contractStatements.length} separate Ullstein contract statement${contractStatements.length===1?'':'s'} detected by Interne VertragsNr.`);
+      const first=contractStatements[0];
+      Object.assign(st, first.state||{});
+      contractStatements.forEach(cs=>(cs.products||[]).forEach(p=>products.push(p)));
+      contractStatements.forEach((cs,idx)=>{
+        addDetection(detections,'licenseeContractId',cs.contractId,'High',`Interne VertragsNr. statement ${idx+1}`,'Used to split the imported statement into separate contract statements.');
+      });
+    }
+  }
+  if(!products.length){
+    const isbnRegex=/(Hardcover|Paperback|E-?Book|Audiobook(?: Download)?|Taschenbuch|TB|Standard E-?Book)?\s*(97[89][\d\- ]{10,17})/gi; let match;
+    while((match=isbnRegex.exec(text))){
+      const rawForm=(match[1]||'').trim(); const formMap={'TB':'Paperback','Taschenbuch':'Paperback','Standard E-Book':'E-Book','EBook':'E-Book'}; const form=formMap[rawForm]||rawForm||'Book'; const isbn=match[2].trim().replace(/\s+/g,'');
+      const after=text.slice(match.index, Math.min(text.length, match.index+950));
+      const p=parseUllsteinProductSegment((rawForm||'Book')+'\n'+isbn+'\n'+after, st.licenseeTitle||'');
+      if(p.isbn || p.form) products.push(p);
+    }
+  }
+  products.forEach(p=>{
+    if(p.basisAmount && p.rate && p.earnings){
+      let expected=null;
+      if(/per copy/i.test(p.basisAmount) && p.periodUnits){
+        const b=Number((p.basisAmount.match(/€([0-9,.]+)/)||[])[1]?.replace(/,/g,'')||NaN); expected=Number(p.periodUnits)*b*Number(p.rate)/100;
+      } else if(/total net receipts/i.test(p.basisAmount)) {
+        const b=Number((p.basisAmount.match(/€([0-9,.]+)/)||[])[1]?.replace(/,/g,'')||NaN); expected=b*Number(p.rate)/100;
+      }
+      if(Number.isFinite(expected)){
+        const diff=Math.abs(expected-Number(p.earnings));
+        calcInferences.push({product:p.form||p.isbn,calculation:`${p.basisAmount} × ${p.rate}%${/per copy/i.test(p.basisAmount)?' × '+p.periodUnits+' units':''} = ${expected.toFixed(2)}`,reported:Number(p.earnings).toFixed(2),status:diff<0.05?'matches':'review'});
+      }
+    }
+  });
+  if(!products.length){
+    const isbns=[...text.matchAll(/97[89][\d\- ]{10,17}/g)].map(x=>x[0]);
+    isbns.forEach(isbn=>products.push({form:'',isbn:isbn.trim().replace(/\s+/g,''),pubDate:'',listPrice:'',basis:'',rate:'',priorUnits:'',periodUnits:'',basisAmount:'',earnings:''}));
+  }
+  const abbreviationHits=Object.entries(ABBREVIATIONS).filter(([abbr])=>new RegExp('\\b'+abbr.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'\\b','i').test(text)).map(([abbr,meaning])=>`${abbr} = ${meaning}`);
+  const populated=Object.fromEntries(Object.entries(st).filter(([k,v])=>notBlank(v)));
+  notes.push(`${Object.keys(populated).length} statement-level fields detected.`);
+  notes.push(`${products.length} product row${products.length===1?'':'s'} detected${contractStatements.length?` across ${contractStatements.length} contract statement${contractStatements.length===1?'':'s'}`:''}.`);
+  if(abbreviationHits.length) notes.push(`Abbreviation dictionary hits: ${abbreviationHits.slice(0,10).join('; ')}.`);
+  if(calcInferences.length) notes.push(`${calcInferences.length} royalty calculation inference${calcInferences.length===1?'':'s'} detected.`);
+  if(!products.length) notes.push('No product rows detected. Try copying statement text into the paste box, or import Hugo JSON/CSV.');
+  notes.push('Review all detected values before applying them; publisher statement layouts vary significantly.');
+  return {sourceType:'Text/PDF heuristic digest',profile,state:populated,products:products.length?products:[],reserves:[],sublicenses:[],detections,unmappedLines:unmappedImportantLines(text),calcInferences,notes,rawText:text,contractStatements};
+}
+async function readPdfText(file){
+  if(!window.pdfjsLib) throw new Error('PDF parser library was not available. Paste the PDF text instead.');
+  pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  const buf=await file.arrayBuffer(); const pdf=await pdfjsLib.getDocument({data:buf}).promise; let out='';
+  for(let p=1;p<=pdf.numPages;p++){const page=await pdf.getPage(p); const tc=await page.getTextContent(); out+='\n\n--- Page '+p+' ---\n'+tc.items.map(i=>i.str).join('\n');}
+  return out;
+}
+async function readImportFile(){
+  const file=document.getElementById('importFile').files[0]; if(!file){setImportResult('<span class="pill bad">No file</span> Choose a JSON, CSV, TXT, or text-based PDF file.');return}
+  setImportResult('<span class="pill warn">Reading</span> Processing '+esc(file.name)+' ...');
+  try{
+    const name=file.name.toLowerCase(); let parsed;
+    if(name.endsWith('.json')){const obj=JSON.parse(await file.text()); const detections=Object.entries(obj.state||{}).map(([k,v])=>({target:k,value:v,confidence:'High',source:'Hugo JSON export',reason:'Structured import',bisg:FIELD_META[k]?.[0]||'',category:FIELD_META[k]?.[1]||''})); parsed={sourceType:'Hugo JSON export',profile:'structured',state:obj.state||{},products:obj.products||[],reserves:obj.reserves||[],sublicenses:obj.sublicenses||[],detections,unmappedLines:[],calcInferences:[],notes:['Recognized JSON structure.']};}
+    else if(name.endsWith('.csv')) parsed=parseImportedCSV(await file.text());
+    else if(name.endsWith('.pdf')){const txt=await readPdfText(file); setImportText(txt); parsed=digestStatementText(txt,currentImportProfile());}
+    else {const txt=await file.text(); setImportText(txt); parsed=digestStatementText(txt,currentImportProfile());}
+    detectedImport=parsed; renderImportResult();
+  }catch(e){setImportResult('<span class="pill bad">Import error</span> '+esc(e.message||e));}
+}
+function digestPastedText(){const txt=document.getElementById('importText').value; detectedImport=digestStatementText(txt,currentImportProfile()); renderImportResult()}
+function renderImportResult(){
+  if(!detectedImport){setImportResult('<span class="muted">No statement imported yet.</span>');return}
+  const d=detectedImport; const fields=Object.entries(d.state||{}); const prod=d.products||[]; const det=d.detections||[];
+  const fieldRows=fields.length?'<table><thead><tr><th>Detected field</th><th>Value</th><th>Confidence</th><th>BISG ID</th><th>Reason</th></tr></thead><tbody>'+fields.map(([k,v])=>{const found=det.find(x=>x.target===k&&String(x.value)===String(v))||det.find(x=>x.target===k)||{};return `<tr><td>${esc(k)}</td><td>${esc(v)}</td><td>${confidencePill(found.confidence||'Medium')}</td><td>${esc(FIELD_META[k]?.[0]||'')}</td><td>${esc(found.reason||'Heuristic detection')}</td></tr>`}).join('')+'</tbody></table>':'<p class="muted">No statement-level fields detected.</p>';
+  const contractRows=(d.contractStatements||[]).length?'<h4>Detected separate contract statements</h4><p class="muted">Hugo split this Ullstein-style intake by <b>Interne VertragsNr.</b>. Apply one contract at a time to create/review separate Hugo statements.</p><table><thead><tr><th>#</th><th>Internal contract number</th><th>Detected title</th><th>Product rows</th><th>Opening balance</th><th>Current royalties</th><th>New carried-forward balance</th><th>Action</th></tr></thead><tbody>'+d.contractStatements.map((cs,i)=>`<tr><td>${i+1}</td><td class="mono">${esc(cs.contractId)}</td><td>${esc(cs.title)}</td><td>${(cs.products||[]).length}</td><td>${esc(cs.openingBalance||'')}</td><td>${esc(cs.currentRoyalty||'')}</td><td>${esc(cs.newBalance||'')}</td><td><button class="secondary small" type="button" onclick="applyContractStatement(${i})">Apply this statement</button></td></tr>`).join('')+'</tbody></table>':'';
+  const prodRows=prod.length?'<table><thead><tr><th>Form</th><th>ISBN</th><th>Prior units</th><th>Period units</th><th>Rate</th><th>Basis</th><th>Basis amount</th><th>Earnings</th></tr></thead><tbody>'+prod.slice(0,24).map(p=>`<tr><td>${esc(p.form)}</td><td>${esc(p.isbn)}</td><td>${esc(p.priorUnits)}</td><td>${esc(p.periodUnits)}</td><td>${esc(p.rate)}</td><td>${esc(p.basis)}</td><td>${esc(p.basisAmount)}</td><td>${esc(p.earnings)}</td></tr>`).join('')+'</tbody></table>':'<p class="muted">No product rows detected.</p>';
+  const calc=(d.calcInferences||[]).length?'<h4>Calculation inferences</h4><table><thead><tr><th>Product</th><th>Inferred calculation</th><th>Reported</th><th>Status</th></tr></thead><tbody>'+d.calcInferences.map(c=>`<tr><td>${esc(c.product)}</td><td class="mono">${esc(c.calculation)}</td><td>${esc(c.reported)}</td><td>${c.status==='matches'?'<span class="pill good">matches</span>':'<span class="pill warn">review</span>'}</td></tr>`).join('')+'</tbody></table>':'';
+  const unmapped=(d.unmappedLines||[]).length?`<h4>Unmapped text lines</h4><p class="muted">These lines were not classified. Select a line and map it manually if it contains an important BISG field.</p><div class="fileline"><select id="mapLineSelect" style="max-width:100%">${d.unmappedLines.slice(0,60).map((l,i)=>`<option value="${i}">${esc(l.slice(0,120))}</option>`).join('')}</select><select id="mapFieldSelect">${IMPORT_FIELD_OPTIONS.map(k=>`<option value="${k}">${esc(k)} ${FIELD_META[k]?.[0]?'— '+FIELD_META[k][0]:''}</option>`).join('')}</select><button class="secondary small" type="button" onclick="mapSelectedLine()">Map selected line</button></div>`:'';
+  setImportResult(`<div><span class="pill good">${esc(d.sourceType)}</span><span class="pill">Profile: ${esc(d.profile||'generic')}</span><span class="pill">Review before applying</span></div><p>${(d.notes||[]).map(esc).join('<br>')}</p>${contractRows}<h4>Detected statement fields</h4>${fieldRows}<h4>Detected product rows</h4>${prodRows}${calc}${unmapped}`);
+}
+function mapSelectedLine(){
+  if(!detectedImport) return;
+  const lineIdx=Number(document.getElementById('mapLineSelect')?.value||0); const field=document.getElementById('mapFieldSelect')?.value; const line=(detectedImport.unmappedLines||[])[lineIdx];
+  if(!field||!line) return;
+  detectedImport.state=detectedImport.state||{}; detectedImport.state[field]=line;
+  detectedImport.detections=detectedImport.detections||[]; addDetection(detectedImport.detections,field,line,'Low','Manual mapping','Mapped by user from unmapped text line');
+  detectedImport.unmappedLines=(detectedImport.unmappedLines||[]).filter((_,i)=>i!==lineIdx);
+  renderImportResult();
+}
+window.mapSelectedLine=mapSelectedLine;
+function applyContractStatement(i){
+  if(!detectedImport || !(detectedImport.contractStatements||[])[i]) return;
+  const cs=detectedImport.contractStatements[i];
+  Object.entries(cs.state||{}).forEach(([k,v])=>{if(k in state && notBlank(v)) state[k]=String(v)});
+  products=(cs.products||[]).map(p=>Object.assign({form:'',isbn:'',pubDate:'',listPrice:'',basis:'',rate:'',priorUnits:'',periodUnits:'',basisAmount:'',earnings:''},p));
+  save(); render();
+  setImportResult(document.getElementById('importResult').innerHTML+`<p><span class="pill good">Applied</span> Contract ${esc(cs.contractId)} has been copied into Hugo as one separate statement. Review validation and calculation warnings, then export if needed.</p>`);
+}
+window.applyContractStatement=applyContractStatement;
+function applyDetectedImport(){
+  if(!detectedImport){setImportResult('<span class="pill bad">Nothing to apply</span> Import or digest a statement first.');return}
+  if((detectedImport.contractStatements||[]).length>1){
+    setImportResult(document.getElementById('importResult').innerHTML+'<p><span class="pill warn">Multiple statements detected</span> Please use the “Apply this statement” button in the contract table so Hugo imports one internal contract number at a time.</p>');
+    return;
+  }
+  if((detectedImport.contractStatements||[]).length===1){applyContractStatement(0);return;}
+  Object.entries(detectedImport.state||{}).forEach(([k,v])=>{if(k in state && notBlank(v)) state[k]=String(v)});
+  if((detectedImport.products||[]).length) products=detectedImport.products.map(p=>Object.assign({form:'',isbn:'',pubDate:'',listPrice:'',basis:'',rate:'',priorUnits:'',periodUnits:'',basisAmount:'',earnings:''},p));
+  if((detectedImport.reserves||[]).length) reserves=detectedImport.reserves;
+  if((detectedImport.sublicenses||[]).length) sublicenses=detectedImport.sublicenses;
+  save(); render(); setImportResult(document.getElementById('importResult').innerHTML+'<p><span class="pill good">Applied</span> Reviewed values have been copied into Hugo. Review validation and calculation warnings.</p>');
+}
+function clearImport(){detectedImport=null;document.getElementById('importFile').value='';setImportText('');renderImportResult()}
+
+
+function openHelp(section){
+  const modal=document.getElementById('helpModal'); if(!modal) return;
+  modal.classList.add('open');
+  if(section) switchHelpSection(section);
+}
+function closeHelp(){const modal=document.getElementById('helpModal'); if(modal) modal.classList.remove('open')}
+function switchHelpSection(section){
+  document.querySelectorAll('.help-tab').forEach(b=>b.classList.toggle('active', b.dataset.help===section));
+  document.querySelectorAll('.help-section').forEach(s=>s.classList.toggle('active', s.dataset.helpSection===section));
+}
+window.openHelp=openHelp;
+window.closeHelp=closeHelp;
+document.addEventListener('click',e=>{
+  const tab=e.target.closest('.help-tab');
+  if(tab) switchHelpSection(tab.dataset.help);
+  if(e.target && e.target.id==='helpModal') closeHelp();
+});
+document.addEventListener('keydown',e=>{if(e.key==='Escape') closeHelp()});
+
+
+const REVIEW_FIELD_DETAILS={
+ licenseeName:['Contract information','High','Identifies the party issuing the statement.','Add the publisher/licensee legal name.'],licenseeAddress:['Contract information','Medium','Gives contact information for follow-up questions.','Add full postal address and rights/royalty contact details.'],licenseeImprint:['Contract information','Medium','Shows the publishing imprint connected to the edition.','Add the imprint if different from the legal publisher.'],licenseeContractId:['Contract information','High','Allows publisher and recipient to match the statement to the relevant agreement.','Add the internal contract number or contract reference.'],licensorName:['Contract information','High','Identifies the rights holder or recipient principal.','Add the licensor/proprietor name.'],licensorContractId:['Contract information','Medium','Helps the licensor/agent match the statement to its own records.','Add the licensor or agency contract reference where available.'],contributorNames:['Work information','High','Identifies the author or creator whose work is being reported.','Add contributor name(s), ideally with identifiers where available.'],licensorTitle:['Work information','High','Identifies the original licensed work.','Add the original title as published by the licensor.'],licenseeTitle:['Work information','High','Identifies the translated/local edition.','Add the local title as published by the licensee.'],language:['Work information','High','Shows the language covered by the licensed edition.','Add the language of the licensee work.'],salesTerritory:['Contract information','High','Clarifies the market or territory in which sales occurred.','Add sales territory or market such as Germany, DACH, or German-language world.'],advanceAmount:['Contract economics','High','Explains what royalties are recouping against.','Show the advance/minimum guarantee amount paid to date.'],advanceCurrency:['Contract economics','High','Clarifies the currency of the advance.','Add the advance currency, especially if different from statement currency.'],statementDate:['Statement period','High','Shows when the statement was generated.','Add the statement date.'],periodStart:['Statement period','High','Defines the beginning of the royalty reporting period.','Add reporting period start date.'],periodEnd:['Statement period','High','Defines the end of the royalty reporting period.','Add reporting period end date.'],openingBalance:['Balance reconciliation','High','Shows carry-forward/unearned amount from the prior period.','Label the opening balance or balance forward clearly.'],reserveWithheld:['Reserves','High','Shows amounts withheld against future returns.','Add reserve withheld this period, even if zero.'],reserveReleased:['Reserves','High','Shows prior reserves released in this period.','Add reserve released this period, even if zero.'],coAgentCommissionPercent:['Remittance / tax','Medium','Explains any co-agent deduction before remittance.','Show percentage and amount if applicable, or state not applicable.'],taxId:['Remittance / tax','Medium','Supports tax/VAT reconciliation on remittance paperwork.','Add licensee VAT/tax ID where relevant.'],taxExemptionStatus:['Remittance / tax','Medium','Clarifies whether withholding tax is waived or exempt.','Add treaty/exemption status or expiry date if applicable.'],taxWithheld:['Remittance / tax','High','Explains deductions from the gross amount payable.','Show withholding tax rate and amount, even if zero.']
+};
+function importConfidenceFor(key){
+ if(!detectedImport||!(detectedImport.detections||[]).length) return '';
+ const candidates=(detectedImport.detections||[]).filter(d=>d.target===key);
+ if(!candidates.length) return '';
+ return candidates.some(d=>d.confidence==='Low')?'Low':(candidates.some(d=>d.confidence==='Medium')?'Medium':'High');
+}
+function statusForField(key, ok, cat){
+ if(cat==='Conditional' && !ok) return 'Not applicable / not shown';
+ if(!ok) return 'Missing';
+ const conf=importConfidenceFor(key);
+ if(conf==='Low' || conf==='Medium') return 'Detected but unclear';
+ return 'Detected';
+}
+function statusClass(status){
+ if(status==='Detected') return 'status-detected';
+ if(status==='Detected but unclear') return 'status-unclear';
+ if(status==='Missing') return 'status-missing';
+ return 'status-na';
+}
+function reviewRows(){
+ const v=validation();
+ const rows=v.checks.map(c=>{const meta=FIELD_META[c.key]||['','']; const detail=REVIEW_FIELD_DETAILS[c.key]||['Product / sales / royalty detail',c.cat==='Required'?'High':'Medium','This field supports BISG-aligned statement clarity.','Add or clarify this field.']; const status=statusForField(c.key,c.ok,c.cat); return {label:c.label,key:c.key,bisgId:meta[0]||'',category:detail[0],fieldCategory:c.cat,priority:detail[1],why:detail[2],recommendation:detail[3],status,detected:c.ok?'Yes':'No',confidence:importConfidenceFor(c.key)||'—'};});
+ products.forEach((p,i)=>{
+   const keys=[['form','Product form detail'],['isbn','Licensee product identifier / ISBN'],['pubDate','Publication date'],['listPrice','List price'],['basis','Royalty basis'],['rate','Royalty rate'],['periodUnits','Units sold in period'],['earnings','Royalty earnings']];
+   keys.forEach(([k,label])=>{const ok=notBlank(p[k]); const meta=FIELD_META[k]||['','']; const priority=['basis','rate','periodUnits','earnings','isbn','form'].includes(k)?'High':'Medium'; rows.push({label:`Product ${i+1}: ${label}`,key:k,bisgId:meta[0]||'',category:'Product / sales / royalty detail',fieldCategory:meta[1]||'Required',priority,why:'Allows the recipient to identify the edition and verify the royalty calculation.',recommendation:'Add this value for each product form or mark not applicable if no such format exists.',status:ok?'Detected':'Missing',detected:ok?'Yes':'No',confidence:'—'});});
+ });
+ if(Number(state.sublicenseIncomeTotal||0)>0){
+   if(!sublicenses.length) rows.push({label:'Sublicense detail rows',key:'sublicense',bisgId:'SC3–SC23',category:'Sublicense income',fieldCategory:'Conditional',priority:'High',why:'Sublicense income is payable only when applicable, but must be explained when reported.',recommendation:'Add sublicensee, sublicense type, income, licensor share, and amount due.',status:'Missing',detected:'No',confidence:'—'});
+ } else {
+   rows.push({label:'Sublicense income section',key:'sublicense',bisgId:'SC3–SC23',category:'Sublicense income',fieldCategory:'Conditional',priority:'Medium',why:'Clarifies whether subsidiary rights income exists for the period.',recommendation:'State “not applicable” or show a zero-value sublicense section.',status:'Not applicable / not shown',detected:'No',confidence:'—'});
+ }
+ return rows;
+}
+function categoryScores(rows){
+ const grouped={}; rows.forEach(r=>{grouped[r.category]=grouped[r.category]||[]; grouped[r.category].push(r)});
+ return Object.entries(grouped).map(([cat,items])=>{const relevant=items.filter(i=>!i.status.startsWith('Not applicable')); const ok=relevant.filter(i=>i.status==='Detected').length; const warn=relevant.filter(i=>i.status==='Detected but unclear').length; const score=Math.round(((ok + warn*0.5)/Math.max(relevant.length,1))*100); return {category:cat,score,detected:ok,unclear:warn,missing:relevant.filter(i=>i.status==='Missing').length,total:relevant.length};});
+}
+function reviewData(){
+ const rows=reviewRows(); const cats=categoryScores(rows); const warnings=calculationWarnings(); const score=Math.round(cats.reduce((s,c)=>s+c.score,0)/Math.max(cats.length,1));
+ const highMissing=rows.filter(r=>r.status==='Missing'&&r.priority==='High'); const unclear=rows.filter(r=>r.status==='Detected but unclear');
+ const top=[...highMissing,...unclear,...rows.filter(r=>r.status==='Missing'&&r.priority!=='High')].slice(0,7);
+ const profile=detectedImport?.profile||profileFromText(document.getElementById('importText')?.value||'','auto');
+ return {version:'1.1',generatedAt:new Date().toISOString(),overallScore:score,profile,statement:{statementNo:state.statementNo,licenseeContractId:state.licenseeContractId,licensorTitle:state.licensorTitle,licenseeTitle:state.licenseeTitle,periodStart:state.periodStart,periodEnd:state.periodEnd},categoryScores:cats,fields:rows,missingFields:rows.filter(r=>r.status==='Missing'),unclearFields:unclear,calculationWarnings:warnings,topRecommendations:top.map(r=>({field:r.label,bisgId:r.bisgId,priority:r.priority,recommendation:r.recommendation,why:r.why})),totals:totals(),products,reserves,sublicenses,disclaimer:'This report is an automated standards-completeness review. It is intended for guidance and discussion only and does not constitute an audit, certification, legal opinion, or accounting advice.'};
+}
+function renderReviewPanel(){
+ const r=reviewData(); const cats=r.categoryScores; const top=r.topRecommendations;
+ const catsHtml=cats.slice(0,8).map(c=>`<div class="review-card"><h3>${esc(c.category)}</h3><div class="big">${c.score}%</div><div class="helpnote">Detected ${c.detected}, unclear ${c.unclear}, missing ${c.missing}</div></div>`).join('');
+ const topHtml=top.length?`<ol class="priority-list">${top.map(x=>`<li><b>${esc(x.field)}</b>${x.bisgId?` <span class="badge idbadge">${esc(x.bisgId)}</span>`:''}<br><span class="muted">${esc(x.recommendation)}</span></li>`).join('')}</ol>`:'<p class="muted">No high-priority gaps detected.</p>';
+ document.getElementById('reviewRoot').innerHTML=`<div class="score"><b>BISG review score: ${r.overallScore}%</b><div class="scorebar"><span style="width:${r.overallScore}%"></span></div></div><div class="review-summary">${catsHtml}</div><div class="issue ${r.missingFields.length?'warn':'good'}"><div class="issue-head"><span>Top improvement recommendations</span><span class="badge recommended">Review output</span></div>${topHtml}</div><div class="issue"><div class="issue-head"><span>Report output</span></div><p>The generated report includes an executive summary, category scores, missing fields, unclear fields, calculation warnings, top recommendations, and a field-by-field BISG checklist.</p></div>`;
+}
+
+function shortText(value, fallback='—'){return esc(value || fallback)}
+function pillForStatus(status){
+  if(status==='Detected') return '<span class="status-pill status-ok">Detected</span>';
+  if(status==='Detected but unclear' || status==='Needs review') return '<span class="status-pill status-warn">Needs review</span>';
+  if(status==='Missing') return '<span class="status-pill status-miss">Missing</span>';
+  return `<span class="status-pill">${esc(status)}</span>`;
+}
+function pleasantReviewReportHTML(){
+ const r=reviewData(); const cats=r.categoryScores, missing=r.missingFields, unclear=r.unclearFields, warnings=r.calculationWarnings;
+ const summary = r.overallScore>=85?'This statement appears to include most BISG-recommended information. Review any remaining recommended or conditional fields before treating it as BISG-aligned.':r.overallScore>=65?'This statement is partly aligned with BISG expectations. It already contains useful information, but a publisher should clarify or add several fields so recipients can verify royalties more easily.':'This statement has significant BISG field gaps. A recipient may find it difficult to verify contract economics, royalty calculations, balances, reserves, tax treatment, or payment reconciliation.';
+ const simpleTable=(rows,cols,empty='No items detected.')=>rows.length?`<table class="simple-table"><thead><tr>${cols.map(c=>`<th>${esc(c[0])}</th>`).join('')}</tr></thead><tbody>${rows.map(row=>`<tr>${cols.map(c=>`<td>${typeof c[1]==='function'?c[1](row):esc(row[c[1]]||'')}</td>`).join('')}</tr>`).join('')}</tbody></table>`:`<p class="muted">${esc(empty)}</p>`;
+ const top=r.topRecommendations.slice(0,6);
+ const topHtml=top.length?`<div class="recommendations">${top.map((x,i)=>`<div class="rec-item"><div class="rec-no">${i+1}</div><div><b>${esc(x.field)}</b>${x.bisgId?` <span class="badge idbadge">${esc(x.bisgId)}</span>`:''}<br><span>${esc(x.recommendation)}</span>${x.why?`<div class="helpnote">Why it matters: ${esc(x.why)}</div>`:''}</div></div>`).join('')}</div>`:'<p>No high-priority recommendations were found.</p>';
+ const categoryHtml=`<div class="category-grid">${cats.map(c=>`<div class="cat-card"><b>${esc(c.category)}</b><div class="num">${c.score}%</div><div class="helpnote">${c.detected} detected · ${c.unclear} unclear · ${c.missing} missing</div></div>`).join('')}</div>`;
+ const missingHtml=simpleTable(missing,[['Priority','priority'],['BISG field',x=>`${esc(x.label)} ${x.bisgId?`<span class="badge idbadge">${esc(x.bisgId)}</span>`:''}`],['Why it matters','why'],['Suggested fix','recommendation']], 'No missing fields were identified by the current review.');
+ const unclearHtml=simpleTable(unclear,[['BISG field',x=>`${esc(x.label)} ${x.bisgId?`<span class="badge idbadge">${esc(x.bisgId)}</span>`:''}`],['Confidence','confidence'],['Suggested clarification','recommendation']], 'No unclear fields were identified by the current review.');
+ const warnHtml=simpleTable(warnings,[['Check','label'],['What Hugo found','detail']], 'No calculation warnings were detected by Hugo’s current checks.');
+ const checklistHtml=simpleTable(r.fields,[['Status',x=>pillForStatus(x.status)],['Priority','priority'],['BISG ID','bisgId'],['Field','label'],['Category','category'],['Recommendation','recommendation']]);
+ const productsHtml=simpleTable(products,[['Form','form'],['ISBN','isbn'],['Period units','periodUnits'],['Royalty basis','basis'],['Rate','rate'],['Basis amount','basisAmount'],['Earnings','earnings']], 'No product rows are currently present.');
+ return `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>BISG Royalty Statement Review Report</title><style>${document.querySelector('style').textContent}</style></head><body><div class="report-toolbar"><div><b>Hugo Review Report</b><div class="helpnote">Publisher-facing BISG standards-completeness review</div></div><div><button class="secondary" onclick="window.close()">Close</button> <button onclick="window.print()">Download / Save as PDF</button></div></div><div class="report-layout"><div class="report-doc"><div class="report-hero"><h1>BISG Royalty Statement Review Report</h1><p>Generated by Hugo. This plain-language report shows what Hugo detected, what may be missing, and which improvements would make the statement easier to understand and verify.</p></div><div class="report-note"><b>Important:</b> ${esc(r.disclaimer)} This is not BISG certification or approval.</div><div class="report-metrics"><div class="plain-card"><div class="score-donut">${r.overallScore}%</div><p class="center"><b>Overall BISG completeness</b></p></div><div class="plain-card"><h2>Executive summary</h2><p class="lay-summary">${esc(summary)}</p><p><b>Statement reviewed:</b> ${shortText(r.statement.licenseeContractId||r.statement.statementNo,'untitled')} — ${shortText(r.statement.licenseeTitle||r.statement.licensorTitle,'title not detected')}</p><p><b>Reporting period:</b> ${shortText(r.statement.periodStart)} ${r.statement.periodEnd?'– '+shortText(r.statement.periodEnd):''}</p><p><b>Detected import profile:</b> ${shortText(r.profile)}</p></div></div><div class="plain-card"><h2>Top recommended improvements</h2>${topHtml}</div><div class="plain-card" style="margin-top:16px"><h2>Category scores</h2>${categoryHtml}</div><div class="plain-card" style="margin-top:16px"><h2>Missing fields</h2><p class="helpnote">Fields below were not found in the current Hugo data. Some may be non-applicable; publishers should either add the information or state “not applicable.”</p>${missingHtml}</div><div class="plain-card" style="margin-top:16px"><h2>Detected but unclear fields</h2><p class="helpnote">These fields appear to be present, but labels, abbreviations, or formatting may make them difficult for recipients to interpret.</p>${unclearHtml}</div><div class="plain-card" style="margin-top:16px"><h2>Calculation review</h2><p class="helpnote">Hugo checks whether totals and formula relationships appear consistent. These checks do not replace accounting review.</p>${warnHtml}</div><details class="appendix"><summary>Appendix A — Field-by-field BISG checklist</summary>${checklistHtml}</details><details class="appendix"><summary>Appendix B — Extracted/current product data</summary>${productsHtml}</details></div></div></body></html>`;
+}
+function reviewReportHTML(){ return pleasantReviewReportHTML(); }
+function showReviewReport(){
+  const html=pleasantReviewReportHTML();
+  const blob=new Blob([html],{type:'text/html;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const w=window.open(url,'_blank','width=1180,height=900');
+  if(!w){
+    URL.revokeObjectURL(url);
+    alert('The report could not be opened because the browser blocked the pop-up. Please allow pop-ups for Hugo and try again.');
+    return;
+  }
+  setTimeout(()=>URL.revokeObjectURL(url),60000);
+}
+function exportReviewJSON(){download(`hugo-bisg-review-${state.statementNo||state.licenseeContractId||'draft'}.json`,'application/json',JSON.stringify(reviewData(),null,2))}
+function exportReviewCSV(){const r=reviewData();let rows=[['Status','Priority','BISG ID','Field','Category','Field Category','Confidence','Why it matters','Recommendation']];r.fields.forEach(f=>rows.push([f.status,f.priority,f.bisgId,f.label,f.category,f.fieldCategory,f.confidence,f.why,f.recommendation]));rows.push([]);rows.push(['Calculation warning','Detail']);r.calculationWarnings.forEach(w=>rows.push([w.label,w.detail]));download(`hugo-bisg-review-${state.statementNo||state.licenseeContractId||'draft'}.csv`,'text/csv;charset=utf-8',rows.map(row=>row.map(csvEscape).join(',')).join('\n'))}
+
+
+
+// ---- Hugo v1.7 Custom Import Profiles / Profile Builder ----
+const CUSTOM_PROFILE_KEY='hugoCustomImportProfiles';
+const PROFILE_DRAFT_KEY='hugoCustomProfileDraft';
+const defaultProfileDraft={
+  id:'',
+  name:'New publisher profile',
+  language:'English / German',
+  numberFormat:'auto',
+  splitPattern:'',
+  fieldRules:'',
+  abbreviations:'',
+  productAliases:'',
+  calculationHint:'units + rate + basis amount + royalty amount'
+};
+let customProfileDraft=readCustomProfileDraft();
+function readCustomProfiles(){try{return JSON.parse(localStorage.getItem(CUSTOM_PROFILE_KEY)||'[]')}catch(e){return []}}
+function writeCustomProfiles(arr){localStorage.setItem(CUSTOM_PROFILE_KEY,JSON.stringify(arr||[]));}
+function readCustomProfileDraft(){try{return Object.assign({},defaultProfileDraft,JSON.parse(localStorage.getItem(PROFILE_DRAFT_KEY)||'{}'))}catch(e){return cloneData(defaultProfileDraft)}}
+function writeCustomProfileDraft(){localStorage.setItem(PROFILE_DRAFT_KEY,JSON.stringify(customProfileDraft));}
+function slugifyProfileName(name){return String(name||'profile').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,50)||'profile'}
+function customProfileOptionValue(id){return 'custom:'+id}
+function selectedCustomProfile(){const val=currentImportProfile(); if(!val.startsWith('custom:')) return null; const id=val.slice(7); return readCustomProfiles().find(p=>p.id===id)||null;}
+function updateImportProfileOptions(){
+  const sel=document.getElementById('importProfile'); if(!sel) return;
+  const current=sel.value;
+  [...sel.querySelectorAll('option[data-custom="1"]')].forEach(o=>o.remove());
+  const profiles=readCustomProfiles();
+  profiles.forEach(p=>{const opt=document.createElement('option'); opt.value=customProfileOptionValue(p.id); opt.dataset.custom='1'; opt.textContent='Custom: '+(p.name||p.id); sel.appendChild(opt);});
+  if([...sel.options].some(o=>o.value===current)) sel.value=current;
+}
+function parseRuleLines(text){
+  return String(text||'').split(/\r?\n/).map(x=>x.trim()).filter(x=>x && !x.startsWith('#')).map(line=>{
+    const parts=line.split(/\s*=>\s*/); if(parts.length<2) return null;
+    return {pattern:parts[0].trim(), target:parts.slice(1).join('=>').trim()};
+  }).filter(Boolean);
+}
+function parseKeyValueLines(text){
+  const out={}; String(text||'').split(/\r?\n/).map(x=>x.trim()).filter(x=>x && !x.startsWith('#')).forEach(line=>{
+    const parts=line.split(/\s*=>\s*/); if(parts.length>=2) out[parts[0].trim()]=parts.slice(1).join('=>').trim();
+  });
+  return out;
+}
+function makeRegex(pattern,flags){
+  try{return new RegExp(pattern,flags||'i')}catch(e){try{return new RegExp(pattern.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),flags||'i')}catch(_){return null}}
+}
+function valueFromCustomMatch(text,pattern){
+  const re=makeRegex(pattern,'im'); if(!re) return '';
+  const m=text.match(re); if(!m) return '';
+  if(m[1]) return m[1].trim();
+  const lines=text.split('\n');
+  for(let i=0;i<lines.length;i++){
+    if(makeRegex(pattern,'i')?.test(lines[i])){
+      const same=lines[i].replace(makeRegex(pattern,'i'),'').replace(/^\s*[:\-–—]?\s*/,'').trim();
+      if(same) return same;
+      for(let j=i+1;j<Math.min(lines.length,i+4);j++){const nxt=lines[j].trim(); if(nxt) return nxt;}
+    }
+  }
+  return (m[0]||'').trim();
+}
+function normalizeCustomNumber(value, profile){
+  if(!value) return value;
+  if(!profile || profile.numberFormat==='auto') return parseGermanNumber(value)||detectCurrencyValue(value)||value;
+  let s=String(value).replace(/[€$£\s]/g,'');
+  if(profile.numberFormat==='european') s=s.replace(/\./g,'').replace(',','.');
+  if(profile.numberFormat==='us') s=s.replace(/,/g,'');
+  return /^-?\d+(\.\d+)?$/.test(s)?s:value;
+}
+function applyCustomProfileNoSplit(base,text,profile){
+  base=base||{state:{},products:[],detections:[],notes:[],unmappedLines:[],calcInferences:[]};
+  base.state=base.state||{}; base.detections=base.detections||[]; base.notes=base.notes||[]; base.products=base.products||[];
+  parseRuleLines(profile.fieldRules).forEach(rule=>{
+    if(!IMPORT_FIELD_OPTIONS.includes(rule.target)) return;
+    const value=valueFromCustomMatch(text,rule.pattern);
+    if(notBlank(value)){
+      const finalValue=/amount|balance|withheld|released|income|tax/i.test(rule.target)?normalizeCustomNumber(value,profile):value;
+      base.state[rule.target]=String(finalValue);
+      addDetection(base.detections,rule.target,finalValue,'High','Custom profile: '+profile.name,`Matched custom rule “${rule.pattern}”.`);
+    }
+  });
+  const aliases=parseKeyValueLines(profile.productAliases);
+  if(Object.keys(aliases).length && base.products.length){
+    base.products=base.products.map(p=>Object.assign({},p,{form:aliases[p.form]||aliases[String(p.form||'').toLowerCase()]||p.form}));
+  }
+  const abbr=parseKeyValueLines(profile.abbreviations);
+  const hits=Object.entries(abbr).filter(([abbr])=>makeRegex('\\b'+abbr.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'\\b','i')?.test(text)).map(([a,m])=>`${a} = ${m}`);
+  if(hits.length) base.notes.push('Custom abbreviation hits: '+hits.slice(0,12).join('; ')+'.');
+  if(profile.calculationHint) base.notes.push('Custom calculation hint: '+profile.calculationHint);
+  return base;
+}
+const HUGO_ORIGINAL_DIGEST=digestStatementText;
+digestStatementText=function(text,requestedProfile){
+  const requested=requestedProfile||currentImportProfile();
+  if(!String(requested).startsWith('custom:')) return HUGO_ORIGINAL_DIGEST(text,requestedProfile);
+  text=normalizeText(text); const id=String(requested).slice(7); const profile=readCustomProfiles().find(p=>p.id===id);
+  if(!profile) return HUGO_ORIGINAL_DIGEST(text,'generic');
+  let base=HUGO_ORIGINAL_DIGEST(text,'generic');
+  base.profile='custom: '+profile.name;
+  base.notes=base.notes||[]; base.notes.unshift('Custom import profile applied: '+profile.name+'.');
+  const split=String(profile.splitPattern||'').trim();
+  if(split){
+    const re=makeRegex(split,'gmi');
+    if(re){
+      const matches=[...text.matchAll(re)];
+      if(matches.length){
+        const contractStatements=[];
+        matches.forEach((m,idx)=>{
+          const start=m.index||0, end=idx+1<matches.length?matches[idx+1].index:text.length;
+          const seg=text.slice(start,end);
+          let segBase=HUGO_ORIGINAL_DIGEST(seg,'generic');
+          segBase=applyCustomProfileNoSplit(segBase,seg,profile);
+          const contractId=(m[1]||segBase.state.licenseeContractId||m[0]||'').trim();
+          if(contractId) segBase.state.licenseeContractId=contractId;
+          contractStatements.push({
+            contractId,
+            title:segBase.state.licenseeTitle||segBase.state.licensorTitle||'',
+            state:segBase.state||{},
+            products:segBase.products||[],
+            openingBalance:segBase.state.openingBalance||'',
+            currentRoyalty:(segBase.products||[]).reduce((s,p)=>s+Number(p.earnings||0),0).toFixed(2),
+            newBalance:segBase.state.closingBalance||''
+          });
+        });
+        if(contractStatements.length){
+          base.contractStatements=contractStatements;
+          base.notes.push(`${contractStatements.length} separate statement block${contractStatements.length===1?'':'s'} detected by custom split rule.`);
+          base.products=[]; contractStatements.forEach(cs=>(cs.products||[]).forEach(p=>base.products.push(p)));
+          if(contractStatements[0]) base.state=Object.assign({},base.state,contractStatements[0].state);
+        }
+      }
+    }
+  }
+  base=applyCustomProfileNoSplit(base,text,profile);
+  base.sourceType='Text/PDF digest with custom profile';
+  return base;
+}
+function renderCustomProfilesPanel(){
+  updateImportProfileOptions();
+  const root=document.getElementById('profileBuilderRoot'); if(!root) return;
+  const profiles=readCustomProfiles();
+  const fieldOptions=IMPORT_FIELD_OPTIONS.map(k=>`<option value="${esc(k)}">${esc(k)}${FIELD_META[k]?.[0]?' — '+FIELD_META[k][0]:''}</option>`).join('');
+  root.innerHTML=`
+    <div class="issue good"><div class="issue-head"><span>Create reusable import rules</span><span>${profiles.length} saved</span></div><p>Use simple rules first. Advanced users may enter regular expressions with one capture group for the value to extract.</p></div>
+    <div class="grid2"><div class="field"><label>Profile name</label><input id="cpName" value="${esc(customProfileDraft.name)}"></div><div class="field"><label>Statement language</label><input id="cpLanguage" value="${esc(customProfileDraft.language)}"></div></div>
+    <div class="grid2"><div class="field"><label>Number format</label><select id="cpNumberFormat"><option value="auto">Auto-detect</option><option value="european">European: 1.234,56</option><option value="us">US/UK: 1,234.56</option></select></div><div class="field"><label>Split rule / start new statement when this pattern appears</label><input id="cpSplitPattern" placeholder="Example: Interne VertragsNr\\.?\\s*(\\d+)" value="${esc(customProfileDraft.splitPattern)}"></div></div>
+    <div class="field"><label>Field mapping rules <span class="badge recommended">rule syntax</span></label><textarea id="cpFieldRules" placeholder="One rule per line, for example:\nContract No\\.?\\s*([A-Z0-9-]+) => licenseeContractId\nStatement Date\\s*:?\\s*([^\\n]+) => statementDate">${esc(customProfileDraft.fieldRules)}</textarea><div class="helpnote">Available Hugo/BISG fields: <select id="cpFieldQuick">${fieldOptions}</select> <button type="button" class="secondary small" id="cpInsertRuleBtn">Insert selected field</button></div></div>
+    <div class="grid2"><div class="field"><label>Abbreviation dictionary</label><textarea id="cpAbbreviations" placeholder="NVE => Net Publisher Receipts\nHC => Hardcover">${esc(customProfileDraft.abbreviations)}</textarea></div><div class="field"><label>Product form aliases</label><textarea id="cpProductAliases" placeholder="TB => Paperback\nHC => Hardcover\nAudio DL => Audiobook Download">${esc(customProfileDraft.productAliases)}</textarea></div></div>
+    <div class="field"><label>Calculation hint</label><input id="cpCalculationHint" value="${esc(customProfileDraft.calculationHint)}"></div>
+    <div class="fileline"><button type="button" class="green small" id="cpSaveBtn">Save profile</button><button type="button" class="secondary small" id="cpTemplateBtn">Load Ullstein-style template</button><button type="button" class="secondary small" id="cpExportBtn">Export profiles JSON</button><input type="file" id="cpImportFile" accept=".json,application/json"><button type="button" class="secondary small" id="cpImportBtn">Import profiles JSON</button></div>
+    <h4>Saved custom profiles</h4>
+    ${profiles.length?'<table><thead><tr><th>Name</th><th>Split rule</th><th>Field rules</th><th>Actions</th></tr></thead><tbody>'+profiles.map(p=>`<tr><td><b>${esc(p.name)}</b><div class="helpnote">${esc(p.language||'')}</div></td><td class="mono">${esc(p.splitPattern||'—')}</td><td>${parseRuleLines(p.fieldRules).length}</td><td><button type="button" class="secondary small" onclick="loadCustomProfileForEdit('${esc(p.id)}')">Edit</button> <button type="button" class="danger small" onclick="deleteCustomProfile('${esc(p.id)}')">Delete</button></td></tr>`).join('')+'</tbody></table>':'<p class="muted">No custom profiles saved yet.</p>'}
+    <div class="demo"><b>Important:</b> A custom profile helps Hugo detect fields, but it never certifies or audits a statement. Review detected values and unmapped lines before applying.</div>`;
+  const nf=document.getElementById('cpNumberFormat'); if(nf) nf.value=customProfileDraft.numberFormat||'auto';
+  ['cpName','cpLanguage','cpNumberFormat','cpSplitPattern','cpFieldRules','cpAbbreviations','cpProductAliases','cpCalculationHint'].forEach(id=>{document.getElementById(id)?.addEventListener('input',saveProfileDraftFromUI)});
+  document.getElementById('cpSaveBtn')?.addEventListener('click',saveCustomProfileFromUI);
+  document.getElementById('cpTemplateBtn')?.addEventListener('click',loadCustomProfileTemplate);
+  document.getElementById('cpExportBtn')?.addEventListener('click',exportCustomProfiles);
+  document.getElementById('cpImportBtn')?.addEventListener('click',importCustomProfilesFile);
+  document.getElementById('cpInsertRuleBtn')?.addEventListener('click',()=>{const f=document.getElementById('cpFieldQuick')?.value||'licenseeContractId'; const area=document.getElementById('cpFieldRules'); if(area){area.value+=(area.value.trim()?'\n':'')+'Publisher label\\s*:?\\s*([^\\n]+) => '+f; saveProfileDraftFromUI();}});
+}
+function saveProfileDraftFromUI(){
+  customProfileDraft={id:customProfileDraft.id||'',name:document.getElementById('cpName')?.value||'',language:document.getElementById('cpLanguage')?.value||'',numberFormat:document.getElementById('cpNumberFormat')?.value||'auto',splitPattern:document.getElementById('cpSplitPattern')?.value||'',fieldRules:document.getElementById('cpFieldRules')?.value||'',abbreviations:document.getElementById('cpAbbreviations')?.value||'',productAliases:document.getElementById('cpProductAliases')?.value||'',calculationHint:document.getElementById('cpCalculationHint')?.value||''};
+  writeCustomProfileDraft();
+}
+function saveCustomProfileFromUI(){
+  saveProfileDraftFromUI();
+  if(!customProfileDraft.name.trim()){alert('Please enter a profile name.');return;}
+  const profiles=readCustomProfiles();
+  const id=customProfileDraft.id||slugifyProfileName(customProfileDraft.name)+'-'+Date.now().toString(36);
+  const profile=Object.assign({},customProfileDraft,{id});
+  const idx=profiles.findIndex(p=>p.id===id); if(idx>=0) profiles[idx]=profile; else profiles.push(profile);
+  writeCustomProfiles(profiles); customProfileDraft=Object.assign({},profile); writeCustomProfileDraft(); renderCustomProfilesPanel(); updateImportProfileOptions(); alert('Custom profile saved. Select it in the Import / digest profile dropdown.');
+}
+function loadCustomProfileTemplate(){
+  customProfileDraft={id:'',name:'Ullstein-style custom template',language:'German',numberFormat:'european',splitPattern:'Interne VertragsNr\\.?\\s*(\\d+)',fieldRules:'Datum\\s*:?\\s*([0-9.]+) => statementDate\nAbrechnungszeitraum\\s+([0-9.]+)\\s*- => periodStart\nAbrechnungszeitraum\\s+[0-9.]+\\s*-\\s*([0-9.]+) => periodEnd\nRechtegeber\\s*:?\\s*([^\\n]+) => licensorName\nInterne VertragsNr\\.?\\s*(\\d+) => licenseeContractId\nVortrag lt\\. letzter Abrechnung\\s*([-0-9.,]+) => openingBalance\nNeuer Vortrag\\s*([-0-9.,]+) => closingBalance\nHonorarabrechnung brutto / Auszahlung\\s*([-0-9.,]+) => paymentDue',abbreviations:'NVE => Nettoverlagserlös / Net Publisher Receipts\nNLP => Nettoladenpreis / Net List Price\nBLP => Bruttoladenpreis / Gross List Price\nET => Erscheinungstermin / Publication Date\nGutschrift => Credit Note',productAliases:'TB => Paperback\nTaschenbuch => Paperback\nStandard E-Book => E-Book',calculationHint:'Ullstein line pattern: units + Honorar % + NVE/NLP/BLP basis amount + Guthaben amount'};
+  writeCustomProfileDraft(); renderCustomProfilesPanel();
+}
+function loadCustomProfileForEdit(id){const p=readCustomProfiles().find(x=>x.id===id); if(!p) return; customProfileDraft=Object.assign({},defaultProfileDraft,p); writeCustomProfileDraft(); renderCustomProfilesPanel(); showNavPanel('profileBuilderPanel');}
+function deleteCustomProfile(id){if(!confirm('Delete this custom import profile?')) return; writeCustomProfiles(readCustomProfiles().filter(p=>p.id!==id)); if(customProfileDraft.id===id) customProfileDraft=cloneData(defaultProfileDraft); writeCustomProfileDraft(); renderCustomProfilesPanel(); updateImportProfileOptions();}
+function exportCustomProfiles(){download('hugo-custom-import-profiles.json','application/json',JSON.stringify({hugoProfileVersion:'1.7',profiles:readCustomProfiles()},null,2));}
+async function importCustomProfilesFile(){const file=document.getElementById('cpImportFile')?.files?.[0]; if(!file){alert('Choose a JSON profile file first.');return;} try{const obj=JSON.parse(await file.text()); const incoming=Array.isArray(obj)?obj:(obj.profiles||[]); if(!Array.isArray(incoming)) throw new Error('No profiles array found.'); const existing=readCustomProfiles(); incoming.forEach(p=>{if(!p.id) p.id=slugifyProfileName(p.name||'profile')+'-'+Date.now().toString(36); const idx=existing.findIndex(x=>x.id===p.id); if(idx>=0) existing[idx]=p; else existing.push(p);}); writeCustomProfiles(existing); renderCustomProfilesPanel(); updateImportProfileOptions(); alert('Profiles imported.');}catch(e){alert('Could not import profiles: '+(e.message||e));}}
+window.loadCustomProfileForEdit=loadCustomProfileForEdit;
+window.deleteCustomProfile=deleteCustomProfile;
+
+function setupSideNavigation(){
+  const aside=document.querySelector('aside.no-print');
+  if(!aside || aside.dataset.navReady) return;
+  const titles={aboutPanel:'About Hugo',versionHistoryPanel:'Version history',importPanel:'Import / digest',validationPanel:'Validation',reviewPanel:'Review my statement',profileBuilderPanel:'Custom import profiles',dataEntryPanel:'Statement data',productsPanel:'Product rows',reservesPanel:'Reserve rows',sublicensesPanel:'Sublicense rows'};
+  const preferredOrder=['dataEntryPanel','productsPanel','reservesPanel','sublicensesPanel','importPanel','profileBuilderPanel','validationPanel','reviewPanel','aboutPanel','versionHistoryPanel'];
+  let panels=[...aside.querySelectorAll(':scope > .panel')];
+  panels.forEach((panel,idx)=>{
+    if(!panel.id) panel.id='navPanel'+idx;
+    const h=panel.querySelector(':scope > h2');
+    if(h){ h.classList.add('nav-heading'); }
+    panel.dataset.navTitle=titles[panel.id] || (h ? h.textContent.trim() : 'Section '+(idx+1));
+  });
+  panels=preferredOrder.map(id=>document.getElementById(id)).filter(Boolean)
+    .concat(panels.filter(panel=>!preferredOrder.includes(panel.id)));
+  const nav=document.createElement('nav');
+  nav.className='left-nav';
+  nav.setAttribute('aria-label','Hugo navigation');
+  nav.innerHTML='<div class="left-nav-title">Navigation <span>choose a section</span></div><div class="left-nav-buttons"></div>';
+  const holder=nav.querySelector('.left-nav-buttons');
+  panels.forEach((panel)=>{
+    aside.appendChild(panel);
+    const btn=document.createElement('button');
+    btn.type='button';
+    btn.dataset.target=panel.id;
+    btn.innerHTML='<span>'+panel.dataset.navTitle+'</span><span class="nav-dot"></span>';
+    btn.addEventListener('click',()=>showNavPanel(panel.id));
+    holder.appendChild(btn);
+  });
+  const shell=document.querySelector('.shell');
+  if(shell) shell.insertBefore(nav, aside);
+  else aside.prepend(nav);
+  aside.dataset.navReady='1';
+  showNavPanel('dataEntryPanel');
+}
+function showNavPanel(panelId){
+  const aside=document.querySelector('aside.no-print');
+  if(!aside) return;
+  const panels=[...aside.querySelectorAll(':scope > .panel')];
+  panels.forEach(panel=>panel.classList.toggle('nav-active', panel.id===panelId));
+  [...document.querySelectorAll('.left-nav button')].forEach(btn=>btn.classList.toggle('active', btn.dataset.target===panelId));
+  const panel=document.getElementById(panelId);
+  if(panel){panel.scrollIntoView({block:'nearest'});}
+}
+function openNavPanelFor(elementId){
+  const el=document.getElementById(elementId);
+  const panel=el?.closest?.('aside.no-print > .panel');
+  if(panel) showNavPanel(panel.id);
+}
+
+
+function render(){renderForms();renderValidation();renderPreview();renderReviewPanel();renderCustomProfilesPanel();setupSideNavigation()}
+document.getElementById('printBtn').onclick=()=>window.print();
+document.getElementById('jsonBtn').onclick=exportJSON;
+document.getElementById('csvBtn').onclick=exportCSV;
+document.getElementById('resetBtn').onclick=clearAllFields;
+document.getElementById('loadSampleBtn').onclick=loadSampleData;
+document.getElementById('importJumpBtn').onclick=()=>showNavPanel('importPanel');
+document.getElementById('reviewJumpBtn').onclick=()=>showNavPanel('reviewPanel');
+document.getElementById('generateReviewBtn').onclick=showReviewReport;
+document.getElementById('reviewJsonBtn').onclick=exportReviewJSON;
+document.getElementById('reviewCsvBtn').onclick=exportReviewCSV;
+document.getElementById('helpBtn').onclick=()=>openHelp('overview');
+document.getElementById('helpCloseBtn').onclick=closeHelp;
+document.getElementById('readImportBtn').onclick=readImportFile;
+document.getElementById('parsePasteBtn').onclick=digestPastedText;
+document.getElementById('applyImportBtn').onclick=applyDetectedImport;
+document.getElementById('clearImportBtn').onclick=clearImport;
+document.getElementById('addProduct').onclick=()=>{products.push({form:'',isbn:'',pubDate:'',listPrice:'0',basis:'',rate:'0',priorUnits:'0',periodUnits:'0',basisAmount:'',earnings:'0'});save();render()};
+document.getElementById('addReserve').onclick=()=>{reserves.push({form:'',rate:'',withheld:'0',released:'0'});save();render()};
+document.getElementById('addSublicense').onclick=()=>{sublicenses.push({name:'',type:'',income:'0',share:'0',amountDue:'0'});save();render()};
+render();
+</script>
+</body>
+</html>
