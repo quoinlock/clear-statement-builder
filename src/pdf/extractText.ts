@@ -50,11 +50,13 @@ export async function extractTextWithLib(lib: PdfLibLike, data: ArrayBuffer): Pr
 let libPromise: Promise<PdfLibLike> | null = null;
 
 async function loadPdfJs(): Promise<PdfLibLike> {
-  const pdfjs = await import('pdfjs-dist');
-  pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-    'pdfjs-dist/build/pdf.worker.min.js',
-    import.meta.url,
-  ).toString();
+  // Vite emits the worker as a same-origin asset via the ?url import; the
+  // library itself stays in a lazy chunk loaded on first PDF import.
+  const [pdfjs, { default: workerUrl }] = await Promise.all([
+    import('pdfjs-dist'),
+    import('pdfjs-dist/build/pdf.worker.min.js?url'),
+  ]);
+  pdfjs.GlobalWorkerOptions.workerSrc = workerUrl;
   return pdfjs as unknown as PdfLibLike;
 }
 
