@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
-    "coverage": "vitest run --coverage"
+    "coverage": "vitest run --coverage",
+    "ci": "tsc -b && vitest run --coverage && vite build && node tools/check-dist.js"
   },
   "dependencies": {
     "pdfjs-dist": "^3.11.174",
