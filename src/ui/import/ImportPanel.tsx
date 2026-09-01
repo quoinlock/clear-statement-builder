@@ -71,7 +71,14 @@ export function ImportPanel() {
   function applyAll() {
     const outcome = applyDetectionResult(store.workspace, d);
     if (outcome.kind === 'applied') {
-      store.replaceWorkspace({ ...store.workspace, ...outcome.target });
+      // A statement JSON import carries its statement type (Hugo/CSB 1.0.x
+      // files read as 'translation'); applying the import adopts it. Text,
+      // PDF, and CSV imports leave the current mode alone.
+      store.replaceWorkspace({
+        ...store.workspace,
+        ...outcome.target,
+        ...(d?.statementType ? { statementType: d.statementType } : {}),
+      });
     }
     setStatus(outcome.message);
   }

@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
-import { cloneSampleDocument, sample, sampleProducts, sampleReserves, sampleSublicenses } from '../../src/core/sample/index.ts';
+import { cloneSampleDocument, sample } from '../../src/core/sample/index.ts';
 import { calculationWarnings, totals } from '../../src/core/calc/index.ts';
 import { validation } from '../../src/core/validation/index.ts';
 import { reviewData } from '../../src/core/review/index.ts';
@@ -28,10 +28,11 @@ const hugoCsvPath = join(FIXTURES, 'hugo', 'hugo-royalty-statement-RS-2026-0142.
 function sampleDoc(): StatementDocument {
   const { state, products, reserves, sublicenses } = cloneSampleDocument();
   return {
-    version: '1.0.0',
+    version: '1.1.0',
     generatedAt: '2026-03-15T10:00:00.000Z',
     product: 'clear-statement-builder',
     priorArt: 'hugo-prototype-v1.7',
+    statementType: 'translation',
     state,
     products,
     reserves,
@@ -40,14 +41,15 @@ function sampleDoc(): StatementDocument {
 }
 
 describe('AC-PER-2: statement JSON write', () => {
-  it('writes version 1.0.0 (not schemaVersion, not 0.9) and never showIds', () => {
+  it('writes version 1.1.0 with statementType (not schemaVersion, not 0.9) and never showIds', () => {
     const doc = sampleDoc();
     const out = serializeDocument(doc, {
       totals: totals(doc.state, doc.products),
       validation: validation(doc.state, doc.products, doc.sublicenses),
       calculationWarnings: calculationWarnings(doc.state, doc.products, doc.reserves, doc.sublicenses),
     }) as Record<string, unknown>;
-    expect(out.version).toBe('1.0.0');
+    expect(out.version).toBe('1.1.0');
+    expect(out.statementType).toBe('translation');
     expect(out).not.toHaveProperty('schemaVersion');
     expect(JSON.stringify(out)).not.toContain('showIds');
     expect(out.product).toBe('clear-statement-builder');
@@ -64,15 +66,19 @@ describe('AC-PER-2: statement JSON write', () => {
 });
 
 describe('AC-PER-3 / AC-IMP-1: Hugo 0.9 read path', () => {
-  it('parses the real Hugo 0.9 fixture and restores the full sample document', () => {
+  // The Hugo fixture is a provenance artifact (the frozen snapshot's own
+  // German sample), independent of the CSB Appendix B sample.
+  it('parses the real Hugo 0.9 fixture and restores the full document as translation', () => {
     const raw = JSON.parse(readFileSync(hugoJsonPath, 'utf8'));
     expect(raw.version).toBe('0.9');
     const doc = parseHugoOrCsbJson(raw);
-    expect(doc.version).toBe('1.0.0');
-    expect(doc.state).toEqual(sample);
-    expect(doc.products).toEqual(sampleProducts);
-    expect(doc.reserves).toEqual(sampleReserves);
-    expect(doc.sublicenses).toEqual(sampleSublicenses);
+    expect(doc.version).toBe('1.1.0');
+    expect(doc.statementType).toBe('translation');
+    expect(doc.state.licenseeName).toBe('Nordlicht Verlag GmbH');
+    expect(doc.state.statementNotes).toContain('best-practice template');
+    expect(doc.products).toHaveLength(4);
+    expect(doc.reserves).toHaveLength(2);
+    expect(doc.sublicenses).toHaveLength(1);
   });
 
   it('accepts version-missing files without a product marker (hand-edited CSB → Hugo path)', () => {
@@ -82,11 +88,20 @@ describe('AC-PER-3 / AC-IMP-1: Hugo 0.9 read path', () => {
     expect(() => parseHugoOrCsbJson(raw)).not.toThrow();
   });
 
-  it('round-trips CSB 1.0.0 output through the parser', () => {
+  it('round-trips CSB output through the parser', () => {
     const doc = sampleDoc();
     const parsed = parseHugoOrCsbJson(serializeDocument(doc));
     expect(parsed.state).toEqual(doc.state);
     expect(parsed.products).toEqual(doc.products);
+  });
+
+  it('round-trips statementType and reads legacy CSB 1.0.x as translation', () => {
+    const standard = parseHugoOrCsbJson(serializeDocument({ ...sampleDoc(), statementType: 'standard' }));
+    expect(standard.statementType).toBe('standard');
+    // A CSB 1.0.x file predates statementType.
+    const legacy: Record<string, unknown> = { ...serializeDocument(sampleDoc()), version: '1.0.0' };
+    delete legacy.statementType;
+    expect(parseHugoOrCsbJson(legacy).statementType).toBe('translation');
   });
 
   it('rejects unrecognized shapes', () => {
@@ -110,9 +125,17 @@ describe('AC-PER-3 / AC-IMP-1: Hugo 0.9 read path', () => {
 });
 
 describe('statement CSV (v1.7 parity)', () => {
-  it('serializes the sample document byte-identically to the Hugo fixture CSV', () => {
-    const expected = readFileSync(hugoCsvPath, 'utf8');
-    expect(serializeStatementCsv(sampleDoc())).toBe(expected);
+  it('serializes the parsed Hugo document byte-identically to the Hugo fixture CSV', () => {
+    // Shape parity: our writer over Hugo's own data reproduces Hugo's CSV.
+    const doc = parseHugoOrCsbJson(JSON.parse(readFileSync(hugoJsonPath, 'utf8')));
+    expect(serializeStatementCsv(doc)).toBe(readFileSync(hugoCsvPath, 'utf8'));
+  });
+
+  it('sample CSV keeps the Section,Field,Value,BISG ID,Category shape', () => {
+    const csv = serializeStatementCsv(sampleDoc());
+    expect(csv.split('\n')[0]).toBe('"Section","Field","Value","BISG ID","Category"');
+    expect(csv).toContain('"Statement","licenseeName","Harbor Light Press, Inc.","Con1_LicName","Required"');
+    expect(csv).toContain('"Product 4","form","Audiobook Download","SS32_ProdFormDtl","Required"');
   });
 });
 

@@ -1,7 +1,9 @@
-// File interchange (PRD "File interchange"): statement JSON write 1.0.0 /
-// read 0.9 and 1.0.x, statement CSV (v1.7 parity shape), custom-profile
-// envelopes, and review JSON/CSV serialization.
+// File interchange (PRD "File interchange"): statement JSON write 1.1.0
+// (v2 adds document-level statementType) / read 0.9 and 1.x, statement CSV
+// (v1.7 parity shape — deliberately unchanged in v2; JSON is the fidelity
+// format), custom-profile envelopes, and review JSON/CSV serialization.
 import { STATEMENT_STATE_KEYS, PRODUCT_KEYS, RESERVE_KEYS, SUBLICENSE_KEYS } from '../catalog/groups.ts';
+import { coerceStatementType } from '../catalog/applicability.ts';
 import { emptyState } from '../catalog/rows.ts';
 import { bisgCategory, bisgId } from '../catalog/fieldMeta.ts';
 import type { CalculationWarning } from '../calc/index.ts';
@@ -26,10 +28,11 @@ export interface SerializeExtras {
 /** Statement JSON write shape. Never includes showIds. */
 export function serializeDocument(doc: StatementDocument, extras?: SerializeExtras): object {
   return {
-    version: '1.0.0',
+    version: '1.1.0',
     generatedAt: doc.generatedAt,
     product: 'clear-statement-builder',
     priorArt: 'hugo-prototype-v1.7',
+    statementType: doc.statementType ?? 'translation',
     state: doc.state,
     products: doc.products,
     reserves: doc.reserves,
@@ -77,10 +80,12 @@ function coerceRows<T extends object>(raw: unknown, keys: readonly (keyof T)[]):
 }
 
 /**
- * Accepts a CSB 1.0.x export or a Hugo 0.9 dataPackage. Hugo acceptance rule:
- * version === '0.9', or version missing/unknown with `product` missing, as
- * long as state/products exist. generatedAt is not required. A review JSON
- * is rejected with a distinct error.
+ * Accepts a CSB 1.x export (1.0.x pre-statementType, 1.1.x with it) or a
+ * Hugo 0.9 dataPackage. Hugo acceptance rule: version === '0.9', or version
+ * missing/unknown with `product` missing, as long as state/products exist.
+ * generatedAt is not required. A missing/invalid statementType (every Hugo
+ * and CSB 1.0.x file) reads as 'translation'. A review JSON is rejected with
+ * a distinct error.
  */
 export function parseHugoOrCsbJson(obj: unknown): StatementDocument {
   if (typeof obj !== 'object' || obj === null) {
@@ -94,16 +99,17 @@ export function parseHugoOrCsbJson(obj: unknown): StatementDocument {
   const o = obj as Record<string, unknown>;
   const version = typeof o.version === 'string' ? o.version : '';
   const hasStructure = typeof o.state === 'object' && o.state !== null && Array.isArray(o.products);
-  const isCsb = version.startsWith('1.0') && o.product === 'clear-statement-builder';
+  const isCsb = /^1\.\d/.test(version) && o.product === 'clear-statement-builder';
   const isHugo = (version === '0.9' || (!isCsb && o.product === undefined)) && hasStructure;
   if (!hasStructure || (!isCsb && !isHugo)) {
-    throw new StatementParseError('Unrecognized statement JSON (expected Hugo 0.9 or Clear Statement Builder 1.0).');
+    throw new StatementParseError('Unrecognized statement JSON (expected Hugo 0.9 or Clear Statement Builder 1.x).');
   }
   return {
-    version: '1.0.0',
+    version: '1.1.0',
     generatedAt: typeof o.generatedAt === 'string' ? o.generatedAt : '',
     product: 'clear-statement-builder',
     priorArt: 'hugo-prototype-v1.7',
+    statementType: coerceStatementType(o.statementType),
     state: coerceState(o.state),
     products: coerceRows<ProductRow>(o.products, PRODUCT_KEYS),
     reserves: coerceRows<ReserveRow>(o.reserves, RESERVE_KEYS),

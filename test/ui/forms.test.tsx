@@ -26,7 +26,7 @@ describe('statement forms', () => {
     expect(tabs.map(t => t.textContent)).toEqual(['Statement', 'Parties', 'Work', 'Payment']);
     expect(tabs[0]).toHaveAttribute('aria-selected', 'true');
     expect(screen.getByLabelText(/Statement No\./)).toHaveValue('RS-2026-0142');
-    expect(screen.getByLabelText(/Prepared By/)).toHaveValue('Maria Köhler, Senior Royalties Manager');
+    expect(screen.getByLabelText(/Prepared By/)).toHaveValue('Dana Whitfield, Senior Royalties Manager');
   });
 
   it('persists every keystroke to storage (oninput parity)', async () => {

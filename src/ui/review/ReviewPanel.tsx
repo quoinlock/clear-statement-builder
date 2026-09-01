@@ -14,7 +14,7 @@ const BAND_COPY: Record<ReturnType<typeof scoreBand>, string> = {
 
 export function ReviewPanel() {
   const store = useAppStore();
-  const { state, products, reserves, sublicenses } = store.workspace;
+  const { state, products, reserves, sublicenses, statementType } = store.workspace;
   const review = reviewData({
     state,
     products,
@@ -22,6 +22,7 @@ export function ReviewPanel() {
     sublicenses,
     detections: store.detectedImport?.detections,
     profile: store.detectedImport?.profile ?? 'auto',
+    statementType,
   });
   const band = scoreBand(review.overallScore);
 

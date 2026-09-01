@@ -17,10 +17,16 @@ export const HELP_SECTIONS: HelpSection[] = [
         <p>
           A BISG-focused royalty statement tool (prior art: Hugo prototype v1.7 by Sebastian Ritscher,
           Mohrbooks). It helps publishers, agents, and rights professionals create, review, import, validate,
-          and export BISG-aligned translation-rights royalty statements.
+          and export BISG-aligned royalty statements.
         </p>
         <ul>
           <li>Create structured statements from scratch.</li>
+          <li>
+            Choose the statement type in the top bar: <b>Translation</b> (translation-rights deals, the
+            default) or <b>Standard</b> (ordinary royalty statements — translation-only fields such as
+            Language, Licensee Title, Sales Territory, Advance Currency, and Co-Agent Commission are
+            disabled but their values are kept).
+          </li>
           <li>Import and digest publisher statements, including Ullstein-style PDFs.</li>
           <li>Validate completeness against the BISG-aligned field categories.</li>
           <li>Review calculation warnings and missing mappings.</li>
@@ -119,7 +125,8 @@ export const HELP_SECTIONS: HelpSection[] = [
       <ul>
         <li>Print / Save as PDF: A4 portrait; check your margins.</li>
         <li>
-          Export JSON: structured <code>version 1.0.0</code>; Hugo <code>0.9</code> files are still readable.
+          Export JSON: structured <code>version 1.1.0</code> including the statement type; CSB{' '}
+          <code>1.0.x</code> and Hugo <code>0.9</code> files are still readable.
         </li>
         <li>Export CSV: spreadsheet-friendly, not as rich as JSON.</li>
       </ul>

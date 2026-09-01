@@ -23,6 +23,7 @@ import type {
   ProductRow,
   ReserveRow,
   StatementState,
+  StatementType,
   SublicenseRow,
 } from '../../core/types.ts';
 
@@ -62,6 +63,7 @@ export interface AppStore {
   addReserve: () => void;
   addSublicense: () => void;
   setShowIds: (v: boolean) => void;
+  setStatementType: (t: StatementType) => void;
   clearAll: () => void;
   loadSample: () => void;
 }
@@ -136,6 +138,9 @@ export function AppStoreProvider({ storage, children }: { storage: StoragePort; 
       addReserve: () => update(ws => ({ ...ws, reserves: [...ws.reserves, newReserveRow()] })),
       addSublicense: () => update(ws => ({ ...ws, sublicenses: [...ws.sublicenses, newSublicenseRow()] })),
       setShowIds: v => update(ws => ({ ...ws, showIds: v })),
+      // Non-destructive by design (v2): switching to 'standard' keeps any
+      // values already in the translation-only fields.
+      setStatementType: t => update(ws => ({ ...ws, statementType: t })),
       clearAll: () => {
         // Parity: wipe statement keys only (profiles survive), reset to one
         // blank row each, showIds off, back to the Statement tab.
@@ -144,7 +149,8 @@ export function AppStoreProvider({ storage, children }: { storage: StoragePort; 
         setSection('Statement data');
       },
       loadSample: () => {
-        update(() => ({ ...cloneSampleDocument(), showIds: false }));
+        // The Appendix B sample is a standard US domestic deal (v2).
+        update(() => ({ ...cloneSampleDocument(), showIds: false, statementType: 'standard' }));
         setSection('Statement data');
       },
     }),

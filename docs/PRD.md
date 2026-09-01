@@ -217,7 +217,7 @@ These are implementation and product decisions **this document does make**. They
 
 4. **Review-before-apply is a hard product rule.** Multi-contract Ullstein (or custom-split) intakes cannot be applied with the bulk “Apply” button; the user must pick one `Interne VertragsNr.` (or split block) at a time. Optional **proposed improvement**: confirm modal “Replace current statement?” — not skip-review.
 
-5. **JSON interchange field is `version` (`1.0.0` write, `0.9` read).** Matches Hugo `dataPackage().version`. In-memory types use the same `version` field (not a separate `schemaVersion`). `showIds` is a **persistence-only** key, not a JSON document field. Review payload uses `reviewFormatVersion: '1.1'` (Hugo’s `reviewData().version` was `'1.1'` and is **not** the statement schema). Hugo JSON/CSV and `{hugoProfileVersion:'1.7', profiles:[...]}` remain readable.
+5. **JSON interchange field is `version` (`1.0.0` write, `0.9` read).** Matches Hugo `dataPackage().version`. In-memory types use the same `version` field (not a separate `schemaVersion`). `showIds` is a **persistence-only** key, not a JSON document field. Review payload uses `reviewFormatVersion: '1.1'` (Hugo’s `reviewData().version` was `'1.1'` and is **not** the statement schema). Hugo JSON/CSV and `{hugoProfileVersion:'1.7', profiles:[...]}` remain readable. *(Amended in v2: write `1.1.0` with a document-level `statementType`; read `0.9` and all `1.x`; review payload writes `reviewFormatVersion: '1.2'`. See “v2: Statement type”.)*
 
 6. **Working product name is Clear Statement Builder.** In-app we do not pretend to be Hugo or BISG. Hugo is credited as prior art on About, Help, and the printed disclaimer. Shorter wordmarks are an Open Question, not a unilateral rename.
 
@@ -233,7 +233,7 @@ These are implementation and product decisions **this document does make**. They
 
 12. **Euro display remains the v1 default for parity**, unless Open Question 4 decides otherwise before implementation. Advance currency stays a separate field. Do **not** silently invent FX.
 
-13. **Sample data remains available via “Load sample data”.** Open Question 3 is unanswered. **Until OQ3 is answered, default `firstVisitMode=sample` (Hugo `readStored(..., sample)` parity), flag-switchable** — same pattern as euro display until OQ4. The normative fixture is the snapshot `sample` / `sampleProducts` / `sampleReserves` / `sampleSublicenses` objects (Appendix B).
+13. **Sample data remains available via “Load sample data”.** Open Question 3 is unanswered. **Until OQ3 is answered, default `firstVisitMode=sample` (Hugo `readStored(..., sample)` parity), flag-switchable** — the same flag-until-answered pattern the euro display followed before OQ4 was answered (2026-09-01: USD). The normative fixture is the Appendix B `sample` / `sampleProducts` / `sampleReserves` / `sampleSublicenses` objects (Appendix B).
 
 14. **Render with React (no `innerHTML` of imported text).** **Proposed improvement** addressing Hugo XSS risk. `esc()`-style escaping is not enough once custom profile IDs and unmapped lines are interpolated.
 
@@ -931,7 +931,7 @@ Page size in UI: **794px × min-height 1123px** (A4 at 96 CSS px), white, drop s
 
 **Page 1** (preview markup is snapshot-normative; copy contract below is the v1 rebrand)
 
-1. Header: title **Translation Rights Royalty Statement**. Italic teal subtitle **must be** `BISG-aligned translation-rights royalty statement — not a certification` (do **not** port Hugo’s `Example of a BISG-compliant publisher royalty statement`). Right: Statement No., Page 1 of 2.
+1. Header: title **Translation Rights Royalty Statement**. Italic teal subtitle **must be** `BISG-aligned translation-rights royalty statement — not a certification` (do **not** port Hugo’s `Example of a BISG-compliant publisher royalty statement`). Right: Statement No., Page 1 of 2. *(Amended in v2: in Standard mode the title is **Royalty Statement** and the subtitle `BISG-aligned royalty statement — not a certification`; see “v2: Statement type”.)*
 2. Explanatory note box (see copy rules below).
 3. Two-column block **always rendered** (Hugo parity, not conditional): left heading `◎ Licensee`; right heading `▣ Payer (if different from Licensee)`. Empty payer fields still show the column.
 4. Contract and Work Information (two-column `line` list). Advance amount uses `toLocaleString('en-US', {minimumFractionDigits:2})` **without** euro prefix; advance currency on the next line.
@@ -1029,34 +1029,36 @@ Version history lists CSB versions **and** a collapsed “Hugo prototype history
 
 **Parties / work**
 
+*(Amended 2026-09-01: the sample is now a standard US domestic deal — see Appendix B for the normative values. Numeric values are unchanged from the snapshot fixture so all pinned totals below still hold.)*
+
 - Statement No. `RS-2026-0142`; date `15 Mar 2026`; period `01 Jan 2025`–`31 Dec 2025`
-- Prepared by `Maria Köhler, Senior Royalties Manager`
-- Licensee: Nordlicht Verlag GmbH / Nordlicht Belletristik, Friedrichstraße 88, 10117 Berlin, Germany; phone `+49 30 555 018 40`; email `rights@nordlicht-verlag.de`; website `www.nordlicht-verlag.de`
-- Payer: Aurora Media Deutschland GmbH, same street; phone `+49 30 555 018 99`; email `finance@auroramedia.de`; website `www.auroramedia.de`
-- Contract `NV-DE-TR-2024-00981`; licensor `Cedar Lane Rights LLC, c/o Bright Quill Agency`; licensor contract `BQA-US-4471`
+- Prepared by `Dana Whitfield, Senior Royalties Manager`
+- Licensee: Harbor Light Press, Inc. / Harbor Light Fiction, 175 Varick Street, New York, NY 10014, USA; phone `+1 212 555 0184`; email `royalties@harborlightpress.com`; website `www.harborlightpress.com`
+- Payer: Harbor Light Media Group, Inc., same street; phone `+1 212 555 0199`; email `finance@harborlightmedia.com`; website `www.harborlightmedia.com`
+- Contract `HLP-US-2024-00981`; licensor `Cedar Lane Rights LLC, c/o Bright Quill Agency`; licensor contract `BQA-US-4471`
 - Contributor `Amelia Hart (ISNI 0000000123456789)`
-- Titles: *The Long Summer Road* / *Der lange Sommerweg*; language German; territory Germany, Austria, Switzerland, Luxembourg
-- Advance `8000.00` **USD** (statement display still euro)
+- Title: *The Long Summer Road* (licensee title identical — translation-only fields hold sensible kept values so the sample validates at 100 in Translation mode); language English; territory United States and Canada
+- Advance `8000.00` **USD**
 
 **Payment**
 
 - Opening `-2450.00`; reserve withheld `236.40`; released `95.00`; sublicense total `600.00`
-- Co-agent `10`%; tax ID `DE339221908`; exemption `Waived under Germany–US tax treaty; Form W-8BEN-E valid through 31 Dec 2027`; tax withheld `0.00`
-- Pay date `31 Mar 2026`; method `International bank transfer (SWIFT)`; beneficiary `Bright Quill Agency Client Account`; bank `Hudson Trust Bank, New York`; SWIFT `HUTBUS33`; account `Client Account ending 0281`
-- `statementNotes` is the five-line snapshot string (Appendix B)
+- Co-agent `10`%; tax ID `EIN 13-5559821`; exemption `Not applicable — domestic US payment; Form W-9 on file`; tax withheld `0.00`
+- Pay date `31 Mar 2026`; method `ACH transfer (domestic US)`; beneficiary `Bright Quill Agency Client Account`; bank `Hudson Trust Bank, New York`; SWIFT `HUTBUS33`; account `Client Account ending 0281`
+- `statementNotes` is the five-line string (Appendix B)
 
 **Products**
 
 | Form | ISBN | Pub | List | Basis | Rate | Prior | Period | Basis amount | Earnings |
 |---|---|---|---|---|---|---|---|---|---|
-| Hardcover | 978-3-9812345-1-2 | 20 May 2024 | 24.00 | List Price | 8.0 | 960 | 450 | €24.00 per copy | 864.00 |
-| Paperback | 978-3-9812345-2-9 | 15 Mar 2025 | 16.00 | List Price | 7.5 | 0 | 1250 | €16.00 per copy | 1500.00 |
-| E-Book | 978-3-9812345-3-6 | 20 May 2024 | 12.99 | Net Receipts | 25.0 | 1640 | 780 | €7,140.00 total net receipts | 1785.00 |
-| Audiobook Download | 978-3-9812345-4-3 | 01 Jun 2024 | 19.99 | Net Receipts | 25.0 | 410 | 315 | €4,260.00 total net receipts | 1065.00 |
+| Hardcover | 978-1-9812345-1-2 | 20 May 2024 | 24.00 | List Price | 8.0 | 960 | 450 | $24.00 per copy | 864.00 |
+| Paperback | 978-1-9812345-2-9 | 15 Mar 2025 | 16.00 | List Price | 7.5 | 0 | 1250 | $16.00 per copy | 1500.00 |
+| E-Book | 978-1-9812345-3-6 | 20 May 2024 | 12.99 | Net Receipts | 25.0 | 1640 | 780 | $7,140.00 total net receipts | 1785.00 |
+| Audiobook Download | 978-1-9812345-4-3 | 01 Jun 2024 | 19.99 | Net Receipts | 25.0 | 410 | 315 | $4,260.00 total net receipts | 1065.00 |
 
 **Reserves:** Hardcover 10% / 86.40 / 35.00; Paperback 10% / 150.00 / 60.00.
 
-**Sublicense:** Lesering Deutschland GmbH, German book club edition, income 1500.00, share 40, amountDue 600.00.
+**Sublicense:** Meadowbrook Book Club LLC, Book club edition, income 1500.00, share 40, amountDue 600.00.
 
 Pinned **display** totals for this fixture (`money()` / two-decimal contract). `totals()` uses IEEE-754 `Number` arithmetic: Node reproduces `payment === 3222.6000000000004` and `commission === 322.26000000000005`. Tests **must not** use `===` on non-integer totals; use `toFixed(2)` or `roughlyEqual(..., 0.02)`.
 
@@ -1073,13 +1075,13 @@ Pinned **display** totals for this fixture (`money()` / two-decimal contract). `
 
 ## Calculation rules
 
-All money math uses JavaScript `Number` on string fields. Display via `money(v)`:
+All money math uses JavaScript `Number` on string fields. Display via `money(v)` (USD per the OQ4 answer, 2026-09-01; Hugo hardcoded `€`):
 
 ```
-sign + '€' + Math.abs(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+sign + '$' + Math.abs(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
 ```
 
-Negative values render as `-€1,234.56` (**not** `€-1,234.56`).
+Negative values render as `-$1,234.56` (**not** `$-1,234.56`). The importer keeps its own euro formatter for figures quoted from German source statements (`formatBasisCurrency`, `compareImportedBalance`).
 
 Units display: `Number(v||0).toLocaleString('en-US')` (no forced decimals).
 
@@ -1531,7 +1533,7 @@ This is the **single v1 definition of done**. Column A = Hugo parity MUST. Colum
 |---|---|---|---|
 | Privacy / platform | Browser-only; no accounts; statement data never uploaded | No backend, no analytics, no cdnjs; vendored pdf.js; production CSP below; unencrypted origin `localStorage` (OS user account is the confidentiality boundary) | IndexedDB adapter; desktop shell (OQ2) |
 | Catalog / forms | 44 Hugo `FIELD_META` IDs + Hugo-extended fields; groups; three repeaters; empty-vs-zero add-row | — | `priorUnits` in required product checks; SC* badges on repeater keys; empty strings on Add row |
-| Preview / print | Two-page A4; payer column **always** rendered; remit ID template; euro `money()` | Non-certification subtitle (not Hugo’s “BISG-compliant”); React, no `innerHTML` | Opening-balance explainer; sample-vs-real banner switch; debounce typing |
+| Preview / print | Two-page A4; payer column **always** rendered; remit ID template; USD `money()` (OQ4 answered) | Non-certification subtitle (not Hugo’s “BISG-compliant”); React, no `innerHTML` | Opening-balance explainer; sample-vs-real banner switch; debounce typing |
 | Sample / first visit | Load sample clones Appendix B; `firstVisitMode=sample` until OQ3 | JSON write `version: 1.0.0` | Flag to empty-start (OQ3) |
 | Clear all | Wipes **statement keys + showIds only**; profiles survive | — | Confirm dialog |
 | Calc / validation | `totals()`, warnings 0.05, presence score as `validation()` table; tautological net warning may stay silent | Assert totals via `toFixed(2)` / `roughlyEqual`; tests for IEEE floats | Real Vortrag/Auszahlung vs computed closing (PR 13) |
@@ -1821,6 +1823,17 @@ Industry outcome (not a v1 KPI we can own): fewer missing `Con61` / `Con66` / `S
 
 ---
 
+## v2: Statement type (Standard vs Translation)
+
+**Product decision (owner-approved, 2026-08-31).** v2 adds a statement-type toggle in the app bar: `Statement: [Standard | Translation]`. **Translation** is the default and is exactly the v1 behavior. **Standard** produces an ordinary (non-translation) royalty statement.
+
+- **Translation-only field set (broad):** `licenseeTitle` (Con51_LicWorkTitle), `language` (Con56_LangLicWork), `salesTerritory` (Con61_SalesTerr), `advanceCurrency` (Con71_AdvCurr), `coAgentCommissionPercent` (RA9_CoAgentCommPerc). Canonical list: `TRANSLATION_ONLY_KEYS` in `src/core/catalog/applicability.ts`. In Standard mode, `licensorTitle` is displayed as plain **“Title of Work.”**
+- **Non-destructive toggle.** Switching to Standard disables the fields in the forms but keeps their stored values; switching back restores them. No confirm dialog.
+- **Behavior in Standard mode:** the five fields are dropped from the validation check list (score denominator shrinks); review reports them as `Not applicable / not shown` (excluded from category and overall scores) with the recommendation “Not applicable to a standard (non-translation) statement”; the preview hides their lines and the co-agent commission remittance lines; `totals()` forces `commission = 0` even when a value is kept in the field.
+- **Interchange:** `statementType: 'translation' | 'standard'` is a **document-level** JSON field (never a `StatementState` key). Statement JSON writes `version: '1.1.0'`; readers accept `0.9` and all CSB `1.x`, and a missing/invalid `statementType` reads as `'translation'`. Applying a statement-JSON import adopts the file’s type; text/PDF/CSV imports leave the mode alone. **Statement CSV shape is unchanged** (Hugo byte parity; JSON is the fidelity format). Review JSON writes `reviewFormatVersion: '1.2'` and includes `statementType`.
+- **Persistence:** `csb.v1.statementType` rides on `Workspace` beside `showIds`; it is a STATEMENT_KEY (Clear all resets to Translation). Load sample and a sample first visit select **Standard** (since 2026-09-01 Appendix B is a standard US domestic deal); an empty start remains Translation.
+- The 44-key `FIELD_META` catalog, the four form groups, and the sample fixture are unchanged.
+
 ## Open Questions
 
 These are **true product decisions**. Do not silently invent answers in implementation PRs.
@@ -1829,9 +1842,9 @@ These are **true product decisions**. Do not silently invent answers in implemen
 
 2. **Stay strictly browser-only, or add optional local-file / desktop packaging later?** v1 is browser-only; this question is the post-v1 platform bet (PWA vs Electron/Tauri vs “Save to disk as the only persistence”).
 
-3. **Empty-start vs sample-data-on-first-load?** Hugo loads Nordlicht on first visit. That is excellent for demos and dangerous for privacy (users edit “real” numbers on top of fictional parties). **Until this is answered, ship `firstVisitMode=sample` (Hugo parity), flag-switchable** — same pattern as euro display until OQ4. Product still needs to pick the long-term default.
+3. **Empty-start vs sample-data-on-first-load?** Hugo loads Nordlicht on first visit. That is excellent for demos and dangerous for privacy (users edit “real” numbers on top of fictional parties). **Until this is answered, ship `firstVisitMode=sample` (Hugo parity), flag-switchable** — the same flag-until-answered pattern the euro display followed before OQ4 was answered (2026-09-01: USD). Product still needs to pick the long-term default.
 
-4. **Statement currency + FX in v1, or stay euro-display like Hugo?** Advance currency already exists. A first-class `statementCurrency` (ISO 4217) is the minimum change; FX rates are a larger accounting decision. Default until answered: **euro display, no FX**.
+4. **Statement currency + FX in v1, or stay euro-display like Hugo?** Advance currency already exists. A first-class `statementCurrency` (ISO 4217) is the minimum change; FX rates are a larger accounting decision. ~~Default until answered: **euro display, no FX**.~~ **Answered 2026-09-01 (owner): statement currency is USD, no FX.** `money()` renders `$`; the importer keeps its euro formatter for figures quoted from German source statements. A first-class `statementCurrency` field remains future work.
 
 5. **Relationship to BISG.** Independent tool that implements the standard vs closer collaboration (review, hosting, trademark). Do not put the BISG logo on the app bar without a written answer.
 
@@ -2051,32 +2064,34 @@ Not in list (v1 unmappable unless labeled improvement): `statementNo`, `prepared
 
 Clone these objects. Do not reconstruct from F11.
 
+*(Amended 2026-09-01: replaced the snapshot's German translation deal with a standard US domestic deal — same numeric values, so every pinned total is unchanged. The original snapshot objects survive in the Hugo provenance fixtures, `test/fixtures/hugo/`. Loading the sample selects Standard mode; the translation-only fields hold kept values so the sample also validates at 100 in Translation mode.)*
+
 ```js
 const sample = {
   statementNo: 'RS-2026-0142',
   statementDate: '15 Mar 2026',
   periodStart: '01 Jan 2025',
   periodEnd: '31 Dec 2025',
-  preparedBy: 'Maria Köhler, Senior Royalties Manager',
-  licenseeName: 'Nordlicht Verlag GmbH',
-  licenseeImprint: 'Nordlicht Belletristik',
-  licenseeAddress: 'Friedrichstraße 88, 10117 Berlin, Germany',
-  licenseePhone: '+49 30 555 018 40',
-  licenseeEmail: 'rights@nordlicht-verlag.de',
-  licenseeWebsite: 'www.nordlicht-verlag.de',
-  payerName: 'Aurora Media Deutschland GmbH',
-  payerAddress: 'Friedrichstraße 88, 10117 Berlin, Germany',
-  payerPhone: '+49 30 555 018 99',
-  payerEmail: 'finance@auroramedia.de',
-  payerWebsite: 'www.auroramedia.de',
-  licenseeContractId: 'NV-DE-TR-2024-00981',
+  preparedBy: 'Dana Whitfield, Senior Royalties Manager',
+  licenseeName: 'Harbor Light Press, Inc.',
+  licenseeImprint: 'Harbor Light Fiction',
+  licenseeAddress: '175 Varick Street, New York, NY 10014, USA',
+  licenseePhone: '+1 212 555 0184',
+  licenseeEmail: 'royalties@harborlightpress.com',
+  licenseeWebsite: 'www.harborlightpress.com',
+  payerName: 'Harbor Light Media Group, Inc.',
+  payerAddress: '175 Varick Street, New York, NY 10014, USA',
+  payerPhone: '+1 212 555 0199',
+  payerEmail: 'finance@harborlightmedia.com',
+  payerWebsite: 'www.harborlightmedia.com',
+  licenseeContractId: 'HLP-US-2024-00981',
   licensorName: 'Cedar Lane Rights LLC, c/o Bright Quill Agency',
   licensorContractId: 'BQA-US-4471',
   contributorNames: 'Amelia Hart (ISNI 0000000123456789)',
   licensorTitle: 'The Long Summer Road',
-  licenseeTitle: 'Der lange Sommerweg',
-  language: 'German',
-  salesTerritory: 'Germany, Austria, Switzerland, Luxembourg',
+  licenseeTitle: 'The Long Summer Road',
+  language: 'English',
+  salesTerritory: 'United States and Canada',
   advanceAmount: '8000.00',
   advanceCurrency: 'USD',
   openingBalance: '-2450.00',
@@ -2084,23 +2099,23 @@ const sample = {
   reserveReleased: '95.00',
   sublicenseIncomeTotal: '600.00',
   coAgentCommissionPercent: '10',
-  taxId: 'DE339221908',
-  taxExemptionStatus: 'Waived under Germany–US tax treaty; Form W-8BEN-E valid through 31 Dec 2027',
+  taxId: 'EIN 13-5559821',
+  taxExemptionStatus: 'Not applicable — domestic US payment; Form W-9 on file',
   taxWithheld: '0.00',
   scheduledPaymentDate: '31 Mar 2026',
-  paymentMethod: 'International bank transfer (SWIFT)',
+  paymentMethod: 'ACH transfer (domestic US)',
   beneficiary: 'Bright Quill Agency Client Account',
   beneficiaryBank: 'Hudson Trust Bank, New York',
   swiftBic: 'HUTBUS33',
   accountReference: 'Client Account ending 0281',
-  statementNotes: 'This example is intended as a best-practice template for publisher royalty statements.\nAll BISG core, statement-specific, conditional, and remittance fields are shown.\nAdvance Amount is stated separately from statement currency.\nCo-agent commission is deducted from Payment Due before remittance.\nNo foreign tax was withheld for this payment.'
+  statementNotes: 'This example is intended as a best-practice template for publisher royalty statements.\nAll BISG core, statement-specific, conditional, and remittance fields are shown.\nStatement currency is US dollars; no currency conversion applies.\nSublicense income reflects the licensor share of the book club edition.\nNo tax was withheld for this payment.'
 };
 
 const sampleProducts = [
-  { form: 'Hardcover', isbn: '978-3-9812345-1-2', pubDate: '20 May 2024', listPrice: '24.00', basis: 'List Price', rate: '8.0', priorUnits: '960', periodUnits: '450', basisAmount: '€24.00 per copy', earnings: '864.00' },
-  { form: 'Paperback', isbn: '978-3-9812345-2-9', pubDate: '15 Mar 2025', listPrice: '16.00', basis: 'List Price', rate: '7.5', priorUnits: '0', periodUnits: '1250', basisAmount: '€16.00 per copy', earnings: '1500.00' },
-  { form: 'E-Book', isbn: '978-3-9812345-3-6', pubDate: '20 May 2024', listPrice: '12.99', basis: 'Net Receipts', rate: '25.0', priorUnits: '1640', periodUnits: '780', basisAmount: '€7,140.00 total net receipts', earnings: '1785.00' },
-  { form: 'Audiobook Download', isbn: '978-3-9812345-4-3', pubDate: '01 Jun 2024', listPrice: '19.99', basis: 'Net Receipts', rate: '25.0', priorUnits: '410', periodUnits: '315', basisAmount: '€4,260.00 total net receipts', earnings: '1065.00' }
+  { form: 'Hardcover', isbn: '978-1-9812345-1-2', pubDate: '20 May 2024', listPrice: '24.00', basis: 'List Price', rate: '8.0', priorUnits: '960', periodUnits: '450', basisAmount: '$24.00 per copy', earnings: '864.00' },
+  { form: 'Paperback', isbn: '978-1-9812345-2-9', pubDate: '15 Mar 2025', listPrice: '16.00', basis: 'List Price', rate: '7.5', priorUnits: '0', periodUnits: '1250', basisAmount: '$16.00 per copy', earnings: '1500.00' },
+  { form: 'E-Book', isbn: '978-1-9812345-3-6', pubDate: '20 May 2024', listPrice: '12.99', basis: 'Net Receipts', rate: '25.0', priorUnits: '1640', periodUnits: '780', basisAmount: '$7,140.00 total net receipts', earnings: '1785.00' },
+  { form: 'Audiobook Download', isbn: '978-1-9812345-4-3', pubDate: '01 Jun 2024', listPrice: '19.99', basis: 'Net Receipts', rate: '25.0', priorUnits: '410', periodUnits: '315', basisAmount: '$4,260.00 total net receipts', earnings: '1065.00' }
 ];
 
 const sampleReserves = [
@@ -2109,7 +2124,7 @@ const sampleReserves = [
 ];
 
 const sampleSublicenses = [
-  { name: 'Lesering Deutschland GmbH', type: 'German book club edition', income: '1500.00', share: '40', amountDue: '600.00' }
+  { name: 'Meadowbrook Book Club LLC', type: 'Book club edition', income: '1500.00', share: '40', amountDue: '600.00' }
 ];
 ```
 

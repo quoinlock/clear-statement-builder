@@ -25,7 +25,7 @@ function detectionFor(target: string, value: string, source: string): Detection 
   };
 }
 
-/** Statement JSON (Hugo 0.9 or CSB 1.0.x) as a reviewable DetectionResult. */
+/** Statement JSON (Hugo 0.9 or CSB 1.x) as a reviewable DetectionResult. */
 export function jsonToDetectionResult(obj: unknown): DetectionResult {
   const doc = parseHugoOrCsbJson(obj);
   const detections = Object.entries(doc.state)
@@ -34,6 +34,7 @@ export function jsonToDetectionResult(obj: unknown): DetectionResult {
   return {
     sourceType: 'Hugo JSON export',
     profile: 'structured',
+    statementType: doc.statementType,
     state: doc.state,
     products: doc.products,
     reserves: doc.reserves,

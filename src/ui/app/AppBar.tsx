@@ -5,18 +5,24 @@ import {
   serializeStatementCsv,
   statementFilename,
 } from '../../core/schema/index.ts';
-import type { StatementDocument } from '../../core/types.ts';
+import type { StatementDocument, StatementType } from '../../core/types.ts';
 import { useAppStore } from './store.tsx';
 import { downloadFile } from './download.ts';
 
-export const APP_VERSION = 'v1.0.0';
+export const APP_VERSION = 'v2.0.0';
+
+const STATEMENT_TYPES: [type: StatementType, label: string][] = [
+  ['standard', 'Standard'],
+  ['translation', 'Translation'],
+];
 
 function currentDocument(ws: ReturnType<typeof useAppStore>['workspace']): StatementDocument {
   return {
-    version: '1.0.0',
+    version: '1.1.0',
     generatedAt: new Date().toISOString(),
     product: 'clear-statement-builder',
     priorArt: 'hugo-prototype-v1.7',
+    statementType: ws.statementType,
     state: ws.state,
     products: ws.products,
     reserves: ws.reserves,
@@ -31,8 +37,8 @@ export function AppBar() {
   function exportJson() {
     const doc = currentDocument(workspace);
     const extras = {
-      totals: computeTotals(doc.state, doc.products),
-      validation: validation(doc.state, doc.products, doc.sublicenses),
+      totals: computeTotals(doc.state, doc.products, workspace.statementType),
+      validation: validation(doc.state, doc.products, doc.sublicenses, workspace.statementType),
       calculationWarnings: calculationWarnings(doc.state, doc.products, doc.reserves, doc.sublicenses),
     };
     downloadFile(
@@ -52,6 +58,20 @@ export function AppBar() {
       <div className="appbar-inner">
         <h1 className="app-title">Clear Statement Builder</h1>
         <span className="version-badge">{APP_VERSION}</span>
+        <div className="seg-toggle" role="group" aria-label="Statement type">
+          <span className="seg-label">Statement:</span>
+          {STATEMENT_TYPES.map(([type, label]) => (
+            <button
+              key={type}
+              type="button"
+              className={`seg-btn${workspace.statementType === type ? ' active' : ''}`}
+              aria-pressed={workspace.statementType === type}
+              onClick={() => store.setStatementType(type)}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
         <div className="appbar-buttons">
           <button
             type="button"
@@ -89,8 +109,8 @@ export function AppBar() {
           </button>
         </div>
         <p className="app-subtitle">
-          BISG-aligned translation-rights royalty statements — validation, import profiles, Ullstein contract
-          splitting, review reports, and exports. Prior art: Hugo prototype.
+          BISG-aligned royalty statements (standard or translation-rights) — validation, import profiles,
+          Ullstein contract splitting, review reports, and exports. Prior art: Hugo prototype.
         </p>
       </div>
     </header>

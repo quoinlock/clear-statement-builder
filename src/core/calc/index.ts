@@ -1,16 +1,18 @@
 // Calculation core, parity with Hugo v1.7 (PRD "Calculation rules"). The
-// formulas are behavior-frozen: do not "fix" the euro hardcoding, the
-// state-sourced reserve/sublicense totals, or the tautological net check
-// (warning #5) here — those are governed by PRD Open Questions / PR 13.
-import type { ProductRow, ReserveRow, StatementState, SublicenseRow, Totals } from '../types.ts';
+// formulas are behavior-frozen: do not "fix" the state-sourced
+// reserve/sublicense totals or the tautological net check (warning #5)
+// here — those are governed by PRD Open Questions / PR 13. Statement
+// currency is USD per the OQ4 answer (2026-09-01); the importer keeps its
+// own euro formatter for German source statements.
+import type { ProductRow, ReserveRow, StatementState, StatementType, SublicenseRow, Totals } from '../types.ts';
 
-/** Euro-hardcoded money display; negatives render as -€1,234.56 (parity, OQ4). */
+/** USD money display (OQ4: statement currency USD, no FX); negatives render as -$1,234.56. */
 export function money(v: unknown): string {
   const n = Number(v || 0);
   const sign = n < 0 ? '-' : '';
   return (
     sign +
-    '€' +
+    '$' +
     Math.abs(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
   );
 }
@@ -43,9 +45,15 @@ export function ltdUnits(p: ProductRow): number {
 /**
  * Statement totals. Withheld/released/sublicense figures come from the
  * payment-section STATE fields, not from row sums (parity). Negative payment
- * is not clamped; commission applies only to positive payment.
+ * is not clamped; commission applies only to positive payment. In v2
+ * 'standard' mode co-agent commission is not applicable, so any kept value
+ * in that field is ignored (commission = 0).
  */
-export function totals(state: StatementState, products: ProductRow[]): Totals {
+export function totals(
+  state: StatementState,
+  products: ProductRow[],
+  statementType: StatementType = 'translation',
+): Totals {
   const totalRoyalty = products.reduce((s, p) => s + Number(p.earnings || 0), 0);
   const opening = Number(state.openingBalance || 0);
   const withheld = Number(state.reserveWithheld || 0);
@@ -53,7 +61,8 @@ export function totals(state: StatementState, products: ProductRow[]): Totals {
   const sub = Number(state.sublicenseIncomeTotal || 0);
   const closing = totalRoyalty - withheld + released + sub;
   const payment = opening + closing;
-  const commission = payment > 0 ? payment * (Number(state.coAgentCommissionPercent || 0) / 100) : 0;
+  const commissionPct = statementType === 'standard' ? 0 : Number(state.coAgentCommissionPercent || 0);
+  const commission = payment > 0 ? payment * (commissionPct / 100) : 0;
   const net = payment - commission - Number(state.taxWithheld || 0);
   return { totalRoyalty, opening, withheld, released, sub, closing, payment, commission, net };
 }

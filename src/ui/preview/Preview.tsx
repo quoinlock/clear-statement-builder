@@ -6,8 +6,10 @@
 import { useMemo, type ReactNode } from 'react';
 import { ltdUnits, money, num, totals } from '../../core/calc/index.ts';
 import { bisgId } from '../../core/catalog/fieldMeta.ts';
+import { statementSubtitle, statementTitle } from '../../core/catalog/applicability.ts';
 import { sample } from '../../core/sample/index.ts';
 import { useAppStore } from '../app/store.tsx';
+import type { StatementType } from '../../core/types.ts';
 
 function Fid({ k, on }: { k: string; on: boolean }) {
   if (!on) return null;
@@ -36,12 +38,12 @@ function Sect({ icon, title }: { icon: string; title: string }) {
   );
 }
 
-function PageHeader({ n, statementNo }: { n: number; statementNo: string }) {
+function PageHeader({ n, statementNo, type }: { n: number; statementNo: string; type: StatementType }) {
   return (
     <header className="doc-header">
       <div>
-        <h1>Translation Rights Royalty Statement</h1>
-        <p className="doc-subtitle">BISG-aligned translation-rights royalty statement — not a certification</p>
+        <h1>{statementTitle(type)}</h1>
+        <p className="doc-subtitle">{statementSubtitle(type)}</p>
       </div>
       <div className="doc-meta">
         <div>Statement No. {statementNo}</div>
@@ -62,14 +64,15 @@ function PageFooter({ n, preparedBy, licenseeName }: { n: number; preparedBy: st
 
 export function Preview() {
   const { workspace } = useAppStore();
-  const { state, products, reserves, sublicenses, showIds } = workspace;
-  const t = totals(state, products);
+  const { state, products, reserves, sublicenses, showIds, statementType } = workspace;
+  const translation = statementType === 'translation';
+  const t = totals(state, products, statementType);
   const isSampleData = useMemo(() => JSON.stringify(state) === JSON.stringify(sample), [state]);
 
   return (
     <main className="preview-wrap" aria-label="Statement preview">
       <div className="page">
-        <PageHeader n={1} statementNo={state.statementNo} />
+        <PageHeader n={1} statementNo={state.statementNo} type={statementType} />
         <section className="notes">
           <b>Explanatory note:</b>{' '}
           {isSampleData
@@ -107,19 +110,32 @@ export function Preview() {
               <Line label="Licensor Name:" value={state.licensorName} k="licensorName" on={showIds} />
               <Line label="Licensor Contract ID:" value={state.licensorContractId} k="licensorContractId" on={showIds} />
               <Line label="Contributor Name(s):" value={state.contributorNames} k="contributorNames" on={showIds} />
-              <Line label="Licensor Title of Work:" value={<em>{state.licensorTitle}</em>} k="licensorTitle" on={showIds} />
-              <Line label="Licensee Title of Work:" value={<em>{state.licenseeTitle}</em>} k="licenseeTitle" on={showIds} />
+              <Line
+                label={translation ? 'Licensor Title of Work:' : 'Title of Work:'}
+                value={<em>{state.licensorTitle}</em>}
+                k="licensorTitle"
+                on={showIds}
+              />
+              {translation ? (
+                <Line label="Licensee Title of Work:" value={<em>{state.licenseeTitle}</em>} k="licenseeTitle" on={showIds} />
+              ) : null}
             </div>
             <div>
-              <Line label="Language:" value={state.language} k="language" on={showIds} />
-              <Line label="Sales Territory:" value={state.salesTerritory} k="salesTerritory" on={showIds} />
+              {translation ? (
+                <>
+                  <Line label="Language:" value={state.language} k="language" on={showIds} />
+                  <Line label="Sales Territory:" value={state.salesTerritory} k="salesTerritory" on={showIds} />
+                </>
+              ) : null}
               <Line
                 label="Advance Amount:"
                 value={Number(state.advanceAmount || 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}
                 k="advanceAmount"
                 on={showIds}
               />
-              <Line label="Advance Currency:" value={state.advanceCurrency} k="advanceCurrency" on={showIds} />
+              {translation ? (
+                <Line label="Advance Currency:" value={state.advanceCurrency} k="advanceCurrency" on={showIds} />
+              ) : null}
               <Line label="Statement Date:" value={state.statementDate} k="statementDate" on={showIds} />
               <Line label="Period Start Date:" value={state.periodStart} k="periodStart" on={showIds} />
               <Line label="Period End Date:" value={state.periodEnd} k="periodEnd" on={showIds} />
@@ -209,7 +225,7 @@ export function Preview() {
         <PageFooter n={1} preparedBy={state.preparedBy} licenseeName={state.licenseeName} />
       </div>
       <div className="page">
-        <PageHeader n={2} statementNo={state.statementNo} />
+        <PageHeader n={2} statementNo={state.statementNo} type={statementType} />
         <section className="block pad">
           <Sect icon="⚖" title="Balance Reconciliation" />
           <table className="tbl smalltbl narrow">
@@ -341,8 +357,12 @@ export function Preview() {
                 k="remitId"
                 on={showIds}
               />
-              <Line label="Co-Agent Commission %:" value={`${state.coAgentCommissionPercent}%`} k="coAgentCommissionPercent" on={showIds} />
-              <Line label="Co-Agent Commission:" value={money(-t.commission)} k="coAgentCommissionPercent" on={showIds} />
+              {translation ? (
+                <>
+                  <Line label="Co-Agent Commission %:" value={`${state.coAgentCommissionPercent}%`} k="coAgentCommissionPercent" on={showIds} />
+                  <Line label="Co-Agent Commission:" value={money(-t.commission)} k="coAgentCommissionPercent" on={showIds} />
+                </>
+              ) : null}
               <Line label="Licensee VAT / Tax ID:" value={state.taxId} k="taxId" on={showIds} />
               <Line label="Tax Exemption Status:" value={state.taxExemptionStatus} k="taxExemptionStatus" on={showIds} />
               <Line label="Tax Withheld Amount:" value={money(state.taxWithheld)} k="taxWithheld" on={showIds} />

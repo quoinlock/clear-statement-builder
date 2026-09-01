@@ -2,6 +2,8 @@
 // Keys match Hugo v1.7 state/rows so 0.9 JSON round-trips.
 
 export type BisgCategory = 'Required' | 'Recommended' | 'Conditional' | 'Remittance';
+/** v2: 'translation' is the v1 behavior and the default everywhere a type is absent. */
+export type StatementType = 'translation' | 'standard';
 export type Confidence = 'High' | 'Medium' | 'Low';
 export type ReviewStatus =
   | 'Detected'
@@ -96,10 +98,12 @@ export interface Totals {
 
 /** In-memory working document. `showIds` is UI/persistence only — not written to statement JSON. */
 export interface StatementDocument {
-  version: '1.0.0';
+  version: '1.1.0';
   generatedAt: string; // ISO-8601
   product?: 'clear-statement-builder';
   priorArt?: 'hugo-prototype-v1.7';
+  /** v2 document-level field; absent (Hugo 0.9 / CSB 1.0.x reads) means 'translation'. */
+  statementType?: StatementType;
   state: StatementState;
   products: ProductRow[];
   reserves: ReserveRow[];
@@ -142,6 +146,8 @@ export interface ContractStatement {
 export interface DetectionResult {
   sourceType: string;
   profile: string;
+  /** Set by statement JSON imports (Hugo/1.0.x read as 'translation'); applying adopts it. */
+  statementType?: StatementType;
   state: Partial<StatementState>;
   products: ProductRow[];
   reserves: ReserveRow[];

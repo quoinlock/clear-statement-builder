@@ -68,7 +68,7 @@ describe('AC-PER-1: reload restores the last saved document', () => {
 
   it('corrupt JSON in one key falls back independently (Hugo readStored parity)', () => {
     const storage = new MemoryStorage();
-    saveWorkspace(storage, { ...cloneSampleDocument(), showIds: false });
+    saveWorkspace(storage, { ...cloneSampleDocument(), showIds: false, statementType: 'translation' as const });
     storage.setItem(KEYS.products, '{not json');
     const ws = loadWorkspace(storage);
     expect(ws.state).toEqual(sample); // intact key kept
@@ -79,7 +79,7 @@ describe('AC-PER-1: reload restores the last saved document', () => {
 describe('AC-PER-4/5: Clear all key partition', () => {
   it('removes statement keys only; sample reload works after', () => {
     const storage = new MemoryStorage();
-    saveWorkspace(storage, { ...cloneSampleDocument(), showIds: true });
+    saveWorkspace(storage, { ...cloneSampleDocument(), showIds: true, statementType: 'translation' as const });
     const cleared = clearStatementData(storage);
     expect(storage.getItem(KEYS.state)).toBeNull();
     expect(storage.getItem(KEYS.showIds)).toBeNull();
@@ -123,12 +123,34 @@ describe('Hugo key migration (opt-in banner)', () => {
   });
 });
 
+describe('v2 statementType persistence', () => {
+  it('sample first visit is standard, empty start is translation, and Clear all resets', () => {
+    const storage = new MemoryStorage();
+    // First visit loads the Appendix B sample, a standard US deal (v2).
+    expect(loadWorkspace(storage).statementType).toBe('standard');
+    const empty = new MemoryStorage();
+    setFirstVisitMode(empty, 'empty');
+    expect(loadWorkspace(empty).statementType).toBe('translation');
+    saveWorkspace(storage, { ...cloneSampleDocument(), showIds: false, statementType: 'translation' });
+    expect(loadWorkspace(storage).statementType).toBe('translation');
+    const cleared = clearStatementData(storage);
+    expect(cleared.statementType).toBe('translation');
+    expect(storage.getItem(KEYS.statementType)).toBeNull();
+  });
+
+  it('coerces an invalid stored value to translation', () => {
+    const storage = new MemoryStorage();
+    storage.setItem(KEYS.statementType, JSON.stringify('bogus'));
+    expect(loadWorkspace(storage).statementType).toBe('translation');
+  });
+});
+
 describe('quota failures surface as PersistenceError', () => {
   it('wraps setItem throws', () => {
     const storage = new MemoryStorage();
     storage.setItem = () => {
       throw new DOMException('quota', 'QuotaExceededError');
     };
-    expect(() => saveWorkspace(storage, { ...cloneSampleDocument(), showIds: false })).toThrow(PersistenceError);
+    expect(() => saveWorkspace(storage, { ...cloneSampleDocument(), showIds: false, statementType: 'translation' as const })).toThrow(PersistenceError);
   });
 });

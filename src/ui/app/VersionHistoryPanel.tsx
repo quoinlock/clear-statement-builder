@@ -23,8 +23,21 @@ export function VersionHistoryPanel() {
       <p className="panel-sub">Clear Statement Builder releases, with the Hugo prototype lineage below.</p>
       <div className="issue good">
         <div className="issue-head">
-          <span>v1.0.0</span>
+          <span>v2.0.0</span>
           <span className="badge required">Current</span>
+        </div>
+        <p>
+          Statement-type toggle: Standard vs Translation statements. Standard mode disables the
+          translation-only fields (Language, Licensee Title, Sales Territory, Advance Currency, Co-Agent
+          Commission — values are kept), retitles the preview, excludes those fields from validation and
+          review scoring, and records the type in JSON exports (version 1.1.0; 1.0.x and Hugo 0.9 still
+          readable). Statement currency is now USD, and the sample is a standard US domestic deal (Harbor
+          Light Press) with Hardcover, Paperback, E-Book, and Audiobook product forms.
+        </p>
+      </div>
+      <div className="issue">
+        <div className="issue-head">
+          <span>v1.0.0</span>
         </div>
         <p>
           Clean-room TypeScript reimplementation of Hugo v1.7: tested calculation/validation/review core,

@@ -28,7 +28,7 @@ describe('AC-REV-1: sample overall score', () => {
 
   it('carries the review format version, product marker, and disclaimer', () => {
     const doc = reviewData(cloneSampleDocument());
-    expect(doc.reviewFormatVersion).toBe('1.1');
+    expect(doc.reviewFormatVersion).toBe('1.2');
     expect(doc.product).toBe('clear-statement-builder');
     expect(doc.disclaimer).toBe(REVIEW_DISCLAIMER);
     expect(doc.topRecommendations.length).toBeLessThanOrEqual(7);

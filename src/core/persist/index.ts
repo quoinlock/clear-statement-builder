@@ -3,12 +3,14 @@
 // Key layout per PRD "In-memory + persistence": statement keys are cleared
 // by Clear all; profile keys deliberately survive it.
 import { emptyProductRow, emptyReserveRow, emptyState, emptySublicenseRow } from '../catalog/rows.ts';
+import { coerceStatementType } from '../catalog/applicability.ts';
 import { cloneSampleDocument } from '../sample/index.ts';
 import type {
   CustomImportProfile,
   ProductRow,
   ReserveRow,
   StatementState,
+  StatementType,
   SublicenseRow,
 } from '../types.ts';
 
@@ -44,13 +46,21 @@ export const KEYS = {
   reserves: 'csb.v1.reserves',
   sublicenses: 'csb.v1.sublicenses',
   showIds: 'csb.v1.showIds',
+  statementType: 'csb.v1.statementType',
   customImportProfiles: 'csb.v1.customImportProfiles',
   customProfileDraft: 'csb.v1.customProfileDraft',
   firstVisitMode: 'csb.v1.firstVisitMode',
 } as const;
 
-/** Cleared by Clear all (statement data + the showIds toggle). */
-export const STATEMENT_KEYS = [KEYS.state, KEYS.products, KEYS.reserves, KEYS.sublicenses, KEYS.showIds] as const;
+/** Cleared by Clear all (statement data + the showIds/statementType toggles). */
+export const STATEMENT_KEYS = [
+  KEYS.state,
+  KEYS.products,
+  KEYS.reserves,
+  KEYS.sublicenses,
+  KEYS.showIds,
+  KEYS.statementType,
+] as const;
 
 /** NOT cleared by Clear all. */
 export const PROFILE_KEYS = [KEYS.customImportProfiles, KEYS.customProfileDraft] as const;
@@ -72,6 +82,7 @@ export interface Workspace {
   reserves: ReserveRow[];
   sublicenses: SublicenseRow[];
   showIds: boolean;
+  statementType: StatementType;
 }
 
 function readJson<T>(storage: StoragePort, key: string): T | undefined {
@@ -113,6 +124,7 @@ function emptyWorkspace(): Workspace {
     reserves: [emptyReserveRow()],
     sublicenses: [emptySublicenseRow()],
     showIds: false,
+    statementType: 'translation',
   };
 }
 
@@ -122,13 +134,22 @@ function emptyWorkspace(): Workspace {
  * starts blank. Each key falls back independently, mirroring Hugo readStored.
  */
 export function loadWorkspace(storage: StoragePort): Workspace {
-  const fallback = firstVisitMode(storage) === 'sample' ? { ...cloneSampleDocument(), showIds: false } : emptyWorkspace();
+  // The Appendix B sample is a standard US domestic deal (v2), so a sample
+  // first visit starts in standard mode; an empty start stays translation.
+  const fallback =
+    firstVisitMode(storage) === 'sample'
+      ? { ...cloneSampleDocument(), showIds: false, statementType: 'standard' as StatementType }
+      : emptyWorkspace();
   return {
     state: readJson<StatementState>(storage, KEYS.state) ?? fallback.state,
     products: readJson<ProductRow[]>(storage, KEYS.products) ?? fallback.products,
     reserves: readJson<ReserveRow[]>(storage, KEYS.reserves) ?? fallback.reserves,
     sublicenses: readJson<SublicenseRow[]>(storage, KEYS.sublicenses) ?? fallback.sublicenses,
     showIds: readJson<boolean>(storage, KEYS.showIds) ?? fallback.showIds,
+    statementType:
+      readJson<string>(storage, KEYS.statementType) !== undefined
+        ? coerceStatementType(readJson<string>(storage, KEYS.statementType))
+        : fallback.statementType,
   };
 }
 
@@ -138,6 +159,7 @@ export function saveWorkspace(storage: StoragePort, ws: Workspace): void {
   writeJson(storage, KEYS.reserves, ws.reserves);
   writeJson(storage, KEYS.sublicenses, ws.sublicenses);
   writeJson(storage, KEYS.showIds, ws.showIds);
+  writeJson(storage, KEYS.statementType, ws.statementType);
 }
 
 /** Clear all: removes statement keys only; custom profiles and draft survive. */

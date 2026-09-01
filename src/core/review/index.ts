@@ -1,9 +1,11 @@
 // Standards-completeness review, parity with Hugo v1.7 (reviewRows,
 // categoryScores, reviewData). Product rows ignore import confidence
-// (parity). The JSON payload uses reviewFormatVersion '1.1' plus a `product`
-// marker per the PRD file-interchange spec; Hugo wrote `version: '1.1'` and
-// readers must treat that as review format, not statement schema (PR 5).
+// (parity). The JSON payload uses reviewFormatVersion '1.2' (v2 adds
+// statementType; '1.1' was the v1 shape) plus a `product` marker per the PRD
+// file-interchange spec; Hugo wrote `version: '1.1'` and readers must treat
+// that as review format, not statement schema (PR 5).
 import { fieldMeta } from '../catalog/fieldMeta.ts';
+import { TRANSLATION_ONLY_KEYS } from '../catalog/applicability.ts';
 import { calculationWarnings, notBlank, totals, type CalculationWarning } from '../calc/index.ts';
 import { validation } from '../validation/index.ts';
 import type {
@@ -13,6 +15,7 @@ import type {
   ReserveRow,
   ReviewStatus,
   StatementState,
+  StatementType,
   SublicenseRow,
   Totals,
 } from '../types.ts';
@@ -49,11 +52,12 @@ export interface ReviewRecommendation {
 }
 
 export interface ReviewDocument {
-  reviewFormatVersion: '1.1';
+  reviewFormatVersion: '1.2';
   product: 'clear-statement-builder';
   generatedAt: string;
   overallScore: number;
   profile: string;
+  statementType: StatementType;
   statement: Pick<
     StatementState,
     'statementNo' | 'licenseeContractId' | 'licensorTitle' | 'licenseeTitle' | 'periodStart' | 'periodEnd'
@@ -87,7 +91,7 @@ export const REVIEW_FIELD_DETAILS: Record<string, FieldDetail> = {
   licensorTitle: ['Work information', 'High', 'Identifies the original licensed work.', 'Add the original title as published by the licensor.'],
   licenseeTitle: ['Work information', 'High', 'Identifies the translated/local edition.', 'Add the local title as published by the licensee.'],
   language: ['Work information', 'High', 'Shows the language covered by the licensed edition.', 'Add the language of the licensee work.'],
-  salesTerritory: ['Contract information', 'High', 'Clarifies the market or territory in which sales occurred.', 'Add sales territory or market such as Germany, DACH, or German-language world.'],
+  salesTerritory: ['Contract information', 'High', 'Clarifies the market or territory in which sales occurred.', 'Add sales territory or market such as United States and Canada, North America, or World English.'],
   advanceAmount: ['Contract economics', 'High', 'Explains what royalties are recouping against.', 'Show the advance/minimum guarantee amount paid to date.'],
   advanceCurrency: ['Contract economics', 'High', 'Clarifies the currency of the advance.', 'Add the advance currency, especially if different from statement currency.'],
   statementDate: ['Statement period', 'High', 'Shows when the statement was generated.', 'Add the statement date.'],
@@ -161,11 +165,23 @@ export interface ReviewInput {
   detections?: Detection[];
   profile?: string;
   generatedAt?: string;
+  /** v2: absent means 'translation' (v1 behavior). */
+  statementType?: StatementType;
 }
+
+/** Report labels for the fields excluded in standard mode (v2). */
+const TRANSLATION_ONLY_LABELS: Record<(typeof TRANSLATION_ONLY_KEYS)[number], string> = {
+  licenseeTitle: 'Licensee title',
+  language: 'Language',
+  salesTerritory: 'Sales territory',
+  advanceCurrency: 'Advance currency',
+  coAgentCommissionPercent: 'Co-agent commission percent',
+};
 
 export function reviewRows(input: ReviewInput): ReviewRow[] {
   const { state, products, sublicenses, detections } = input;
-  const v = validation(state, products, sublicenses);
+  const statementType = input.statementType ?? 'translation';
+  const v = validation(state, products, sublicenses, statementType);
   const rows: ReviewRow[] = v.checks.map(c => {
     const meta = fieldMeta(c.key) ?? ['', ''];
     const detail = REVIEW_FIELD_DETAILS[c.key] ?? FALLBACK_DETAIL(c.cat);
@@ -184,6 +200,27 @@ export function reviewRows(input: ReviewInput): ReviewRow[] {
       confidence: importConfidenceFor(c.key, detections) || '—',
     };
   });
+  if (statementType === 'standard') {
+    // v2: validation dropped these checks; the report still names them so a
+    // reader sees why they are absent. N/A rows are excluded from scoring.
+    for (const key of TRANSLATION_ONLY_KEYS) {
+      const meta = fieldMeta(key) ?? ['', ''];
+      const detail = REVIEW_FIELD_DETAILS[key] ?? FALLBACK_DETAIL('Required');
+      rows.push({
+        label: TRANSLATION_ONLY_LABELS[key],
+        key,
+        bisgId: meta[0] || '',
+        category: detail[0],
+        fieldCategory: meta[1] || 'Required',
+        priority: detail[1],
+        why: detail[2],
+        recommendation: 'Not applicable to a standard (non-translation) statement.',
+        status: 'Not applicable / not shown',
+        detected: 'No',
+        confidence: '—',
+      });
+    }
+  }
   products.forEach((p, i) => {
     PRODUCT_REVIEW_KEYS.forEach(([k, label]) => {
       const ok = notBlank(p[k]);
@@ -268,6 +305,7 @@ export function scoreBand(score: number): 'high' | 'medium' | 'low' {
 
 export function reviewData(input: ReviewInput): ReviewDocument {
   const { state, products, reserves, sublicenses } = input;
+  const statementType = input.statementType ?? 'translation';
   const rows = reviewRows(input);
   const cats = categoryScores(rows);
   const warnings = calculationWarnings(state, products, reserves, sublicenses);
@@ -280,11 +318,12 @@ export function reviewData(input: ReviewInput): ReviewDocument {
     ...rows.filter(r => r.status === 'Missing' && r.priority !== 'High'),
   ].slice(0, 7);
   return {
-    reviewFormatVersion: '1.1',
+    reviewFormatVersion: '1.2',
     product: 'clear-statement-builder',
     generatedAt: input.generatedAt ?? new Date().toISOString(),
     overallScore: score,
     profile: input.profile ?? 'auto',
+    statementType,
     statement: {
       statementNo: state.statementNo,
       licenseeContractId: state.licenseeContractId,
@@ -305,7 +344,7 @@ export function reviewData(input: ReviewInput): ReviewDocument {
       recommendation: r.recommendation,
       why: r.why,
     })),
-    totals: totals(state, products),
+    totals: totals(state, products, statementType),
     products,
     reserves,
     sublicenses,

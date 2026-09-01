@@ -7,15 +7,18 @@ import { useAppStore } from '../app/store.tsx';
 
 export function ValidationPanel() {
   const { workspace } = useAppStore();
-  const { state, products, reserves, sublicenses } = workspace;
-  const v = validation(state, products, sublicenses);
+  const { state, products, reserves, sublicenses, statementType } = workspace;
+  const v = validation(state, products, sublicenses, statementType);
   const warnings = calculationWarnings(state, products, reserves, sublicenses);
   const prioritized = v.checks.filter(c => !c.ok).slice(0, 14);
 
   return (
     <>
       <h2>Validation</h2>
-      <p className="panel-sub">Presence checks against the BISG-aligned field catalog.</p>
+      <p className="panel-sub">
+        Presence checks against the BISG-aligned field catalog.
+        {statementType === 'standard' ? ' Translation-only fields are excluded (standard statement).' : ''}
+      </p>
       <div className="score">
         <span id="scoreText">{v.score}% required complete</span>
         <div className="scorebar-track">

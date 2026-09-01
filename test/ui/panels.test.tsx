@@ -52,7 +52,7 @@ describe('validation panel', () => {
     expect(screen.getByText('Licensee name')).toBeInTheDocument();
     expect(screen.getByText(/Con1_LicName —/)).toBeInTheDocument();
     expect(screen.getByText('Product 1 royalty earnings')).toBeInTheDocument();
-    expect(screen.getByText(/Expected approximately €864\.00/)).toBeInTheDocument();
+    expect(screen.getByText(/Expected approximately \$864\.00/)).toBeInTheDocument();
   });
 });
 

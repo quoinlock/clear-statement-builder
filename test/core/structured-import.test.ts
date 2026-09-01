@@ -5,20 +5,23 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import { jsonToDetectionResult, parseImportedCsv } from '../../src/core/import/structured.ts';
-import { sample, sampleProducts, sampleReserves, sampleSublicenses } from '../../src/core/sample/index.ts';
 
 const FIXTURES = join(dirname(fileURLToPath(import.meta.url)), '..', 'fixtures', 'hugo');
 
+// The fixtures were produced by executing the frozen Hugo v1.7 snapshot's
+// own export logic over its (German) sample — they are provenance
+// artifacts and deliberately do NOT track the CSB Appendix B sample.
 describe('AC-IMP-1: Hugo JSON as DetectionResult', () => {
   it('restores state/products/reserves/sublicenses with High-confidence detections', () => {
     const obj = JSON.parse(readFileSync(join(FIXTURES, 'hugo-royalty-statement-RS-2026-0142.json'), 'utf8'));
     const result = jsonToDetectionResult(obj);
     expect(result.sourceType).toBe('Hugo JSON export');
     expect(result.profile).toBe('structured');
-    expect(result.state).toEqual(sample);
-    expect(result.products).toEqual(sampleProducts);
-    expect(result.reserves).toEqual(sampleReserves);
-    expect(result.sublicenses).toEqual(sampleSublicenses);
+    expect(result.state.licenseeName).toBe('Nordlicht Verlag GmbH');
+    expect(result.state.licenseeTitle).toBe('Der lange Sommerweg');
+    expect(result.products).toHaveLength(4);
+    expect(result.reserves).toHaveLength(2);
+    expect(result.sublicenses).toHaveLength(1);
     expect(result.detections.length).toBeGreaterThan(0);
     expect(result.detections.every(d => d.confidence === 'High')).toBe(true);
     const licensee = result.detections.find(d => d.target === 'licenseeName')!;
@@ -35,14 +38,17 @@ describe('AC-IMP-1: Hugo JSON as DetectionResult', () => {
 });
 
 describe('AC-IMP-2: CSV intake', () => {
-  it('Hugo CSV restores keys and rows with High confidence', () => {
+  it('Hugo CSV restores exactly what the Hugo JSON export carries', () => {
     const csv = readFileSync(join(FIXTURES, 'hugo-royalty-statement-RS-2026-0142.csv'), 'utf8');
+    const fromJson = jsonToDetectionResult(
+      JSON.parse(readFileSync(join(FIXTURES, 'hugo-royalty-statement-RS-2026-0142.json'), 'utf8')),
+    );
     const result = parseImportedCsv(csv);
     expect(result.sourceType).toBe('Hugo CSV export');
-    expect(result.state).toEqual(sample);
-    expect(result.products).toEqual(sampleProducts);
-    expect(result.reserves).toEqual(sampleReserves);
-    expect(result.sublicenses).toEqual(sampleSublicenses);
+    expect(result.state).toEqual(fromJson.state);
+    expect(result.products).toEqual(fromJson.products);
+    expect(result.reserves).toEqual(fromJson.reserves);
+    expect(result.sublicenses).toEqual(fromJson.sublicenses);
     expect(result.detections.every(d => d.confidence === 'High')).toBe(true);
   });
 

@@ -5,7 +5,8 @@ export function AboutPanel() {
     <>
       <h2>About Clear Statement Builder</h2>
       <p className="panel-sub">
-        A BISG-aligned translation-rights royalty statement tool. Clean-room reimplementation of the Hugo
+        A BISG-aligned royalty statement tool for translation-rights and standard statements. Clean-room
+        reimplementation of the Hugo
         prototype v1.7 (Sebastian Ritscher, Mohrbooks Literary Agency, for the BISG Rights Committee). Not an
         official BISG product; not a certification tool; not a production accounting system.
       </p>

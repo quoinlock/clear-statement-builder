@@ -29,7 +29,7 @@ describe('shell chrome', () => {
   it('renders the title, version badge, and all eight app-bar buttons', () => {
     renderShell();
     expect(screen.getByRole('heading', { level: 1, name: 'Clear Statement Builder' })).toBeInTheDocument();
-    expect(screen.getByText('v1.0.0')).toBeInTheDocument();
+    expect(screen.getByText('v2.0.0')).toBeInTheDocument();
     for (const label of ['Clear all fields', 'Load sample', 'Export JSON', 'Export CSV', 'Import', 'Review', 'Help', 'Print']) {
       expect(screen.getByRole('button', { name: label })).toBeInTheDocument();
     }

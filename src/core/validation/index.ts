@@ -5,8 +5,9 @@
 // payer Conditional fields are catalogued but not scored). Do not "complete"
 // it.
 import { FIELD_META, fieldMeta } from '../catalog/fieldMeta.ts';
+import { isFieldApplicable } from '../catalog/applicability.ts';
 import { notBlank } from '../calc/index.ts';
-import type { BisgCategory, ProductRow, StatementState, SublicenseRow } from '../types.ts';
+import type { BisgCategory, ProductRow, StatementState, StatementType, SublicenseRow } from '../types.ts';
 
 export interface Check {
   label: string;
@@ -59,13 +60,19 @@ export function validation(
   state: StatementState,
   products: ProductRow[],
   sublicenses: SublicenseRow[],
+  statementType: StatementType = 'translation',
 ): ValidationResult {
-  const checks: Check[] = STATEMENT_CHECKS.map(([label, key, cat]) => ({
-    label,
-    key,
-    cat,
-    ok: notBlank(state[key]),
-  }));
+  // v2: standard mode drops the translation-only checks entirely (the score
+  // denominator shrinks with them); review re-surfaces those fields as
+  // "Not applicable / not shown".
+  const checks: Check[] = STATEMENT_CHECKS.filter(([, key]) => isFieldApplicable(key, statementType)).map(
+    ([label, key, cat]) => ({
+      label,
+      key,
+      cat,
+      ok: notBlank(state[key]),
+    }),
+  );
   products.forEach((p, i) =>
     PRODUCT_REQUIRED_KEYS.forEach(k =>
       checks.push({

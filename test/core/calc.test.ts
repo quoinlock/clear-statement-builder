@@ -52,14 +52,14 @@ describe('AC-CALC: product earnings inference', () => {
     expect(calculationWarnings(state, products, reserves, sublicenses)).toEqual([]);
   });
 
-  it('AC-CALC-5: Hardcover earnings 800 fires the warning with €864.00 vs €800.00', () => {
+  it('AC-CALC-5: Hardcover earnings 800 fires the warning with $864.00 vs $800.00', () => {
     const { state, products, reserves, sublicenses } = cloneSampleDocument();
     products[0].earnings = '800';
     const warnings = calculationWarnings(state, products, reserves, sublicenses);
     expect(warnings).toHaveLength(1);
     expect(warnings[0].label).toBe('Product 1 royalty earnings');
     expect(warnings[0].detail).toBe(
-      'Expected approximately €864.00 from the entered basis, units, and rate; entered €800.00.',
+      'Expected approximately $864.00 from the entered basis, units, and rate; entered $800.00.',
     );
   });
 
@@ -87,14 +87,14 @@ describe('AC-CALC-6: commission only on positive payment', () => {
 });
 
 describe('AC-CALC-7: money() formatting', () => {
-  it('money(-2450) is -€2,450.00', () => {
-    expect(money(-2450)).toBe('-€2,450.00');
+  it('money(-2450) is -$2,450.00', () => {
+    expect(money(-2450)).toBe('-$2,450.00');
   });
 
   it('formats positives and blanks', () => {
-    expect(money(1234.5)).toBe('€1,234.50');
-    expect(money('')).toBe('€0.00');
-    expect(money(undefined)).toBe('€0.00');
+    expect(money(1234.5)).toBe('$1,234.50');
+    expect(money('')).toBe('$0.00');
+    expect(money(undefined)).toBe('$0.00');
   });
 });
 
@@ -129,8 +129,8 @@ describe('warning suppression parity', () => {
 
 describe('parseMoneyLike / roughlyEqual helpers', () => {
   it('parseMoneyLike is US-shaped', () => {
-    expect(parseMoneyLike('€24.00 per copy')).toBe(24);
-    expect(parseMoneyLike('€7,140.00 total net receipts')).toBe(7140);
+    expect(parseMoneyLike('$24.00 per copy')).toBe(24);
+    expect(parseMoneyLike('$7,140.00 total net receipts')).toBe(7140);
     expect(parseMoneyLike('-12.5')).toBe(-12.5);
     expect(parseMoneyLike('no number')).toBe(0);
   });

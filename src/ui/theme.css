@@ -88,6 +88,67 @@ code,
   margin-left: auto;
 }
 
+/* --- Statement-type segmented toggle (v2) --- */
+.seg-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.seg-label {
+  color: var(--muted);
+  font-size: 12.5px;
+  font-weight: 800;
+}
+
+.seg-btn {
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 850;
+  color: var(--navy);
+  background: var(--paper);
+  border: 1px solid var(--btn-border);
+  padding: 5px 12px;
+  cursor: pointer;
+}
+
+.seg-btn:first-of-type {
+  border-radius: 999px 0 0 999px;
+}
+
+.seg-btn:last-of-type {
+  border-radius: 0 999px 999px 0;
+  border-left: none;
+}
+
+.seg-btn.active {
+  background: var(--teal);
+  border-color: var(--teal);
+  color: #fff;
+}
+
+.seg-btn:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 2px;
+}
+
+/* --- Fields disabled by standard mode (v2) --- */
+.field-na label {
+  color: var(--muted);
+}
+
+.field-na input:disabled,
+.field-na textarea:disabled {
+  background: var(--bg);
+  color: var(--muted);
+  border-style: dashed;
+  cursor: not-allowed;
+}
+
+.field-na-hint {
+  margin: 4px 0 0;
+}
+
 /* --- Buttons --- */
 .btn {
   font: inherit;

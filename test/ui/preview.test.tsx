@@ -31,6 +31,12 @@ function storageWith(mutate: (ws: ReturnType<typeof cloneSampleDocument>) => voi
   return storage;
 }
 
+/** Seed translation mode (the sample first-visit default is standard in v2). */
+function translationMode(storage = new MemoryStorage()): MemoryStorage {
+  storage.setItem(KEYS.statementType, JSON.stringify('translation'));
+  return storage;
+}
+
 describe('A4 preview', () => {
   it('AC-UX-1: renders exactly two .page nodes', () => {
     const { view } = renderPreview();
@@ -38,7 +44,7 @@ describe('A4 preview', () => {
   });
 
   it('shows the non-certification teal subtitle, never the Hugo compliance copy', () => {
-    renderPreview();
+    renderPreview(translationMode());
     expect(
       screen.getAllByText('BISG-aligned translation-rights royalty statement — not a certification'),
     ).toHaveLength(2);
@@ -46,10 +52,10 @@ describe('A4 preview', () => {
   });
 
   it('AC-UX-3: Show IDs reveals Con61_SalesTerr and SS92_PayDue', () => {
-    const off = renderPreview();
+    const off = renderPreview(translationMode());
     expect(screen.queryByText('Con61_SalesTerr')).toBeNull();
     off.view.unmount();
-    const storage = storageWith(() => {});
+    const storage = translationMode(storageWith(() => {}));
     storage.setItem(KEYS.showIds, 'true');
     renderPreview(storage);
     expect(screen.getByText('Con61_SalesTerr')).toBeInTheDocument();
@@ -64,11 +70,13 @@ describe('A4 preview', () => {
     expect(screen.getByText(/^Generated with Clear Statement Builder\./)).toBeInTheDocument();
   });
 
-  it('renders the pinned totals: Total Royalty €5,214.00, Payment Due €3,222.60', () => {
+  it('renders the pinned totals: Total Royalty $5,214.00, Payment Due $3,222.60', () => {
     renderPreview();
-    expect(screen.getByText(/Total Royalty Earnings: €5,214\.00/)).toBeInTheDocument();
-    expect(screen.getByText('€3,222.60')).toBeInTheDocument();
-    expect(screen.getByText('Payment Due (EARNED)')).toBeInTheDocument();
+    expect(screen.getByText(/Total Royalty Earnings: \$5,214\.00/)).toBeInTheDocument();
+    // In standard mode (sample default) net remitted equals payment due, so
+    // scope the amount to the Payment Due row.
+    const paymentRow = screen.getByText('Payment Due (EARNED)').closest('tr')!;
+    expect(paymentRow.textContent).toContain('$3,222.60');
   });
 
   it('reserve withheld shows as negative money; reserve total row uses state totals', () => {
@@ -77,10 +85,10 @@ describe('A4 preview', () => {
       ws.reserves = [{ form: 'Hardcover', rate: '10%', withheld: '1.00', released: '1.00' }];
     });
     renderPreview(storage);
-    expect(screen.getByText('-€236.40')).toBeInTheDocument(); // balance line, negative money
+    expect(screen.getByText('-$236.40')).toBeInTheDocument(); // balance line, negative money
     const totalRow = screen.getByText('Total').closest('tr')!;
-    expect(totalRow.textContent).toContain('€236.40');
-    expect(totalRow.textContent).toContain('€95.00');
+    expect(totalRow.textContent).toContain('$236.40');
+    expect(totalRow.textContent).toContain('$95.00');
   });
 
   it('remit ID drops the ISNI parenthetical from contributor names', () => {
@@ -122,6 +130,6 @@ describe('A4 preview', () => {
     renderPreview();
     const advance = screen.getByText('Advance Amount:').closest('.line')!;
     expect(advance.textContent).toContain('8,000.00');
-    expect(advance.textContent).not.toContain('€8,000.00');
+    expect(advance.textContent).not.toContain('$8,000.00');
   });
 });
