@@ -1,0 +1,33 @@
+# Serves the CSB static bundle. The security headers mirror public/_headers
+# (the Netlify-format source of truth); keep the two in sync.
+#
+# Cache-Control is set via `expires` rather than `add_header` so the
+# server-level security headers still inherit into every location block
+# (nginx drops inherited add_header directives the moment a location adds
+# its own).
+
+server {
+    listen       ${PORT};
+    server_name  _;
+    root         /usr/share/nginx/html;
+    index        index.html;
+
+    add_header Content-Security-Policy "default-src 'self'; script-src 'self'; worker-src 'self' blob:; connect-src 'none'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'none'" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header Referrer-Policy "no-referrer" always;
+
+    gzip on;
+    gzip_types text/css application/javascript application/json image/svg+xml;
+    gzip_min_length 1024;
+
+    # Vite emits content-hashed filenames under /assets: cache hard.
+    location /assets/ {
+        expires 1y;
+    }
+
+    # index.html must always revalidate so deploys take effect immediately.
+    location / {
+        expires -1;
+        try_files $uri $uri/ /index.html;
+    }
+}

@@ -1,0 +1,28 @@
+# `docker compose up web`  -> production build on http://localhost:8090
+#                             (host port override: CSB_PORT=nnnn)
+# `docker compose up dev`  -> Vite dev server with HMR on http://localhost:5173
+services:
+  web:
+    build:
+      context: .
+      target: runtime
+    ports:
+      - "${CSB_PORT:-8090}:8080"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:8080/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  dev:
+    profiles: ["dev"]
+    build:
+      context: .
+      target: dev
+    ports:
+      - "5173:5173"
+    volumes:
+      - .:/app
+      # keep the image's node_modules; don't shadow it with the host's
+      - /app/node_modules
