@@ -102,7 +102,7 @@ export function parseHugoOrCsbJson(obj: unknown): StatementDocument {
   const isCsb = /^1\.\d/.test(version) && o.product === 'clear-statement-builder';
   const isHugo = (version === '0.9' || (!isCsb && o.product === undefined)) && hasStructure;
   if (!hasStructure || (!isCsb && !isHugo)) {
-    throw new StatementParseError('Unrecognized statement JSON (expected Hugo 0.9 or Clear Statement Builder 1.x).');
+    throw new StatementParseError('Unrecognized statement JSON (expected Hugo 0.9 or CLEAR Statement Builder 1.x).');
   }
   return {
     version: '1.1.0',

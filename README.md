@@ -1,4 +1,6 @@
-# Clear Statement Builder
+# CLEAR Statement Builder
+
+**CLEAR — the Common Licensing & Earnings Accounting Report**
 
 A **BISG-aligned translation-rights royalty statement tool**: create, import,
 review, validate, and export royalty statements whose fields map to the 44
@@ -127,9 +129,27 @@ totals. The canonical field list is `TRANSLATION_ONLY_KEYS` in
   `test/fixtures/hugo/`.
 - **Open Questions 1–3 and 5–7** (product name, desktop packaging,
   first-visit mode, BISG branding, additional first-class profiles,
-  license) ship with the PRD's stated defaults: title "Clear Statement
+  license) ship with the PRD's stated defaults: title "CLEAR Statement
   Builder", browser-only, sample data on first visit
   (flag `csb.v1.firstVisitMode`), no BISG logo, Ullstein as the only
   first-class publisher profile.
 - OCR for scanned PDFs is out of scope (an image-only PDF gets an explicit
   error). No auth, no cloud storage, no LLM extraction — by design.
+
+## Branding
+
+- **Wordmark:** always the capitalized `CLEAR` (`CLEAR Statement Builder`).
+- **Tagline:** `CLEAR — the Common Licensing & Earnings Accounting Report`
+  (single source: `src/ui/brand.ts`, used by the app bar, About, Help, and
+  the review report).
+- **Colours:** purple chrome (`--purple: #5b2d90`) with a teal accent
+  (`--teal: #078b8f`; `--teal-bright: #00c3b2` is the logo's check-mark
+  colour, decorative fills only). Tokens live in `src/ui/theme.css`; the
+  review report carries its own copy in `src/ui/review/reportHtml.ts`.
+- **Type:** the "Statement Builder" title is set in Montserrat, vendored via
+  `@fontsource-variable/montserrat` (imported in `src/ui/main.tsx`) so no
+  font is fetched from a third-party host; body copy stays Inter/Arial.
+- **Logo:** `public/brand/clear-logo.png` (transparent PNG cropped from the
+  supplied `clear-v2.jpg`); `clear-mark-64.png` and `apple-touch-icon.png`
+  are the check-mark favicons. Served same-origin, so the CSP `img-src
+  'self'` rule is unchanged.

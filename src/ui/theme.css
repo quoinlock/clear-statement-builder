@@ -1,9 +1,15 @@
 /* Design tokens and chrome, per PRD "Design tokens" / "Typography and
    chrome" / "Layout numbers" (transcribed from the Hugo v1.7 snapshot). */
 :root {
-  --navy: #09264a;
-  --navy2: #001e3c; /* reserved for dark variants */
+  /* Brand: purple + teal. --purple carries the chrome (titles, buttons,
+     table heads); --teal is the accent (active nav, focus rings, summary
+     rows). --teal-bright is the logo's check-mark colour, used only for
+     decorative fills that don't carry text. */
+  --purple: #5b2d90;
+  --purple2: #3b1a66; /* reserved for dark variants */
+  --purple-soft: #f1e9fa;
   --teal: #078b8f;
+  --teal-bright: #00c3b2;
   --green: #13795b;
   --amber: #b7791f;
   --red: #b42318;
@@ -45,7 +51,21 @@ code,
   z-index: 30;
   background: var(--paper);
   border-bottom: 1px solid var(--panel-border);
+  border-top: 4px solid var(--purple);
+  border-image: linear-gradient(90deg, var(--purple), var(--teal-bright)) 1;
   padding: 10px 22px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-logo {
+  height: 30px;
+  width: auto;
+  display: block;
 }
 
 .appbar-inner {
@@ -58,10 +78,22 @@ code,
 }
 
 .app-title {
+  font-family: 'Montserrat Variable', Montserrat, Inter, Arial, Helvetica, sans-serif;
   font-size: 24px;
-  font-weight: 950;
-  color: var(--navy);
-  letter-spacing: -0.02em;
+  font-weight: 800;
+  color: var(--purple);
+  letter-spacing: -0.01em;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.app-tagline {
+  flex-basis: 100%;
+  color: var(--purple);
+  font-size: 13px;
+  font-weight: 700;
   margin: 0;
 }
 
@@ -105,7 +137,7 @@ code,
   font: inherit;
   font-size: 12.5px;
   font-weight: 850;
-  color: var(--navy);
+  color: var(--purple);
   background: var(--paper);
   border: 1px solid var(--btn-border);
   padding: 5px 12px;
@@ -158,17 +190,17 @@ code,
   padding: 8px 14px;
   border: 1px solid var(--btn-border);
   background: var(--paper);
-  color: var(--navy);
+  color: var(--purple);
   cursor: pointer;
 }
 
 .btn:hover {
-  border-color: var(--navy);
+  border-color: var(--purple);
 }
 
 .btn-primary {
-  background: var(--navy);
-  border-color: var(--navy);
+  background: var(--purple);
+  border-color: var(--purple);
   color: #fff;
 }
 
@@ -233,7 +265,7 @@ code,
   text-align: left;
   font-size: 13.5px;
   font-weight: 700;
-  color: var(--navy);
+  color: var(--purple);
   background: var(--paper);
   border: 1px solid var(--panel-border);
   border-radius: 12px;
@@ -259,7 +291,7 @@ code,
 .panel h2 {
   margin: 0 0 4px;
   font-size: 17px;
-  color: var(--navy);
+  color: var(--purple);
 }
 
 .panel .panel-sub {
@@ -340,7 +372,7 @@ code,
   font: inherit;
   font-size: 13px;
   font-weight: 800;
-  color: var(--navy);
+  color: var(--purple);
   background: var(--paper);
   border: 1px solid var(--btn-border);
   border-radius: 10px;
@@ -349,8 +381,8 @@ code,
 }
 
 .tab.active {
-  background: var(--navy);
-  border-color: var(--navy);
+  background: var(--purple);
+  border-color: var(--purple);
   color: #fff;
 }
 
@@ -371,7 +403,7 @@ code,
   display: block;
   font-size: 12.5px;
   font-weight: 700;
-  color: var(--navy);
+  color: var(--purple);
 }
 
 .field input,
@@ -408,7 +440,7 @@ code,
   justify-content: space-between;
   align-items: center;
   font-weight: 800;
-  color: var(--navy);
+  color: var(--purple);
   margin-bottom: 8px;
 }
 
@@ -445,7 +477,7 @@ code,
 .help-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(9, 38, 74, 0.45);
+  background: rgba(59, 26, 102, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -474,7 +506,7 @@ code,
 
 .help-head h2 {
   margin: 0;
-  color: var(--navy);
+  color: var(--purple);
 }
 
 .help-body {
@@ -499,7 +531,7 @@ code,
 
 .help-content h3 {
   margin-top: 0;
-  color: var(--navy);
+  color: var(--purple);
 }
 
 .help-content {
@@ -530,7 +562,7 @@ code,
 .import-result h4 {
   margin: 14px 0 6px;
   font-size: 13.5px;
-  color: var(--navy);
+  color: var(--purple);
 }
 
 .import-table {
@@ -540,7 +572,7 @@ code,
 }
 
 .import-table th {
-  background: var(--navy);
+  background: var(--purple);
   color: #fff;
   text-align: left;
   padding: 5px 7px;
@@ -556,7 +588,7 @@ code,
 .score {
   margin-bottom: 12px;
   font-weight: 800;
-  color: var(--navy);
+  color: var(--purple);
   font-size: 13px;
 }
 
@@ -570,7 +602,7 @@ code,
 
 .scorebar {
   height: 100%;
-  background: var(--teal);
+  background: linear-gradient(90deg, var(--purple), var(--teal-bright));
   border-radius: 999px;
 }
 
@@ -594,7 +626,7 @@ code,
   align-items: center;
   gap: 8px;
   font-weight: 800;
-  color: var(--navy);
+  color: var(--purple);
 }
 
 .issue.bad {
@@ -653,7 +685,7 @@ code,
 .category-name {
   font-size: 12px;
   font-weight: 800;
-  color: var(--navy);
+  color: var(--purple);
 }
 
 .category-detail {
@@ -666,7 +698,7 @@ code,
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  border-bottom: 4px solid var(--navy);
+  border-bottom: 4px solid var(--purple);
   padding-bottom: 10px;
   margin-bottom: 14px;
 }
@@ -674,7 +706,7 @@ code,
 .doc-header h1 {
   margin: 0;
   font-size: 34px;
-  color: var(--navy);
+  color: var(--purple);
   letter-spacing: -0.02em;
 }
 
@@ -693,7 +725,7 @@ code,
 }
 
 .notes {
-  background: #f4f8fb;
+  background: var(--purple-soft);
   border: 1px solid var(--panel-border);
   border-radius: 10px;
   padding: 10px 14px;
@@ -707,7 +739,7 @@ code,
 }
 
 .block {
-  border: 1.5px solid var(--navy);
+  border: 1.5px solid var(--purple);
   border-radius: 10px;
   margin: 12px 0;
 }
@@ -732,11 +764,11 @@ code,
 }
 
 .col-divider {
-  border-right: 1px solid var(--navy);
+  border-right: 1px solid var(--purple);
 }
 
 .dark-title {
-  background: var(--navy);
+  background: var(--purple);
   color: #fff;
   font-size: 11.5px;
   font-weight: 800;
@@ -757,7 +789,7 @@ code,
 }
 
 .line b {
-  color: var(--navy);
+  color: var(--purple);
   white-space: nowrap;
 }
 
@@ -780,7 +812,7 @@ code,
 .section-title h2 {
   margin: 0;
   font-size: 14.5px;
-  color: var(--navy);
+  color: var(--purple);
 }
 
 .info-grid,
@@ -797,12 +829,12 @@ code,
 }
 
 .tbl th {
-  background: var(--navy);
+  background: var(--purple);
   color: #fff;
   font-size: 9.3px;
   text-align: center;
   padding: 5px 6px;
-  border: 1px solid var(--navy);
+  border: 1px solid var(--purple);
 }
 
 .tbl th.left {

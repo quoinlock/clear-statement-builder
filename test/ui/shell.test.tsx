@@ -28,11 +28,18 @@ function renderShell(storage = new MemoryStorage()) {
 describe('shell chrome', () => {
   it('renders the title, version badge, and all eight app-bar buttons', () => {
     renderShell();
-    expect(screen.getByRole('heading', { level: 1, name: 'Clear Statement Builder' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 1, name: 'CLEAR Statement Builder' })).toBeInTheDocument();
     expect(screen.getByText('v2.0.0')).toBeInTheDocument();
     for (const label of ['Clear all fields', 'Load sample', 'Export JSON', 'Export CSV', 'Import', 'Review', 'Help', 'Print']) {
       expect(screen.getByRole('button', { name: label })).toBeInTheDocument();
     }
+  });
+
+  it('renders the CLEAR logo and tagline (brand)', () => {
+    renderShell();
+    const logo = screen.getByRole('img', { name: 'CLEAR' });
+    expect(logo).toHaveAttribute('src', '/brand/clear-logo.png');
+    expect(screen.getByText('CLEAR — the Common Licensing & Earnings Accounting Report')).toBeInTheDocument();
   });
 
   it('renders the ten nav items in parity order', () => {

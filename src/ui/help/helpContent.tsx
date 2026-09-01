@@ -1,6 +1,7 @@
 // Help Center copy deck (PRD Appendix D, rebranded; Hugo credited in tabs
 // 1 and 8). Eight tabs matching the snapshot's section structure.
 import type { ReactNode } from 'react';
+import { TAGLINE } from '../brand.ts';
 
 export interface HelpSection {
   id: string;
@@ -11,9 +12,12 @@ export interface HelpSection {
 export const HELP_SECTIONS: HelpSection[] = [
   {
     id: 'overview',
-    title: 'What Clear Statement Builder is',
+    title: 'What CLEAR Statement Builder is',
     body: (
       <>
+        <p>
+          <b>{TAGLINE}</b>
+        </p>
         <p>
           A BISG-focused royalty statement tool (prior art: Hugo prototype v1.7 by Sebastian Ritscher,
           Mohrbooks). It helps publishers, agents, and rights professionals create, review, import, validate,

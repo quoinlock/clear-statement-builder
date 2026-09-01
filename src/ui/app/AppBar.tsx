@@ -8,6 +8,7 @@ import {
 import type { StatementDocument, StatementType } from '../../core/types.ts';
 import { useAppStore } from './store.tsx';
 import { downloadFile } from './download.ts';
+import { LOGO_SRC, TAGLINE } from '../brand.ts';
 
 export const APP_VERSION = 'v2.0.0';
 
@@ -56,8 +57,13 @@ export function AppBar() {
   return (
     <header className="appbar no-print">
       <div className="appbar-inner">
-        <h1 className="app-title">Clear Statement Builder</h1>
-        <span className="version-badge">{APP_VERSION}</span>
+        <div className="brand">
+          <h1 className="app-title">
+            <img className="brand-logo" src={LOGO_SRC} alt="CLEAR" />
+            Statement Builder
+          </h1>
+          <span className="version-badge">{APP_VERSION}</span>
+        </div>
         <div className="seg-toggle" role="group" aria-label="Statement type">
           <span className="seg-label">Statement:</span>
           {STATEMENT_TYPES.map(([type, label]) => (
@@ -108,6 +114,7 @@ export function AppBar() {
             Print
           </button>
         </div>
+        <p className="app-tagline">{TAGLINE}</p>
         <p className="app-subtitle">
           BISG-aligned royalty statements (standard or translation-rights) — validation, import profiles,
           Ullstein contract splitting, review reports, and exports. Prior art: Hugo prototype.

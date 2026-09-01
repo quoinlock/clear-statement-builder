@@ -20,7 +20,7 @@ export function VersionHistoryPanel() {
   return (
     <>
       <h2>Version history</h2>
-      <p className="panel-sub">Clear Statement Builder releases, with the Hugo prototype lineage below.</p>
+      <p className="panel-sub">CLEAR Statement Builder releases, with the Hugo prototype lineage below.</p>
       <div className="issue good">
         <div className="issue-head">
           <span>v2.0.0</span>

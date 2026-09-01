@@ -27,7 +27,7 @@ describe('review report HTML', () => {
   });
 
   it('is rebranded: no Hugo-branded toolbar, no BISG-compliant claim', () => {
-    expect(html).toContain('Clear Statement Builder Review Report');
+    expect(html).toContain('CLEAR Statement Builder Review Report');
     expect(html).not.toContain('Hugo Review Report');
   });
 

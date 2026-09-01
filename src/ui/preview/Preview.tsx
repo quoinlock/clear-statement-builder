@@ -76,8 +76,8 @@ export function Preview() {
         <section className="notes">
           <b>Explanatory note:</b>{' '}
           {isSampleData
-            ? 'This fictional sample was generated with Clear Statement Builder (prior art: Hugo prototype v1.7) to show a fully populated BISG-style royalty statement. It is not legal, accounting, or tax advice. This is not BISG certification or approval.'
-            : 'Generated with Clear Statement Builder. It is not legal, accounting, or tax advice. This is not BISG certification or approval.'}
+            ? 'This fictional sample was generated with CLEAR Statement Builder (prior art: Hugo prototype v1.7) to show a fully populated BISG-style royalty statement. It is not legal, accounting, or tax advice. This is not BISG certification or approval.'
+            : 'Generated with CLEAR Statement Builder. It is not legal, accounting, or tax advice. This is not BISG certification or approval.'}
         </section>
         <div className="block two-col">
           <div className="col-divider">

@@ -1,11 +1,11 @@
-# Clear Statement Builder
+# CLEAR Statement Builder
 
 **Product Requirements Document + Implementation Design**
 **Reimplementation of Hugo prototype v1.7 (July 2026)**
 
 | Field | Value |
 |---|---|
-| **Working name** | Clear Statement Builder |
+| **Working name** | CLEAR Statement Builder |
 | **Document type** | PRD + implementation design |
 | **Status** | Draft |
 | **Author** | TBD |
@@ -23,7 +23,7 @@ This document is the first deliverable for a clean-room reimplementation. An eng
 
 ## Overview
 
-Clear Statement Builder is a **BISG-aligned translation-rights royalty statement tool**. It helps publishers, literary agents, and rights professionals **create, import, review, validate, and export** royalty statements whose fields map to the **44 alphanumeric IDs implemented in Hugo `FIELD_META`** (four Hugo categories: Required, Recommended, Conditional, Remittance). Those IDs are intended to track the BISG Translation Rights Royalty Statement Standard; this PRD does **not** independently verify the Knowledge Center document’s field table.
+CLEAR Statement Builder is a **BISG-aligned translation-rights royalty statement tool**. It helps publishers, literary agents, and rights professionals **create, import, review, validate, and export** royalty statements whose fields map to the **44 alphanumeric IDs implemented in Hugo `FIELD_META`** (four Hugo categories: Required, Recommended, Conditional, Remittance). Those IDs are intended to track the BISG Translation Rights Royalty Statement Standard; this PRD does **not** independently verify the Knowledge Center document’s field table.
 
 The product is a **clean-room reimplementation** of Hugo, a public single-file HTML/CSS/JS prototype built by BISG Rights Committee member Sebastian Ritscher (Mohrbooks Literary Agency) after comparing a real publisher statement with the BISG standard. Hugo proved the domain: a three-pane builder with live A4 preview, deterministic import/digest (including Ullstein/Bonnier Germany multi-contract PDFs), custom import profiles, calculation warnings, and a publisher-facing standards-completeness report.
 
@@ -46,7 +46,7 @@ Today the work is done in email, PDFs, spreadsheets, and tribal knowledge. Exist
 - sit inside a publisher’s general ledger and emit opaque PDFs, or
 - track contracts and deals without a BISG-coded, recipient-verifiable statement artifact.
 
-Hugo demonstrated that the standard can be implemented as **(1) a data checklist, (2) a readable two-page statement, and (3) an exportable structured package** — without forcing publishers onto one accounting system. Clear Statement Builder turns that demonstration into a maintainable product that can continue to serve **standards discussion** and, if later approved, **production-adjacent local use**.
+Hugo demonstrated that the standard can be implemented as **(1) a data checklist, (2) a readable two-page statement, and (3) an exportable structured package** — without forcing publishers onto one accounting system. CLEAR Statement Builder turns that demonstration into a maintainable product that can continue to serve **standards discussion** and, if later approved, **production-adjacent local use**.
 
 This is explicitly **not** a replacement for:
 
@@ -169,7 +169,7 @@ Production accountants posting live royalties into a general ledger; users who n
 | **Generic PDF extractors / LLM document AI** | High recall, non-deterministic, data leaves the building. | Explicitly rejected for v1 custom profiles (Hugo: “They do not use an LLM and they do not send statement data to a server.”). |
 | **Spreadsheet templates** | What most agents actually use today. | CSV export must remain round-trippable enough to feed Excel. |
 
-Positioning sentence: **Clear Statement Builder is a local, BISG-coded statement workbench — not an accounting system, not a cloud rights platform, and not a BISG certification mark.**
+Positioning sentence: **CLEAR Statement Builder is a local, BISG-coded statement workbench — not an accounting system, not a cloud rights platform, and not a BISG certification mark.**
 
 ---
 
@@ -180,7 +180,7 @@ Positioning sentence: **Clear Statement Builder is a local, BISG-coded statement
 - Preserve Hugo v1.7 **behavior and domain fidelity** (field catalog, formulas, Ullstein split, custom profiles, review report, A4 print).
 - Rebuild as a **maintainable, testable, modular** TypeScript codebase.
 - Keep **privacy-first, client-side, deterministic-import** philosophy unless a later product decision says otherwise.
-- Independent branding (working name Clear Statement Builder) with explicit credit to Hugo / Sebastian Ritscher / BISG as prior art.
+- Independent branding (working name CLEAR Statement Builder) with explicit credit to Hugo / Sebastian Ritscher / BISG as prior art.
 - Produce a JSON schema **versioned at 1.0** with import compatibility for Hugo `dataPackage` `0.9`.
 - Ship automated tests for core math, validation, Ullstein golden fixtures, and custom-profile application.
 
@@ -219,7 +219,7 @@ These are implementation and product decisions **this document does make**. They
 
 5. **JSON interchange field is `version` (`1.0.0` write, `0.9` read).** Matches Hugo `dataPackage().version`. In-memory types use the same `version` field (not a separate `schemaVersion`). `showIds` is a **persistence-only** key, not a JSON document field. Review payload uses `reviewFormatVersion: '1.1'` (Hugo’s `reviewData().version` was `'1.1'` and is **not** the statement schema). Hugo JSON/CSV and `{hugoProfileVersion:'1.7', profiles:[...]}` remain readable. *(Amended in v2: write `1.1.0` with a document-level `statementType`; read `0.9` and all `1.x`; review payload writes `reviewFormatVersion: '1.2'`. See “v2: Statement type”.)*
 
-6. **Working product name is Clear Statement Builder.** In-app we do not pretend to be Hugo or BISG. Hugo is credited as prior art on About, Help, and the printed disclaimer. Shorter wordmarks are an Open Question, not a unilateral rename.
+6. **Working product name is CLEAR Statement Builder.** In-app we do not pretend to be Hugo or BISG. Hugo is credited as prior art on About, Help, and the printed disclaimer. Shorter wordmarks are an Open Question, not a unilateral rename.
 
 7. **Keep BISG field IDs and categories as the interoperability layer.** Internal keys (`licenseeName`, etc.) stay Hugo-compatible so 0.9 JSON round-trips. Display labels may be retitled; IDs such as `Con61_SalesTerr` and `SS92_PayDue` do not change.
 
@@ -959,8 +959,8 @@ Page size in UI: **794px × min-height 1123px** (A4 at 96 CSS px), white, drop s
 
 **Copy contract (page 1 explanatory note):**
 
-- Sample loaded: `Explanatory note: This fictional sample was generated with Clear Statement Builder (prior art: Hugo prototype v1.7) to show a fully populated BISG-style royalty statement. It is not legal, accounting, or tax advice. This is not BISG certification or approval.`
-- User data (**proposed improvement**): `Explanatory note: Generated with Clear Statement Builder. It is not legal, accounting, or tax advice. This is not BISG certification or approval.`
+- Sample loaded: `Explanatory note: This fictional sample was generated with CLEAR Statement Builder (prior art: Hugo prototype v1.7) to show a fully populated BISG-style royalty statement. It is not legal, accounting, or tax advice. This is not BISG certification or approval.`
+- User data (**proposed improvement**): `Explanatory note: Generated with CLEAR Statement Builder. It is not legal, accounting, or tax advice. This is not BISG certification or approval.`
 
 Remit-ID template (parity): `` `${licensorContractId} | ${contributorNames.split(' (')[0]} | ${licensorTitle} | ${statementNo}` `` — contributor is the substring before the first ` (` so ISNI in parentheses is dropped.
 
@@ -1005,7 +1005,7 @@ Report must include executive-summary bands, category scores, missing, unclear, 
 
 Modal `role="dialog" aria-modal="true"`. Escape and backdrop click close. Eight tabs. **Body copy is Appendix D** (rebranded from Hugo’s eight sections). Snapshot Help HTML is normative if Appendix D and snapshot diverge.
 
-1. What Clear Statement Builder is (credit Hugo in the first card)
+1. What CLEAR Statement Builder is (credit Hugo in the first card)
 2. How to use (six steps)
 3. Import statements
 4. Interface guide
@@ -1521,7 +1521,7 @@ Hugo is partial. XSS-safe React rendering is a **v1 MUST improvement**. Keyboard
 
 ### In-app name
 
-Until Open Question 1 is answered, UI title is **Clear Statement Builder** with version badge `v1.0.0`. Subtitle may read: “BISG-aligned translation-rights royalty statements — validation, import profiles, Ullstein contract splitting, review reports, and exports. Prior art: Hugo prototype.”
+Until Open Question 1 is answered, UI title is **CLEAR Statement Builder** with version badge `v1.0.0`. Subtitle may read: “BISG-aligned translation-rights royalty statements — validation, import profiles, Ullstein contract splitting, review reports, and exports. Prior art: Hugo prototype.”
 
 ---
 
@@ -1838,7 +1838,7 @@ Industry outcome (not a v1 KPI we can own): fewer missing `Con61` / `Con66` / `S
 
 These are **true product decisions**. Do not silently invent answers in implementation PRs.
 
-1. **Final product name / wordmark.** Working name is Clear Statement Builder. Need a shorter in-app name? Options (non-binding): CSB, ClearStatement, Quoinlock Statement, “Statement Builder”. Do we keep “Hugo” anywhere other than credits?
+1. **Final product name / wordmark.** Working name is CLEAR Statement Builder. Need a shorter in-app name? Options (non-binding): CSB, ClearStatement, Quoinlock Statement, “Statement Builder”. Do we keep “Hugo” anywhere other than credits?
 
 2. **Stay strictly browser-only, or add optional local-file / desktop packaging later?** v1 is browser-only; this question is the post-v1 platform bet (PWA vs Electron/Tauri vs “Save to disk as the only persistence”).
 
@@ -2160,9 +2160,9 @@ Fields and chrome from snapshot `renderCustomProfilesPanel` / `loadCustomProfile
 
 ## Appendix D — Help Center copy (rebranded from Hugo’s eight sections)
 
-Snapshot Help HTML is normative for structure; this is the v1 copy deck. Replace “Hugo” in user-facing chrome with Clear Statement Builder; credit Hugo in tab 1 and tab 8.
+Snapshot Help HTML is normative for structure; this is the v1 copy deck. Replace “Hugo” in user-facing chrome with CLEAR Statement Builder; credit Hugo in tab 1 and tab 8.
 
-**Tab 1 — What Clear Statement Builder is**
+**Tab 1 — What CLEAR Statement Builder is**
 
 - A BISG-focused royalty statement tool (prior art: Hugo prototype v1.7 by Sebastian Ritscher, Mohrbooks). Helps publishers, agents, and rights professionals create, review, import, validate, and export BISG-aligned translation-rights royalty statements.
 - What it helps you do: create structured statements from scratch; import and digest publisher statements, including Ullstein-style PDFs; validate completeness against Hugo/`FIELD_META` field categories; review calculation warnings and missing mappings; export as PDF, JSON, or CSV.

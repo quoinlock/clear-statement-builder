@@ -64,10 +64,10 @@ describe('A4 preview', () => {
 
   it('sample data shows the sample explanatory note; edited data switches variants', () => {
     renderPreview();
-    expect(screen.getByText(/This fictional sample was generated with Clear Statement Builder/)).toBeInTheDocument();
+    expect(screen.getByText(/This fictional sample was generated with CLEAR Statement Builder/)).toBeInTheDocument();
     cleanup();
     renderPreview(storageWith(ws => (ws.state.licenseeName = 'Real Verlag GmbH')));
-    expect(screen.getByText(/^Generated with Clear Statement Builder\./)).toBeInTheDocument();
+    expect(screen.getByText(/^Generated with CLEAR Statement Builder\./)).toBeInTheDocument();
   });
 
   it('renders the pinned totals: Total Royalty $5,214.00, Payment Due $3,222.60', () => {

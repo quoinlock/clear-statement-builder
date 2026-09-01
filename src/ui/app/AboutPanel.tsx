@@ -1,9 +1,14 @@
 // F10: About panel — the teal privacy notice and amber demo notice are
 // mandatory (PRD), plus prior-art credit and non-certification framing.
+import { TAGLINE } from '../brand.ts';
+
 export function AboutPanel() {
   return (
     <>
-      <h2>About Clear Statement Builder</h2>
+      <h2>About CLEAR Statement Builder</h2>
+      <p className="panel-sub">
+        <b>{TAGLINE}</b>
+      </p>
       <p className="panel-sub">
         A BISG-aligned royalty statement tool for translation-rights and standard statements. Clean-room
         reimplementation of the Hugo
@@ -12,7 +17,7 @@ export function AboutPanel() {
       </p>
       <div className="notice notice-privacy">
         <b>Privacy:</b> everything you enter stays in this browser’s local storage on this device. Statement,
-        bank, tax, and sales data are never uploaded — not to BISG, not to a hosting provider, not to a Clear
+        bank, tax, and sales data are never uploaded — not to BISG, not to a hosting provider, not to a CLEAR
         Statement Builder server. Clearing your browser data removes it. Storage is unencrypted; your OS user
         account is the confidentiality boundary.
       </div>
