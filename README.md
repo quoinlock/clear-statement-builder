@@ -136,6 +136,18 @@ totals. The canonical field list is `TRANSLATION_ONLY_KEYS` in
 - OCR for scanned PDFs is out of scope (an image-only PDF gets an explicit
   error). No auth, no cloud storage, no LLM extraction — by design.
 
+## Hosting on GitHub Pages
+
+`.github/workflows/pages.yml` runs the CI gate on every push to `main` and
+publishes `dist/` to GitHub Pages as a project site
+(`https://<owner>.github.io/clear-statement-builder/`). The workflow sets
+`BASE_PATH` so Vite emits base-relative URLs; every other host (Docker,
+Netlify-style) builds at `/`. GitHub Pages cannot send response headers,
+so the production build also carries the CSP as a `<meta>` tag (injected
+by `vite.config.ts`; identical to `public/_headers` minus
+`frame-ancestors`). The site is public to anyone with the URL: treat it as
+a demo-mode installation and use sample or anonymized data only.
+
 ## Layout
 
 The shell is the "focused workspace" layout (PR 24): a one-row app bar
