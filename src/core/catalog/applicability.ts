@@ -43,6 +43,13 @@ export function statementSubtitle(type: StatementType): string {
     : 'BISG-aligned translation-rights royalty statement — not a certification';
 }
 
+/** Name of the BISG standard a statement of this type is prepared to. */
+export function standardName(type: StatementType): string {
+  return type === 'standard'
+    ? 'BISG Royalty Statement Standard'
+    : 'BISG Translation Rights Royalty Statement Standard';
+}
+
 /** Reader-side coercion shared by persistence and statement JSON parsing. */
 export function coerceStatementType(raw: unknown): StatementType {
   return raw === 'standard' ? 'standard' : 'translation';

@@ -114,7 +114,9 @@ describe('A4 preview', () => {
         ws.state.licenseeName = '<img src=x onerror=alert(1)>';
       }),
     );
-    expect(view.container.querySelector('img')).toBeNull();
+    // The only images are the two static brand logos in the page footers.
+    const imgs = [...view.container.querySelectorAll('img')];
+    expect(imgs.map(i => i.getAttribute('src'))).toEqual(['/brand/clear-logo.png', '/brand/clear-logo.png']);
     expect(screen.getAllByText('<img src=x onerror=alert(1)>').length).toBeGreaterThan(0);
   });
 
@@ -131,5 +133,19 @@ describe('A4 preview', () => {
     const advance = screen.getByText('Advance Amount:').closest('.line')!;
     expect(advance.textContent).toContain('8,000.00');
     expect(advance.textContent).not.toContain('$8,000.00');
+  });
+
+  it('page footers carry the CLEAR brand line, standard name, and tagline', () => {
+    const { view } = renderPreview();
+    const logos = screen.getAllByRole('img', { name: 'CLEAR' });
+    expect(logos).toHaveLength(2);
+    expect(logos[0]).toHaveAttribute('src', '/brand/clear-logo.png');
+    expect(screen.getAllByText('CLEAR Statement')).toHaveLength(2);
+    const lines = [...view.container.querySelectorAll('.footer-brand-line')].map(el => el.textContent);
+    expect(lines).toHaveLength(2);
+    for (const line of lines) {
+      expect(line).toMatch(/^CLEAR Statement — prepared in accordance with the BISG (Translation Rights )?Royalty Statement Standard\.$/);
+    }
+    expect(screen.getAllByText('CLEAR — the Common Licensing & Earnings Accounting Report')).toHaveLength(2);
   });
 });

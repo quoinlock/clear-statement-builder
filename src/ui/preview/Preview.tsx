@@ -6,7 +6,8 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { ltdUnits, money, num, totals } from '../../core/calc/index.ts';
 import { bisgId } from '../../core/catalog/fieldMeta.ts';
-import { statementSubtitle, statementTitle } from '../../core/catalog/applicability.ts';
+import { standardName, statementSubtitle, statementTitle } from '../../core/catalog/applicability.ts';
+import { LOGO_SRC, TAGLINE } from '../brand.ts';
 import { sample } from '../../core/sample/index.ts';
 import { useAppStore } from '../app/store.tsx';
 import type { StatementType } from '../../core/types.ts';
@@ -55,11 +56,32 @@ function PageHeader({ n, statementNo, type }: { n: number; statementNo: string; 
   );
 }
 
-function PageFooter({ n, preparedBy, licenseeName }: { n: number; preparedBy: string; licenseeName: string }) {
+function PageFooter({
+  n,
+  preparedBy,
+  licenseeName,
+  type,
+}: {
+  n: number;
+  preparedBy: string;
+  licenseeName: string;
+  type: StatementType;
+}) {
   return (
     <footer className="footer">
-      <span>Prepared by {n === 2 ? preparedBy : 'Rights & Royalties Department'}</span>
-      <span>{licenseeName}</span>
+      <div className="footer-row">
+        <span>Prepared by {n === 2 ? preparedBy : 'Rights & Royalties Department'}</span>
+        <span>{licenseeName}</span>
+      </div>
+      <div className="footer-brand">
+        <img className="footer-logo" src={LOGO_SRC} alt="CLEAR" />
+        <div>
+          <div className="footer-brand-line">
+            <b>CLEAR Statement</b> — prepared in accordance with the {standardName(type)}.
+          </div>
+          <div className="footer-tagline">{TAGLINE}</div>
+        </div>
+      </div>
     </footer>
   );
 }
@@ -254,7 +276,7 @@ export function Preview() {
             </li>
           </ul>
         </section>
-        <PageFooter n={1} preparedBy={state.preparedBy} licenseeName={state.licenseeName} />
+        <PageFooter n={1} preparedBy={state.preparedBy} licenseeName={state.licenseeName} type={statementType} />
       </div>
       <div className="page">
         <PageHeader n={2} statementNo={state.statementNo} type={statementType} />
@@ -421,7 +443,7 @@ export function Preview() {
               ))}
           </ul>
         </section>
-        <PageFooter n={2} preparedBy={state.preparedBy} licenseeName={state.licenseeName} />
+        <PageFooter n={2} preparedBy={state.preparedBy} licenseeName={state.licenseeName} type={statementType} />
       </div>
       </div>
     </main>
