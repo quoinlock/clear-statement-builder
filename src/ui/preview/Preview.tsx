@@ -3,13 +3,15 @@
 // contract: the subtitle is the non-certification string, and the
 // explanatory note has sample vs user-data variants. All values render as
 // React text nodes (no innerHTML of user/imported strings).
-import { useMemo, type ReactNode } from 'react';
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { ltdUnits, money, num, totals } from '../../core/calc/index.ts';
 import { bisgId } from '../../core/catalog/fieldMeta.ts';
 import { statementSubtitle, statementTitle } from '../../core/catalog/applicability.ts';
 import { sample } from '../../core/sample/index.ts';
 import { useAppStore } from '../app/store.tsx';
 import type { StatementType } from '../../core/types.ts';
+
+const PAGE_WIDTH = 794;
 
 function Fid({ k, on }: { k: string; on: boolean }) {
   if (!on) return null;
@@ -69,8 +71,38 @@ export function Preview() {
   const t = totals(state, products, statementType);
   const isSampleData = useMemo(() => JSON.stringify(state) === JSON.stringify(sample), [state]);
 
+  // Layout A: "Fit" scales the A4 pages to the column width (CSS zoom, reset
+  // for print); "100%" shows them at true size with horizontal scroll.
+  const [zoomMode, setZoomMode] = useState<'fit' | 'full'>('fit');
+  const [fitScale, setFitScale] = useState(1);
+  const pagesRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = pagesRef.current;
+    if (!el || typeof ResizeObserver === 'undefined') return;
+    const ro = new ResizeObserver(entries => {
+      const width = entries[0]?.contentRect.width ?? PAGE_WIDTH;
+      setFitScale(Math.min(1, Math.max(0.4, width / PAGE_WIDTH)));
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+  const zoom = zoomMode === 'fit' ? fitScale : 1;
+
   return (
     <main className="preview-wrap" aria-label="Statement preview">
+      <div className="preview-toolbar no-print">
+        <span className="preview-title">Live preview</span>
+        <span>2 pages · A4</span>
+        <div className="preview-zoom" role="group" aria-label="Preview zoom">
+          <button type="button" className={`btn small${zoomMode === 'fit' ? ' active' : ''}`} aria-pressed={zoomMode === 'fit'} onClick={() => setZoomMode('fit')}>
+            Fit
+          </button>
+          <button type="button" className={`btn small${zoomMode === 'full' ? ' active' : ''}`} aria-pressed={zoomMode === 'full'} onClick={() => setZoomMode('full')}>
+            100%
+          </button>
+        </div>
+      </div>
+      <div className="preview-pages" ref={pagesRef} style={{ zoom }}>
       <div className="page">
         <PageHeader n={1} statementNo={state.statementNo} type={statementType} />
         <section className="notes">
@@ -390,6 +422,7 @@ export function Preview() {
           </ul>
         </section>
         <PageFooter n={2} preparedBy={state.preparedBy} licenseeName={state.licenseeName} />
+      </div>
       </div>
     </main>
   );

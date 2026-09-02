@@ -1,5 +1,5 @@
 // PR 10: validation and review panels (F5/F8).
-import { cleanup, render, screen } from '@testing-library/react';
+import { cleanup, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, describe, expect, it } from 'vitest';
 import { PanelHost } from '../../src/ui/app/PanelHost.tsx';
@@ -59,7 +59,7 @@ describe('validation panel', () => {
 describe('review panel', () => {
   it('shows the overall score, high band copy, category cards, and disclaimer', async () => {
     renderPanels();
-    await userEvent.click(screen.getByRole('button', { name: 'Review my statement' }));
+    await userEvent.click(within(screen.getByRole('navigation', { name: 'Sections' })).getByRole('button', { name: 'Review' }));
     expect(screen.getByText(/Overall score:/)).toBeInTheDocument();
     expect(screen.getByText(/Strong BISG alignment/)).toBeInTheDocument();
     expect(screen.getByText('Contract information')).toBeInTheDocument();
@@ -74,7 +74,7 @@ describe('review panel', () => {
         ws.state.openingBalance = '';
       }),
     );
-    await userEvent.click(screen.getByRole('button', { name: 'Review my statement' }));
+    await userEvent.click(within(screen.getByRole('navigation', { name: 'Sections' })).getByRole('button', { name: 'Review' }));
     expect(screen.getByText('Opening balance')).toBeInTheDocument();
     expect(screen.getByText(/Label the opening balance/)).toBeInTheDocument();
   });

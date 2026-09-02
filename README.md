@@ -136,6 +136,16 @@ totals. The canonical field list is `TRANSLATION_ONLY_KEYS` in
 - OCR for scanned PDFs is out of scope (an image-only PDF gets an explicit
   error). No auth, no cloud storage, no LLM extraction — by design.
 
+## Layout
+
+The shell is the "focused workspace" layout (PR 24): a one-row app bar
+(brand, statement type, required-field completeness meter, Import, Review,
+Export menu, Print, and a More menu holding Load sample / Clear all), a
+grouped side rail (Build / Check / Import, with row counts, and an
+About / Version history / Help footer under the tagline), the section
+panel, and the live A4 preview with a Fit / 100% zoom toolbar. Section IDs
+in `src/ui/app/store.tsx` are unchanged; only the visible labels moved.
+
 ## Branding
 
 - **Wordmark:** always the capitalized `CLEAR` (`CLEAR Statement Builder`).

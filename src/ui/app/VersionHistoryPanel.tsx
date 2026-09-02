@@ -23,8 +23,18 @@ export function VersionHistoryPanel() {
       <p className="panel-sub">CLEAR Statement Builder releases, with the Hugo prototype lineage below.</p>
       <div className="issue good">
         <div className="issue-head">
-          <span>v2.0.0</span>
+          <span>v2.1.0</span>
           <span className="badge required">Current</span>
+        </div>
+        <p>
+          Brand refresh and the "focused workspace" layout: CLEAR wordmark, purple/teal palette, logo and
+          Montserrat title; a one-row app bar with a completeness meter and Export / More menus; the sections
+          grouped into Build / Check / Import with row counts; and a live-preview toolbar with Fit / 100% zoom.
+        </p>
+      </div>
+      <div className="issue">
+        <div className="issue-head">
+          <span>v2.0.0</span>
         </div>
         <p>
           Statement-type toggle: Standard vs Translation statements. Standard mode disables the

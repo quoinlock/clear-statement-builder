@@ -57,7 +57,7 @@ describe('statement forms', () => {
 describe('repeaters', () => {
   it('renders sample product rows as cards with Row N heads', async () => {
     renderPanels();
-    await userEvent.click(screen.getByRole('button', { name: 'Product rows' }));
+    await userEvent.click(screen.getByRole('button', { name: /^Products/ }));
     expect(screen.getByText('Row 1')).toBeInTheDocument();
     expect(screen.getByText('Row 4')).toBeInTheDocument();
     expect(screen.getAllByRole('button', { name: 'Delete' })).toHaveLength(4);
@@ -65,7 +65,7 @@ describe('repeaters', () => {
 
   it('Add product row appends the parity zero-defaults row', async () => {
     const storage = renderPanels();
-    await userEvent.click(screen.getByRole('button', { name: 'Product rows' }));
+    await userEvent.click(screen.getByRole('button', { name: /^Products/ }));
     await userEvent.click(screen.getByRole('button', { name: 'Add product row' }));
     const products = JSON.parse(storage.getItem(KEYS.products)!);
     expect(products).toHaveLength(5);
@@ -85,7 +85,7 @@ describe('repeaters', () => {
 
   it('deleting all rows is allowed (zero rows)', async () => {
     const storage = renderPanels();
-    await userEvent.click(screen.getByRole('button', { name: 'Sublicense rows' }));
+    await userEvent.click(screen.getByRole('button', { name: /^Sublicenses/ }));
     await userEvent.click(screen.getByRole('button', { name: 'Delete' }));
     expect(JSON.parse(storage.getItem(KEYS.sublicenses)!)).toEqual([]);
     expect(screen.queryByText('Row 1')).toBeNull();
@@ -93,7 +93,7 @@ describe('repeaters', () => {
 
   it('editing a repeater cell persists', async () => {
     const storage = renderPanels();
-    await userEvent.click(screen.getByRole('button', { name: 'Reserve rows' }));
+    await userEvent.click(screen.getByRole('button', { name: /^Reserves/ }));
     const row1 = screen.getByText('Row 1').closest('.row-card')!;
     const withheld = within(row1 as HTMLElement).getByLabelText(/Reserve Withheld/);
     await userEvent.clear(withheld);

@@ -11,7 +11,8 @@ describe('Clear all confirm', () => {
   it('declining the confirm leaves the statement untouched', async () => {
     window.confirm = vi.fn(() => false);
     render(<App />);
-    await userEvent.click(screen.getByRole('button', { name: 'Clear all fields' }));
+    await userEvent.click(screen.getByRole('button', { name: 'More actions' }));
+    await userEvent.click(screen.getByRole('menuitem', { name: 'Clear all fields' }));
     expect(window.confirm).toHaveBeenCalledWith('Clear all statement fields? Custom import profiles are kept.');
     expect(screen.getByLabelText(/Statement No\./)).toHaveValue('RS-2026-0142');
   });
@@ -19,7 +20,8 @@ describe('Clear all confirm', () => {
   it('accepting clears the fields', async () => {
     window.confirm = vi.fn(() => true);
     render(<App />);
-    await userEvent.click(screen.getByRole('button', { name: 'Clear all fields' }));
+    await userEvent.click(screen.getByRole('button', { name: 'More actions' }));
+    await userEvent.click(screen.getByRole('menuitem', { name: 'Clear all fields' }));
     expect(screen.getByLabelText(/Statement No\./)).toHaveValue('');
   });
 });
