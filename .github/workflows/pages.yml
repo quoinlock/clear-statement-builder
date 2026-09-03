@@ -29,8 +29,8 @@ jobs:
       - run: npm ci
       - run: npm run ci
         env:
-          # Project site: https://<owner>.github.io/<repo>/
-          BASE_PATH: /${{ github.event.repository.name }}/
+          # Custom domain (https://clear-royalties.com/) serves at the root.
+          BASE_PATH: /
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

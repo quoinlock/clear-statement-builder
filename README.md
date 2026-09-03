@@ -139,10 +139,20 @@ totals. The canonical field list is `TRANSLATION_ONLY_KEYS` in
 ## Hosting on GitHub Pages
 
 `.github/workflows/pages.yml` runs the CI gate on every push to `main` and
-publishes `dist/` to GitHub Pages as a project site
-(`https://<owner>.github.io/clear-statement-builder/`). The workflow sets
-`BASE_PATH` so Vite emits base-relative URLs; every other host (Docker,
-Netlify-style) builds at `/`. GitHub Pages cannot send response headers,
+publishes `dist/` to GitHub Pages at the custom domain
+`https://clear-royalties.com/`. The Pages source is "GitHub Actions" and the
+custom domain is set in the repository's Pages settings, so the build uses
+`BASE_PATH=/` like every other host (Docker, Netlify-style). If the site
+ever moves back to a `github.io` project URL, set `BASE_PATH` to
+`/<repo>/` in the workflow so Vite emits base-relative URLs.
+
+DNS for the domain (at the registrar): `A` records for the apex pointing at
+GitHub Pages' four IPv4 addresses (185.199.108.153 through
+185.199.111.153), matching `AAAA` records (2606:50c0:8000::153 through
+2606:50c0:8003::153), and a `CNAME` for `www` to `quoinlock.github.io`.
+GitHub redirects `www` to the apex once both resolve. Verify the domain
+under the organization's Pages settings to prevent takeover if the repo's
+Pages site is ever disabled. GitHub Pages cannot send response headers,
 so the production build also carries the CSP as a `<meta>` tag (injected
 by `vite.config.ts`; identical to `public/_headers` minus
 `frame-ancestors`). The site is public to anyone with the URL: treat it as
