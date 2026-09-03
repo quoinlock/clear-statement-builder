@@ -70,6 +70,16 @@ code,
   gap: 10px;
 }
 
+.brand-link {
+  display: block;
+  border-radius: 4px;
+}
+
+.brand-link:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 3px;
+}
+
 .brand-logo {
   height: 24px;
   width: auto;

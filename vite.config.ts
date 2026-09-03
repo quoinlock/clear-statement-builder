@@ -1,3 +1,4 @@
+import { fileURLToPath } from 'node:url';
 import { defineConfig, type Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
 
@@ -28,5 +29,18 @@ export default defineConfig({
   plugins: [react(), cspMeta()],
   build: {
     sourcemap: true,
+    // Two static pages: the landing page at / and the Statement Builder at
+    // /builder/. Both are plain files, so every host (GitHub Pages, nginx)
+    // serves them without a SPA fallback rule.
+    //
+    // Do not rename the builder directory to `app/`: the Docker image builds
+    // in WORKDIR /app, and Vite collapses `/app/app/index.html` onto
+    // `/app/index.html`, silently dropping the landing page from dist/.
+    rollupOptions: {
+      input: {
+        landing: fileURLToPath(new URL('index.html', import.meta.url)),
+        builder: fileURLToPath(new URL('builder/index.html', import.meta.url)),
+      },
+    },
   },
 });

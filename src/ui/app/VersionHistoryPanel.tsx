@@ -23,8 +23,18 @@ export function VersionHistoryPanel() {
       <p className="panel-sub">CLEAR Statement Builder releases, with the Hugo prototype lineage below.</p>
       <div className="issue good">
         <div className="issue-head">
-          <span>v2.1.0</span>
+          <span>v2.2.0</span>
           <span className="badge required">Current</span>
+        </div>
+        <p>
+          Landing page: the site root now explains CLEAR — the standard, the field codes, how the builder
+          works, the privacy model, and the BISG / Hugo lineage — before the workspace. The Statement Builder
+          itself moved to <code>/builder/</code>; the CLEAR logo in the app bar links back to the landing page.
+        </p>
+      </div>
+      <div className="issue">
+        <div className="issue-head">
+          <span>v2.1.0</span>
         </div>
         <p>
           Brand refresh and the "focused workspace" layout: CLEAR wordmark, purple/teal palette, logo and

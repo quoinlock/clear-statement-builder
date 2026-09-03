@@ -373,6 +373,22 @@ Nav order (**v1.7 parity**, titles from `setupSideNavigation` / `preferredOrder`
 
 Below **1250px**, shell collapses to one column; nav is static; preview remains scrollable. Help modal below **900px** stacks nav/content.
 
+### Landing page (v2.2)
+
+The site root (`/`) is a static landing page that explains CLEAR before the
+user reaches the workspace; the builder shell above lives at `/builder/`. Both
+are separate Vite entry pages in one build, so no host needs a SPA
+fallback. The landing page is copy plus a miniature of the sample
+statement; its field-category counts are derived from `FIELD_META` so they
+cannot drift from the catalog, and its industry figures are the ones in
+"Problem statement and industry context". It carries the same
+non-certification / not-BISG / not-accounting framing as About, and credits
+the BISG standard and the Hugo prototype with links. The app bar logo links
+back to `/`. Nothing on the page makes a network request (same CSP as the
+builder; Montserrat stays vendored). The directory must not be renamed to
+`app/`: the Docker build runs in `/app`, and Vite collapses
+`/app/app/index.html` onto `/app/index.html`, dropping the landing page.
+
 ### Runtime data flow
 
 ```mermaid

@@ -25,12 +25,27 @@ account is the confidentiality boundary. pdf.js is vendored and lazy-loaded
 with a same-origin worker. The production CSP ships in
 [`public/_headers`](public/_headers) (Netlify-style; adapt for other hosts).
 
+## Pages
+
+Two static entry points, built together by Vite (`build.rollupOptions.input`):
+
+- `/` — the landing page (`index.html`, `src/landing/`): what CLEAR is,
+  the field codes, how the builder works, the privacy model, and the
+  BISG / Hugo lineage.
+- `/builder/` — the Statement Builder itself (`builder/index.html`, `src/ui/`).
+  The CLEAR logo in the app bar links back to `/`.
+
+Both are plain files, so GitHub Pages and nginx serve them without any
+SPA fallback rule. The directory is deliberately not named `app/`: the
+Docker image builds in `/app`, and Vite collapses `/app/app/index.html`
+onto `/app/index.html`, which drops the landing page from the bundle.
+
 ## Development
 
 ```sh
 nvm use            # Node 24
 npm install
-npm run dev        # Vite dev server
+npm run dev        # Vite dev server: / is the landing page, /builder/ the builder
 npm test           # Vitest (core: node env; ui: jsdom + Testing Library)
 npm run ci         # typecheck + tests + >=90% core coverage gate + build + CDN scan
 ```

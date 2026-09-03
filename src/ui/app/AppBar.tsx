@@ -13,9 +13,9 @@ import {
 import type { StatementDocument, StatementType } from '../../core/types.ts';
 import { useAppStore } from './store.tsx';
 import { downloadFile } from './download.ts';
-import { LOGO_SRC } from '../brand.ts';
+import { APP_VERSION, LANDING_URL, LOGO_SRC } from '../brand.ts';
 
-export const APP_VERSION = 'v2.1.0';
+export { APP_VERSION };
 
 const STATEMENT_TYPES: [type: StatementType, label: string][] = [
   ['standard', 'Standard'],
@@ -151,7 +151,9 @@ export function AppBar() {
       <div className="appbar-inner">
         <div className="brand">
           <h1 className="app-title">
-            <img className="brand-logo" src={LOGO_SRC} alt="CLEAR" />
+            <a className="brand-link" href={LANDING_URL} title="About CLEAR">
+              <img className="brand-logo" src={LOGO_SRC} alt="CLEAR" />
+            </a>
             Statement Builder
           </h1>
           <span className="version-badge">{APP_VERSION}</span>
