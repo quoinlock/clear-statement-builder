@@ -62,7 +62,7 @@ describe('shell chrome', () => {
     renderShell();
     const logo = screen.getByRole('img', { name: 'CLEAR' });
     expect(logo).toHaveAttribute('src', '/brand/clear-logo.png');
-    expect(screen.getByText('CLEAR — the Common Licensing & Earnings Accounting Report')).toBeInTheDocument();
+    expect(screen.getByText('The Common Licensing & Earnings Accounting Report Standard')).toBeInTheDocument();
   });
 
   it('renders all ten sections, grouped Build / Check / Import with a footer', () => {

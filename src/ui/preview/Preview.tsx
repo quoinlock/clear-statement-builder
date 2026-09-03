@@ -77,7 +77,7 @@ function PageFooter({
         <img className="footer-logo" src={LOGO_SRC} alt="CLEAR" />
         <div>
           <div className="footer-brand-line">
-            <b>CLEAR Statement</b> — prepared in accordance with the {standardName(type)}.
+            <b>This is a CLEAR Statement</b> — prepared in accordance with the {standardName(type)}.
           </div>
           <div className="footer-tagline">{TAGLINE}</div>
         </div>

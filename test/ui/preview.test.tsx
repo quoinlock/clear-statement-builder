@@ -140,12 +140,12 @@ describe('A4 preview', () => {
     const logos = screen.getAllByRole('img', { name: 'CLEAR' });
     expect(logos).toHaveLength(2);
     expect(logos[0]).toHaveAttribute('src', '/brand/clear-logo.png');
-    expect(screen.getAllByText('CLEAR Statement')).toHaveLength(2);
+    expect(screen.getAllByText('This is a CLEAR Statement')).toHaveLength(2);
     const lines = [...view.container.querySelectorAll('.footer-brand-line')].map(el => el.textContent);
     expect(lines).toHaveLength(2);
     for (const line of lines) {
-      expect(line).toMatch(/^CLEAR Statement — prepared in accordance with the BISG (Translation Rights )?Royalty Statement Standard\.$/);
+      expect(line).toMatch(/^This is a CLEAR Statement — prepared in accordance with the BISG (Translation Rights )?Royalty Statement Standard\.$/);
     }
-    expect(screen.getAllByText('CLEAR — the Common Licensing & Earnings Accounting Report')).toHaveLength(2);
+    expect(screen.getAllByText('The Common Licensing & Earnings Accounting Report Standard')).toHaveLength(2);
   });
 });
