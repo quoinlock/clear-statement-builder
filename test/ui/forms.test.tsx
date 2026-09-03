@@ -39,11 +39,11 @@ describe('statement forms', () => {
   it('field badges show category and BISG ID for catalog keys', async () => {
     renderPanels();
     await userEvent.click(screen.getByRole('tab', { name: 'Parties' }));
-    const licenseeName = screen.getByText('Licensee Name').closest('label')!;
+    const licenseeName = screen.getByText('Licensee Name').closest<HTMLElement>('.field')!;
     expect(within(licenseeName).getByText('Required')).toBeInTheDocument();
     expect(within(licenseeName).getByText('Con1_LicName')).toBeInTheDocument();
     // Hugo-extended field: no badges.
-    const phone = screen.getByText('Licensee Phone').closest('label')!;
+    const phone = screen.getByText('Licensee Phone').closest<HTMLElement>('.field')!;
     expect(within(phone).queryByText(/Con\d/)).toBeNull();
   });
 

@@ -1,12 +1,15 @@
 // Statement data entry: four tabs (Statement default), Show-BISG-IDs
 // toggle (persisted), per-field badges, persist on every keystroke. In v2
 // standard mode the translation-only fields render disabled (values are
-// kept — the statement-type toggle is non-destructive).
+// kept — the statement-type toggle is non-destructive). Label text is a
+// FieldTerm button that opens the field-help dialog; the control is
+// associated via aria-labelledby (a <label> may not contain a button).
 import { useState } from 'react';
 import { GROUPS, GROUP_NAMES, type GroupName } from '../../core/catalog/groups.ts';
 import { fieldLabel, isFieldApplicable } from '../../core/catalog/applicability.ts';
 import { useAppStore } from '../app/store.tsx';
 import { MetaBadges } from './Badges.tsx';
+import { FieldTerm } from './FieldHelp.tsx';
 
 export function StatementForms() {
   const store = useAppStore();
@@ -42,25 +45,31 @@ export function StatementForms() {
       <div role="tabpanel" aria-label={tab} className="section-form">
         {GROUPS[tab].map(field => {
           const applicable = isFieldApplicable(field.key, statementType);
+          const id = `f-${field.key}`;
+          const label = fieldLabel(field.label, field.key, statementType);
           return (
           <div className={`field${applicable ? '' : ' field-na'}`} key={field.key}>
-            <label>
-              {fieldLabel(field.label, field.key, statementType)} <MetaBadges fieldKey={field.key} />
-              {field.control === 'textarea' ? (
-                <textarea
-                  value={state[field.key]}
-                  rows={5}
-                  disabled={!applicable}
-                  onChange={e => store.setState(field.key, e.target.value)}
-                />
-              ) : (
-                <input
-                  value={state[field.key]}
-                  disabled={!applicable}
-                  onChange={e => store.setState(field.key, e.target.value)}
-                />
-              )}
-            </label>
+            <span className="field-label" id={`${id}-label`}>
+              <FieldTerm helpKey={field.key} metaKey={field.key} label={label} /> <MetaBadges fieldKey={field.key} />
+            </span>
+            {field.control === 'textarea' ? (
+              <textarea
+                id={id}
+                aria-labelledby={`${id}-label`}
+                value={state[field.key]}
+                rows={5}
+                disabled={!applicable}
+                onChange={e => store.setState(field.key, e.target.value)}
+              />
+            ) : (
+              <input
+                id={id}
+                aria-labelledby={`${id}-label`}
+                value={state[field.key]}
+                disabled={!applicable}
+                onChange={e => store.setState(field.key, e.target.value)}
+              />
+            )}
             {!applicable ? (
               <p className="panel-sub field-na-hint">
                 Not applicable to standard statements. The value is kept and restored if you switch back to

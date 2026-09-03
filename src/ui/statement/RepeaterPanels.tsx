@@ -40,6 +40,7 @@ export function ProductRows() {
       rows={store.workspace.products}
       columns={[...PRODUCT_COLUMNS]}
       addLabel="Add product row"
+      helpPrefix="product"
       onChange={store.setProducts}
       onAdd={store.addProduct}
     />
@@ -55,6 +56,7 @@ export function ReserveRows() {
       rows={store.workspace.reserves}
       columns={[...RESERVE_COLUMNS]}
       addLabel="Add reserve row"
+      helpPrefix="reserve"
       onChange={store.setReserves}
       onAdd={store.addReserve}
     />
@@ -70,6 +72,7 @@ export function SublicenseRows() {
       rows={store.workspace.sublicenses}
       columns={[...SUBLICENSE_COLUMNS]}
       addLabel="Add sublicense row"
+      helpPrefix="sublicense"
       onChange={store.setSublicenses}
       onAdd={store.addSublicense}
     />

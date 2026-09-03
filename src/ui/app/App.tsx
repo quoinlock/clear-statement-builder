@@ -5,6 +5,7 @@ import { PanelHost } from './PanelHost.tsx';
 import { AppStoreProvider, useAppStore } from './store.tsx';
 import { Preview } from '../preview/Preview.tsx';
 import { HelpModal } from '../help/HelpModal.tsx';
+import { FieldHelpModal } from '../statement/FieldHelp.tsx';
 
 const storage = browserStorage();
 
@@ -28,12 +29,13 @@ export function App() {
       <PersistenceToast />
       <div className="shell">
         <SideNav />
-        <div>
+        <div className="editor-col no-print">
           <PanelHost />
         </div>
         <Preview />
       </div>
       <HelpModal />
+      <FieldHelpModal />
     </AppStoreProvider>
   );
 }

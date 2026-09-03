@@ -1,6 +1,10 @@
 // Generic repeater: card per row ("Row N" + Delete), two-column field grid,
-// zero rows allowed (parity).
+// zero rows allowed (parity). Column labels open the field-help dialog;
+// helpPrefix namespaces the help key (product/reserve/sublicense share
+// bare column keys such as "form" and "rate").
+import { repeaterHelpKey, type RepeaterPrefix } from '../../core/catalog/fieldHelp.ts';
 import { MetaBadges } from './Badges.tsx';
+import { FieldTerm } from './FieldHelp.tsx';
 
 export interface RepeaterColumn<T> {
   key: keyof T & string;
@@ -13,6 +17,7 @@ export function Repeater<T extends { [K in keyof T]: string }>({
   rows,
   columns,
   addLabel,
+  helpPrefix,
   onChange,
   onAdd,
 }: {
@@ -21,6 +26,7 @@ export function Repeater<T extends { [K in keyof T]: string }>({
   rows: T[];
   columns: RepeaterColumn<T>[];
   addLabel: string;
+  helpPrefix: RepeaterPrefix;
   onChange: (rows: T[]) => void;
   onAdd: () => void;
 }) {
@@ -45,14 +51,23 @@ export function Repeater<T extends { [K in keyof T]: string }>({
             </button>
           </div>
           <div className="grid2">
-            {columns.map(col => (
-              <div className="field" key={col.key}>
-                <label>
-                  {col.label} <MetaBadges fieldKey={col.key} />
-                  <input value={row[col.key]} onChange={e => setCell(i, col.key, e.target.value)} />
-                </label>
-              </div>
-            ))}
+            {columns.map(col => {
+              const id = `${helpPrefix}-${i}-${col.key}`;
+              return (
+                <div className="field" key={col.key}>
+                  <span className="field-label" id={`${id}-label`}>
+                    <FieldTerm helpKey={repeaterHelpKey(helpPrefix, col.key)} metaKey={col.key} label={col.label} />{' '}
+                    <MetaBadges fieldKey={col.key} />
+                  </span>
+                  <input
+                    id={id}
+                    aria-labelledby={`${id}-label`}
+                    value={row[col.key]}
+                    onChange={e => setCell(i, col.key, e.target.value)}
+                  />
+                </div>
+              );
+            })}
           </div>
         </div>
       ))}
