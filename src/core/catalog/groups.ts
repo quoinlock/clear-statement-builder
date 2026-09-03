@@ -23,6 +23,7 @@ export const GROUPS: Record<GroupName, GroupField[]> = {
     f('Reporting Period Start Date', 'periodStart'),
     f('Reporting Period End Date', 'periodEnd'),
     f('Prepared By', 'preparedBy'),
+    f('Formula Transparency', 'formulaNotes', 'textarea'),
   ],
   Parties: [
     f('Licensee Name', 'licenseeName'),
@@ -134,6 +135,7 @@ export const STATEMENT_STATE_KEYS = [
   'swiftBic',
   'accountReference',
   'statementNotes',
+  'formulaNotes',
 ] as const satisfies readonly (keyof StatementState)[];
 
 // Compile-time completeness: fails to typecheck if STATEMENT_STATE_KEYS

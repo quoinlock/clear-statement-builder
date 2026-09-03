@@ -3,6 +3,7 @@
 // translation sample was replaced 2026-09-01). Do not edit values here
 // without updating the PRD; tests pin totals computed from this data.
 import type { ProductRow, ReserveRow, StatementState, SublicenseRow } from '../types.ts';
+import { DEFAULT_FORMULA_NOTES } from '../catalog/formulaNotes.ts';
 
 export const sample: StatementState = {
   statementNo: 'RS-2026-0142',
@@ -49,6 +50,7 @@ export const sample: StatementState = {
   accountReference: 'Client Account ending 0281',
   statementNotes:
     'This example is intended as a best-practice template for publisher royalty statements.\nAll BISG core, statement-specific, conditional, and remittance fields are shown.\nStatement currency is US dollars; no currency conversion applies.\nSublicense income reflects the licensor share of the book club edition.\nNo tax was withheld for this payment.',
+  formulaNotes: DEFAULT_FORMULA_NOTES,
 };
 
 export const sampleProducts: ProductRow[] = [

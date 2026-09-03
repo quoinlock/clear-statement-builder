@@ -2,7 +2,7 @@
 // fake live in core; the real localStorage adapter lives in src/persist.
 // Key layout per PRD "In-memory + persistence": statement keys are cleared
 // by Clear all; profile keys deliberately survive it.
-import { emptyProductRow, emptyReserveRow, emptyState, emptySublicenseRow } from '../catalog/rows.ts';
+import { emptyProductRow, emptyReserveRow, emptyState, emptySublicenseRow, withStateDefaults } from '../catalog/rows.ts';
 import { coerceStatementType } from '../catalog/applicability.ts';
 import { cloneSampleDocument } from '../sample/index.ts';
 import type {
@@ -141,7 +141,7 @@ export function loadWorkspace(storage: StoragePort): Workspace {
       ? { ...cloneSampleDocument(), showIds: false, statementType: 'standard' as StatementType }
       : emptyWorkspace();
   return {
-    state: readJson<StatementState>(storage, KEYS.state) ?? fallback.state,
+    state: withStateDefaults(readJson<Partial<StatementState>>(storage, KEYS.state) ?? fallback.state),
     products: readJson<ProductRow[]>(storage, KEYS.products) ?? fallback.products,
     reserves: readJson<ReserveRow[]>(storage, KEYS.reserves) ?? fallback.reserves,
     sublicenses: readJson<SublicenseRow[]>(storage, KEYS.sublicenses) ?? fallback.sublicenses,

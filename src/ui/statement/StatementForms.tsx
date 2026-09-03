@@ -7,6 +7,7 @@
 import { useState } from 'react';
 import { GROUPS, GROUP_NAMES, type GroupName } from '../../core/catalog/groups.ts';
 import { fieldLabel, isFieldApplicable } from '../../core/catalog/applicability.ts';
+import { DEFAULT_FORMULA_NOTES, isDefaultFormulaNotes } from '../../core/catalog/formulaNotes.ts';
 import { useAppStore } from '../app/store.tsx';
 import { MetaBadges } from './Badges.tsx';
 import { FieldTerm } from './FieldHelp.tsx';
@@ -74,6 +75,24 @@ export function StatementForms() {
               <p className="panel-sub field-na-hint">
                 Not applicable to standard statements. The value is kept and restored if you switch back to
                 Translation.
+              </p>
+            ) : null}
+            {field.key === 'formulaNotes' ? (
+              <p className="panel-sub field-hint">
+                One bullet per line, printed under the sales table. Lines containing “=” are set as formulas.
+                Leave blank to omit the section.
+                {isDefaultFormulaNotes(state.formulaNotes) ? null : (
+                  <>
+                    {' '}
+                    <button
+                      type="button"
+                      className="link-btn"
+                      onClick={() => store.setState('formulaNotes', DEFAULT_FORMULA_NOTES)}
+                    >
+                      Restore standard formulas
+                    </button>
+                  </>
+                )}
               </p>
             ) : null}
             {field.key === 'openingBalance' ? (

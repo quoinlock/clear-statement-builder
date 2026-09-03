@@ -61,8 +61,9 @@ describe('AC-CAT-2: every groups form key exists on StatementState', () => {
     }
   });
 
-  it('groups have the parity shape: 5 + 11 + 10 + 15 fields, Statement Notes is a textarea', () => {
-    expect(GROUPS.Statement).toHaveLength(5);
+  it('groups have the parity shape (+ v2.3 formulaNotes): 6 + 11 + 10 + 15 fields, notes are textareas', () => {
+    expect(GROUPS.Statement).toHaveLength(6);
+    expect(GROUPS.Statement.at(-1)).toEqual({ label: 'Formula Transparency', key: 'formulaNotes', control: 'textarea' });
     expect(GROUPS.Parties).toHaveLength(11);
     expect(GROUPS.Work).toHaveLength(10);
     expect(GROUPS.Payment).toHaveLength(15);

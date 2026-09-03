@@ -1,7 +1,7 @@
 {
   "name": "clear-statement-builder",
   "private": true,
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "BISG-aligned translation-rights royalty statement builder (clean-room reimplementation of the Hugo v1.7 prototype)",
   "type": "module",
   "scripts": {

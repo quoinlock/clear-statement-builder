@@ -116,6 +116,16 @@ totals. The canonical field list is `TRANSLATION_ONLY_KEYS` in
 `src/core/catalog/applicability.ts`; the decision is recorded in the PRD
 ("v2: Statement type").
 
+## Formula Transparency (v2.3)
+
+The bullets printed under the sales table ("Life to Date Units = Prior Units
++ Period Units", …) are the **Formula Transparency** field on the Statement
+tab, one bullet per line. Edit them when a contract computes earnings
+differently so the printed formulas match what the statement actually did;
+lines containing `=` are set in the formula style, a blank field omits the
+section, and **Restore standard formulas** brings back the defaults. Files
+and saved workspaces from before v2.3 load with the defaults.
+
 ## File interchange
 
 - Statement JSON writes `version: "1.1.0"` with a document-level

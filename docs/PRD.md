@@ -389,6 +389,32 @@ builder; Montserrat stays vendored). The directory must not be renamed to
 `app/`: the Docker build runs in `/app`, and Vite collapses
 `/app/app/index.html` onto `/app/index.html`, dropping the landing page.
 
+### Formula Transparency notes (v2.3)
+
+The page-1 **Formula Transparency** bullets are a statement field,
+`formulaNotes` (`StatementState`, CLEAR-extended, not a numbered TRRSS
+field), edited as a textarea at the end of the **Statement** form group: one
+bullet per line, blank lines ignored. A line containing `=` is typeset in
+the monospace `.formula` style; any other line is plain prose. A blank field
+omits the section entirely (heading included). The default value is the four
+identity strings under "Identity formulas" (`DEFAULT_FORMULA_NOTES` in
+`src/core/catalog/formulaNotes.ts`); the form shows a **Restore standard
+formulas** action whenever the value differs from it. The page-2 Closing
+Balance / Payment Due formulas are not configurable — they describe what
+`totals()` actually computes.
+
+Compatibility: `emptyState()` seeds the default, and every read path fills
+missing keys from it (`withStateDefaults`), so Hugo 0.9 / CSB ≤ 2.2 JSON,
+CSV imports, and `localStorage` workspaces saved before v2.3 render exactly
+as before. Statement JSON stays `version: '1.1.0'` (the state map gained a
+key; the document shape did not change). The CSV writes a
+`Statement,formulaNotes` row **only when the value differs from the
+default**, so Hugo's own data still reproduces Hugo's CSV byte for byte; the
+CSV reader treats a missing row as the default. Structured imports report
+`formulaNotes` as a detection only when it is non-default (the standard
+bullets are boilerplate, not a finding). Text/PDF imports never touch the
+field.
+
 ### Runtime data flow
 
 ```mermaid
@@ -952,7 +978,7 @@ Page size in UI: **794px × min-height 1123px** (A4 at 96 CSS px), white, drop s
 3. Two-column block **always rendered** (Hugo parity, not conditional): left heading `◎ Licensee`; right heading `▣ Payer (if different from Licensee)`. Empty payer fields still show the column.
 4. Contract and Work Information (two-column `line` list). Advance amount uses `toLocaleString('en-US', {minimumFractionDigits:2})` **without** euro prefix; advance currency on the next line.
 5. Sales and Royalty Detail table (11 columns). List price and earnings use `money()`. LTD = prior + period. Summary bar: Total Royalty Earnings.
-6. Formula Transparency notes (four bullets — exact formulas below).
+6. Formula Transparency notes (four bullets — exact formulas below). *(Amended in v2.3: the bullets are the `formulaNotes` state field, one bullet per line; the four strings are its default. See “Formula Transparency notes (v2.3)”.)*
 7. Footer: “Prepared by Rights & Royalties Department” | licensee name.
 
 **Page 2**
@@ -1103,7 +1129,7 @@ Units display: `Number(v||0).toLocaleString('en-US')` (no forced decimals).
 
 ### Identity formulas (printed under Formula Transparency / Balance)
 
-Exact strings to show (v1.7 parity):
+Exact strings to show (v1.7 parity; since v2.3 items 1–4 are the **default** of `state.formulaNotes` and the user may edit them — items 5–6 stay fixed):
 
 1. `Life to Date Units = Prior Units + Period Units`
 2. `Royalty Earnings = Royalty Rate × Royalty Basis Amount`

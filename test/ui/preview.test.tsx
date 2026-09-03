@@ -2,12 +2,13 @@
 // reveals Con61_SalesTerr and SS92_PayDue), non-certification subtitle,
 // remit-ID template, negative-money reserve line, XSS-safe text rendering
 // (AC-SEC-2), and the sample vs user-data note variants.
-import { cleanup, render, screen } from '@testing-library/react';
+import { act, cleanup, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it } from 'vitest';
 import { AppStoreProvider } from '../../src/ui/app/store.tsx';
 import { Preview } from '../../src/ui/preview/Preview.tsx';
 import { KEYS, MemoryStorage } from '../../src/core/persist/index.ts';
 import { cloneSampleDocument, sample } from '../../src/core/sample/index.ts';
+import { DEFAULT_FORMULA_NOTES } from '../../src/core/catalog/formulaNotes.ts';
 
 afterEach(cleanup);
 
@@ -128,6 +129,47 @@ describe('A4 preview', () => {
     }
   });
 
+  describe('Formula Transparency (v2.3, configurable)', () => {
+    it('renders the four standard bullets by default, formulas in the monospace style', () => {
+      const { view } = renderPreview();
+      const section = view.container.querySelector('.formula-notes')!;
+      expect(section).not.toBeNull();
+      const items = [...section.querySelectorAll('li')].map(li => li.textContent);
+      expect(items).toEqual(DEFAULT_FORMULA_NOTES.split('\n'));
+      expect(section.querySelectorAll('li .formula')).toHaveLength(3);
+    });
+
+    it('renders custom lines from state.formulaNotes, prose lines without the formula style', () => {
+      const storage = storageWith(ws => {
+        ws.state.formulaNotes = 'Royalty Earnings = Period Units × Fee per unit\n\nRates escalate at 5,000 units.\n';
+      });
+      const { view } = renderPreview(storage);
+      const section = view.container.querySelector('.formula-notes')!;
+      const items = [...section.querySelectorAll('li')];
+      expect(items.map(li => li.textContent)).toEqual([
+        'Royalty Earnings = Period Units × Fee per unit',
+        'Rates escalate at 5,000 units.',
+      ]);
+      expect(items[0].querySelector('.formula')).not.toBeNull();
+      expect(items[1].querySelector('.formula')).toBeNull();
+      expect(screen.queryByText('Life to Date Units = Prior Units + Period Units')).toBeNull();
+    });
+
+    it('omits the section when the field is blank', () => {
+      const { view } = renderPreview(storageWith(ws => void (ws.state.formulaNotes = '  \n')));
+      expect(view.container.querySelector('.formula-notes')).toBeNull();
+      expect(screen.queryByText('Formula Transparency')).toBeNull();
+    });
+
+    it('a stored workspace saved before v2.3 (no formulaNotes key) shows the defaults', () => {
+      const storage = storageWith(ws => {
+        delete (ws.state as Partial<typeof ws.state>).formulaNotes;
+      });
+      const { view } = renderPreview(storage);
+      expect(view.container.querySelectorAll('.formula-notes li')).toHaveLength(4);
+    });
+  });
+
   it('advance amount renders without euro prefix', () => {
     renderPreview();
     const advance = screen.getByText('Advance Amount:').closest('.line')!;
@@ -147,5 +189,41 @@ describe('A4 preview', () => {
       expect(line).toMatch(/^This is a CLEAR Statement — prepared in accordance with the BISG (Translation Rights )?Royalty Statement Standard\.$/);
     }
     expect(screen.getAllByText('The Common Licensing & Earnings Accounting Report Standard')).toHaveLength(2);
+  });
+});
+
+// Fit-to-width regression: the ResizeObserver must measure the un-zoomed
+// viewport wrapper, not the element that carries CSS zoom. WebKit reports a
+// zoomed element's contentRect in its own zoomed space, so observing it made
+// the preview oscillate ("shaking") on iPhone.
+describe('fit zoom measurement', () => {
+  it('observes the un-zoomed wrapper and scales pages from its width', () => {
+    const observed: Element[] = [];
+    let fire: ((width: number) => void) | undefined;
+    class FakeResizeObserver {
+      constructor(cb: (entries: { contentRect: { width: number } }[]) => void) {
+        fire = (width: number) => cb([{ contentRect: { width } }]);
+      }
+      observe(el: Element) {
+        observed.push(el);
+      }
+      disconnect() {}
+    }
+    const prev = (globalThis as { ResizeObserver?: unknown }).ResizeObserver;
+    (globalThis as { ResizeObserver?: unknown }).ResizeObserver = FakeResizeObserver;
+    try {
+      const { view } = renderPreview();
+      const viewport = view.container.querySelector('.preview-viewport') as HTMLElement;
+      const pages = view.container.querySelector('.preview-pages') as HTMLElement;
+      expect(observed).toEqual([viewport]);
+      expect(observed).not.toContain(pages);
+      act(() => fire?.(397));
+      expect(pages.style.zoom).toBe('0.5');
+      expect(viewport.getAttribute('style')).toBeNull();
+      act(() => fire?.(2000));
+      expect(pages.style.zoom).toBe('1');
+    } finally {
+      (globalThis as { ResizeObserver?: unknown }).ResizeObserver = prev;
+    }
   });
 });

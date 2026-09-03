@@ -3,6 +3,7 @@
 // them from the import review UI.
 import { fieldMeta } from '../catalog/fieldMeta.ts';
 import { PRODUCT_KEYS, RESERVE_KEYS, SUBLICENSE_KEYS } from '../catalog/groups.ts';
+import { DEFAULT_FORMULA_NOTES, isDefaultFormulaNotes } from '../catalog/formulaNotes.ts';
 import { notBlank } from '../calc/index.ts';
 import { parseHugoOrCsbJson } from '../schema/index.ts';
 import type { Detection, DetectionResult } from '../types.ts';
@@ -11,6 +12,15 @@ function coerceRow<T extends object>(src: Record<string, string>, keys: readonly
   const row = {} as Record<keyof T, string>;
   for (const key of keys) row[key] = src[key as string] ?? '';
   return row as T;
+}
+
+/**
+ * The standard Formula Transparency bullets are boilerplate, not a finding:
+ * files that predate the field read as the default, and reporting that as
+ * "detected" would credit the source with text it never carried.
+ */
+function isReportable(target: string, value: string): boolean {
+  return notBlank(value) && !(target === 'formulaNotes' && isDefaultFormulaNotes(value));
 }
 
 function detectionFor(target: string, value: string, source: string): Detection {
@@ -29,7 +39,7 @@ function detectionFor(target: string, value: string, source: string): Detection 
 export function jsonToDetectionResult(obj: unknown): DetectionResult {
   const doc = parseHugoOrCsbJson(obj);
   const detections = Object.entries(doc.state)
-    .filter(([, v]) => notBlank(v))
+    .filter(([k, v]) => isReportable(k, v))
     .map(([k, v]) => detectionFor(k, v, 'Hugo JSON export'));
   return {
     sourceType: 'Hugo JSON export',
@@ -107,7 +117,7 @@ export function parseImportedCsv(csv: string): DetectionResult {
       const val = r[valueIdx] || '';
       if (sec === 'Statement') {
         newState[field] = val;
-        if (notBlank(val)) detections.push(detectionFor(field, val, 'Hugo CSV export'));
+        if (isReportable(field, val)) detections.push(detectionFor(field, val, 'Hugo CSV export'));
       } else if (sec.startsWith('Product')) {
         const i = Number(sec.match(/\d+/)?.[0] || 1) - 1;
         (prodMap[i] ??= {})[field] = val;
@@ -119,6 +129,9 @@ export function parseImportedCsv(csv: string): DetectionResult {
         (subMap[i] ??= {})[field] = val;
       }
     }
+    // A CSV without the row (Hugo / CSB ≤ 2.2, or a default value) reads as
+    // the standard bullets, matching the JSON path.
+    newState.formulaNotes ??= DEFAULT_FORMULA_NOTES;
     return {
       sourceType: 'Hugo CSV export',
       profile: 'structured',

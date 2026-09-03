@@ -5,6 +5,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import { jsonToDetectionResult, parseImportedCsv } from '../../src/core/import/structured.ts';
+import { DEFAULT_FORMULA_NOTES } from '../../src/core/catalog/formulaNotes.ts';
 
 const FIXTURES = join(dirname(fileURLToPath(import.meta.url)), '..', 'fixtures', 'hugo');
 
@@ -50,6 +51,18 @@ describe('AC-IMP-2: CSV intake', () => {
     expect(result.reserves).toEqual(fromJson.reserves);
     expect(result.sublicenses).toEqual(fromJson.sublicenses);
     expect(result.detections.every(d => d.confidence === 'High')).toBe(true);
+  });
+
+  it('formulaNotes (v2.3): missing row reads as the default without a detection; a custom row restores and is detected', () => {
+    const csv = readFileSync(join(FIXTURES, 'hugo-royalty-statement-RS-2026-0142.csv'), 'utf8');
+    const plain = parseImportedCsv(csv);
+    expect(plain.state.formulaNotes).toBe(DEFAULT_FORMULA_NOTES);
+    expect(plain.detections.some(d => d.target === 'formulaNotes')).toBe(false);
+    const custom = parseImportedCsv(
+      csv + '\n"Statement","formulaNotes","Royalty Earnings = Period Units × Fee per unit\nRates escalate at 5,000 units.","",""',
+    );
+    expect(custom.state.formulaNotes).toBe('Royalty Earnings = Period Units × Fee per unit\nRates escalate at 5,000 units.');
+    expect(custom.detections.filter(d => d.target === 'formulaNotes')).toHaveLength(1);
   });
 
   it('random CSV becomes unmapped lines only — no state, no detections', () => {

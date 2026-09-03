@@ -6,6 +6,7 @@ import { PanelHost } from '../../src/ui/app/PanelHost.tsx';
 import { SideNav } from '../../src/ui/app/SideNav.tsx';
 import { AppStoreProvider } from '../../src/ui/app/store.tsx';
 import { KEYS, MemoryStorage } from '../../src/core/persist/index.ts';
+import { DEFAULT_FORMULA_NOTES } from '../../src/core/catalog/formulaNotes.ts';
 
 afterEach(cleanup);
 
@@ -20,7 +21,7 @@ function renderPanels(storage = new MemoryStorage()) {
 }
 
 describe('statement forms', () => {
-  it('shows four tabs with Statement selected and its five fields', () => {
+  it('shows four tabs with Statement selected and its six fields', () => {
     renderPanels();
     const tabs = screen.getAllByRole('tab');
     expect(tabs.map(t => t.textContent)).toEqual(['Statement', 'Parties', 'Work', 'Payment']);
@@ -45,6 +46,20 @@ describe('statement forms', () => {
     // Hugo-extended field: no badges.
     const phone = screen.getByText('Licensee Phone').closest<HTMLElement>('.field')!;
     expect(within(phone).queryByText(/Con\d/)).toBeNull();
+  });
+
+  it('Formula Transparency is a textarea in the Statement tab with a restore-defaults button', async () => {
+    const storage = renderPanels();
+    const area = screen.getByLabelText(/Formula Transparency/);
+    expect(area.tagName).toBe('TEXTAREA');
+    expect(area).toHaveValue(DEFAULT_FORMULA_NOTES);
+    expect(screen.queryByRole('button', { name: 'Restore standard formulas' })).toBeNull();
+    await userEvent.clear(area);
+    await userEvent.type(area, 'Royalty Earnings = Units × Fee per unit');
+    expect(JSON.parse(storage.getItem(KEYS.state)!).formulaNotes).toBe('Royalty Earnings = Units × Fee per unit');
+    await userEvent.click(screen.getByRole('button', { name: 'Restore standard formulas' }));
+    expect(area).toHaveValue(DEFAULT_FORMULA_NOTES);
+    expect(screen.queryByRole('button', { name: 'Restore standard formulas' })).toBeNull();
   });
 
   it('Show BISG IDs toggle persists', async () => {

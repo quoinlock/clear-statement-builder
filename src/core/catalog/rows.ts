@@ -4,11 +4,30 @@
 // are preserved.
 import type { ProductRow, ReserveRow, StatementState, SublicenseRow } from '../types.ts';
 import { STATEMENT_STATE_KEYS } from './groups.ts';
+import { DEFAULT_FORMULA_NOTES } from './formulaNotes.ts';
 
+/** Every key blank except formulaNotes, which starts as the standard bullets. */
 export function emptyState(): StatementState {
   const out = {} as Record<keyof StatementState, string>;
   for (const key of STATEMENT_STATE_KEYS) out[key] = '';
+  out.formulaNotes = DEFAULT_FORMULA_NOTES;
   return out as StatementState;
+}
+
+/**
+ * Fills keys missing from a stored/imported state with emptyState()
+ * defaults, so workspaces saved before a field existed (v2.3 formulaNotes)
+ * load without undefined values. Present keys are never touched.
+ */
+export function withStateDefaults(raw: Partial<StatementState> | undefined | null): StatementState {
+  const out = emptyState();
+  if (raw) {
+    for (const key of STATEMENT_STATE_KEYS) {
+      const v = raw[key];
+      if (v != null) out[key] = String(v);
+    }
+  }
+  return out;
 }
 
 /** Clear-all repeater row: all empty strings. */

@@ -260,8 +260,25 @@ code,
   cursor: not-allowed;
 }
 
-.field-na-hint {
+.field-na-hint,
+.field-hint {
   margin: 4px 0 0;
+}
+
+/* Inline text-style button inside a hint (e.g. "Restore standard formulas"). */
+.link-btn {
+  font: inherit;
+  color: var(--teal);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.link-btn:hover,
+.link-btn:focus-visible {
+  color: var(--purple);
 }
 
 /* --- Buttons --- */
@@ -709,11 +726,17 @@ code,
   color: #fff;
 }
 
+/* Un-zoomed measuring box for "Fit"; the zoom lives on .preview-pages inside
+   it so the ResizeObserver never measures the element it scales. */
+.preview-viewport {
+  min-width: 0;
+  overflow-x: auto;
+}
+
 .preview-pages {
   display: flex;
   flex-direction: column;
   gap: 24px;
-  overflow-x: auto;
 }
 
 .page {
@@ -1285,6 +1308,7 @@ code,
   }
 
   .preview-wrap,
+  .preview-viewport,
   .preview-pages {
     display: block;
     overflow: visible;

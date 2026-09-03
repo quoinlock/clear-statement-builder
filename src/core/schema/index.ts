@@ -4,7 +4,8 @@
 // format), custom-profile envelopes, and review JSON/CSV serialization.
 import { STATEMENT_STATE_KEYS, PRODUCT_KEYS, RESERVE_KEYS, SUBLICENSE_KEYS } from '../catalog/groups.ts';
 import { coerceStatementType } from '../catalog/applicability.ts';
-import { emptyState } from '../catalog/rows.ts';
+import { withStateDefaults } from '../catalog/rows.ts';
+import { isDefaultFormulaNotes } from '../catalog/formulaNotes.ts';
 import { bisgCategory, bisgId } from '../catalog/fieldMeta.ts';
 import type { CalculationWarning } from '../calc/index.ts';
 import type { ValidationResult } from '../validation/index.ts';
@@ -58,15 +59,9 @@ export function isReviewJson(obj: unknown): boolean {
   return o.version === '1.1' && !('state' in o) && Array.isArray(o.fields);
 }
 
+/** Whitelisted keys only; keys absent from the file (e.g. formulaNotes before v2.3) take their defaults. */
 function coerceState(raw: unknown): StatementState {
-  const out = emptyState();
-  if (typeof raw === 'object' && raw !== null) {
-    const src = raw as Record<string, unknown>;
-    for (const key of STATEMENT_STATE_KEYS) {
-      if (key in src && src[key] != null) out[key] = String(src[key]);
-    }
-  }
-  return out;
+  return withStateDefaults(typeof raw === 'object' && raw !== null ? (raw as Partial<StatementState>) : undefined);
 }
 
 function coerceRows<T extends object>(raw: unknown, keys: readonly (keyof T)[]): T[] {
@@ -121,10 +116,16 @@ export function csvEscape(v: unknown): string {
   return '"' + String(v ?? '').replace(/"/g, '""') + '"';
 }
 
-/** Statement CSV, v1.7 parity: Section,Field,Value,BISG ID,Category rows. */
+/**
+ * Statement CSV, v1.7 parity: Section,Field,Value,BISG ID,Category rows.
+ * The v2.3 formulaNotes row is written only when the value differs from the
+ * standard default, so Hugo's own data still reproduces Hugo's CSV byte for
+ * byte; the reader treats a missing row as the default.
+ */
 export function serializeStatementCsv(doc: StatementDocument): string {
   const rows: unknown[][] = [['Section', 'Field', 'Value', 'BISG ID', 'Category']];
   for (const key of STATEMENT_STATE_KEYS) {
+    if (key === 'formulaNotes' && isDefaultFormulaNotes(doc.state[key])) continue;
     rows.push(['Statement', key, doc.state[key], bisgId(key), bisgCategory(key)]);
   }
   doc.products.forEach((p, i) =>

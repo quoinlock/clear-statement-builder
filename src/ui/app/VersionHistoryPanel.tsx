@@ -23,8 +23,19 @@ export function VersionHistoryPanel() {
       <p className="panel-sub">CLEAR Statement Builder releases, with the Hugo prototype lineage below.</p>
       <div className="issue good">
         <div className="issue-head">
-          <span>v2.2.0</span>
+          <span>v2.3.0</span>
           <span className="badge required">Current</span>
+        </div>
+        <p>
+          Configurable Formula Transparency: the bullets printed under the sales table are now a statement
+          field (Statement tab, one bullet per line) so the printed formulas can match a contract that
+          computes earnings differently. The defaults are the standard identities, with a one-click restore;
+          a blank field omits the section. Older exports and saved workspaces load with the defaults.
+        </p>
+      </div>
+      <div className="issue">
+        <div className="issue-head">
+          <span>v2.2.0</span>
         </div>
         <p>
           Landing page: the site root now explains CLEAR — the standard, the field codes, how the builder

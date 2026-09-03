@@ -31,7 +31,7 @@ describe('shell chrome', () => {
   it('renders the title, version badge, primary actions, and completeness meter', () => {
     renderShell();
     expect(screen.getByRole('heading', { level: 1, name: 'CLEAR Statement Builder' })).toBeInTheDocument();
-    expect(screen.getByText('v2.2.0')).toBeInTheDocument();
+    expect(screen.getByText('v2.3.0')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'CLEAR' })).toHaveAttribute('href', '/');
     const bar = within(screen.getByRole('banner'));
     for (const label of ['Import', 'Review', 'Export', 'Print', 'More actions']) {

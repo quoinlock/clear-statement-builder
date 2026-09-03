@@ -20,6 +20,7 @@ import {
   StatementParseError,
 } from '../../src/core/schema/index.ts';
 import type { StatementDocument } from '../../src/core/types.ts';
+import { DEFAULT_FORMULA_NOTES } from '../../src/core/catalog/formulaNotes.ts';
 
 const FIXTURES = join(dirname(fileURLToPath(import.meta.url)), '..', 'fixtures');
 const hugoJsonPath = join(FIXTURES, 'hugo', 'hugo-royalty-statement-RS-2026-0142.json');
@@ -79,6 +80,26 @@ describe('AC-PER-3 / AC-IMP-1: Hugo 0.9 read path', () => {
     expect(doc.products).toHaveLength(4);
     expect(doc.reserves).toHaveLength(2);
     expect(doc.sublicenses).toHaveLength(1);
+  });
+
+  it('a file without formulaNotes (Hugo 0.9 / CSB ≤ 2.2) reads the standard formula bullets', () => {
+    const raw = JSON.parse(readFileSync(hugoJsonPath, 'utf8'));
+    expect(raw.state.formulaNotes).toBeUndefined();
+    expect(parseHugoOrCsbJson(raw).state.formulaNotes).toBe(DEFAULT_FORMULA_NOTES);
+  });
+
+  it('custom formulaNotes round-trip through JSON and CSV', () => {
+    const doc = sampleDoc();
+    doc.state.formulaNotes = 'Royalty Earnings = Period Units × Fee per unit\nRates escalate at 5,000 units.';
+    const json = JSON.parse(JSON.stringify(serializeDocument(doc)));
+    expect(parseHugoOrCsbJson(json).state.formulaNotes).toBe(doc.state.formulaNotes);
+    expect(serializeStatementCsv(doc)).toContain('"Statement","formulaNotes","Royalty Earnings = Period Units × Fee per unit\nRates escalate at 5,000 units.","",""');
+    // Default value: no row (Hugo byte parity); blank value: an empty row.
+    expect(serializeStatementCsv(sampleDoc())).not.toContain('"formulaNotes"');
+    const blank = sampleDoc();
+    blank.state.formulaNotes = '';
+    expect(serializeStatementCsv(blank)).toContain('"Statement","formulaNotes","","",""');
+    expect(parseHugoOrCsbJson(JSON.parse(JSON.stringify(serializeDocument(blank)))).state.formulaNotes).toBe('');
   });
 
   it('accepts version-missing files without a product marker (hand-edited CSB → Hugo path)', () => {

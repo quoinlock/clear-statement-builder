@@ -82,6 +82,8 @@ export interface StatementState {
   swiftBic: string; // Hugo-extended
   accountReference: string; // Hugo-extended
   statementNotes: string; // Hugo-extended
+  /** v2.3, CLEAR-extended: Formula Transparency bullets, one per line (default: the four identity strings). */
+  formulaNotes: string;
 }
 
 export interface Totals {

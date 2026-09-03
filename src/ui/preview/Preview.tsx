@@ -7,6 +7,7 @@ import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { ltdUnits, money, num, totals } from '../../core/calc/index.ts';
 import { bisgId } from '../../core/catalog/fieldMeta.ts';
 import { standardName, statementSubtitle, statementTitle } from '../../core/catalog/applicability.ts';
+import { formulaNoteLines, isFormulaLine } from '../../core/catalog/formulaNotes.ts';
 import { LOGO_SRC, TAGLINE } from '../brand.ts';
 import { sample } from '../../core/sample/index.ts';
 import { useAppStore } from '../app/store.tsx';
@@ -92,18 +93,25 @@ export function Preview() {
   const translation = statementType === 'translation';
   const t = totals(state, products, statementType);
   const isSampleData = useMemo(() => JSON.stringify(state) === JSON.stringify(sample), [state]);
+  const formulaLines = formulaNoteLines(state.formulaNotes);
 
   // Layout A: "Fit" scales the A4 pages to the column width (CSS zoom, reset
   // for print); "100%" shows them at true size with horizontal scroll.
+  // The observer watches the un-zoomed viewport wrapper, never the zoomed
+  // element itself: WebKit reports a zoomed element's contentRect in its own
+  // zoomed coordinate space, so observing it feeds each scale change back
+  // into the next measurement and the preview oscillates (iOS shaking bug).
   const [zoomMode, setZoomMode] = useState<'fit' | 'full'>('fit');
   const [fitScale, setFitScale] = useState(1);
-  const pagesRef = useRef<HTMLDivElement>(null);
+  const viewportRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    const el = pagesRef.current;
+    const el = viewportRef.current;
     if (!el || typeof ResizeObserver === 'undefined') return;
     const ro = new ResizeObserver(entries => {
       const width = entries[0]?.contentRect.width ?? PAGE_WIDTH;
-      setFitScale(Math.min(1, Math.max(0.4, width / PAGE_WIDTH)));
+      // Round so sub-pixel layout noise cannot re-trigger a render.
+      const next = Math.round(Math.min(1, Math.max(0.4, width / PAGE_WIDTH)) * 1000) / 1000;
+      setFitScale(prev => (prev === next ? prev : next));
     });
     ro.observe(el);
     return () => ro.disconnect();
@@ -124,7 +132,8 @@ export function Preview() {
           </button>
         </div>
       </div>
-      <div className="preview-pages" ref={pagesRef} style={{ zoom }}>
+      <div className="preview-viewport" ref={viewportRef}>
+      <div className="preview-pages" style={{ zoom }}>
       <div className="page">
         <PageHeader n={1} statementNo={state.statementNo} type={statementType} />
         <section className="notes">
@@ -258,24 +267,16 @@ export function Preview() {
             Total Royalty Earnings: {money(t.totalRoyalty)} {showIds ? <span className="fid-summary">SS67_TotRoyEarnings</span> : null}
           </div>
         </section>
-        <section className="notes">
-          <Sect icon="ƒ" title="Formula Transparency" />
-          <ul>
-            <li>
-              <span className="formula">Life to Date Units = Prior Units + Period Units</span>
-            </li>
-            <li>
-              <span className="formula">Royalty Earnings = Royalty Rate × Royalty Basis Amount</span>
-            </li>
-            <li>
-              <span className="formula">Total Royalty Earnings = Sum of Royalty Earnings across product forms</span>
-            </li>
-            <li>
-              For list-price rows, the basis amount is usually list price per copy. For net-receipts rows, the basis
-              amount is total net receipts for the period.
-            </li>
-          </ul>
-        </section>
+        {formulaLines.length ? (
+          <section className="notes formula-notes">
+            <Sect icon="ƒ" title="Formula Transparency" />
+            <ul>
+              {formulaLines.map((line, i) => (
+                <li key={i}>{isFormulaLine(line) ? <span className="formula">{line}</span> : line}</li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
         <PageFooter n={1} preparedBy={state.preparedBy} licenseeName={state.licenseeName} type={statementType} />
       </div>
       <div className="page">
@@ -444,6 +445,7 @@ export function Preview() {
           </ul>
         </section>
         <PageFooter n={2} preparedBy={state.preparedBy} licenseeName={state.licenseeName} type={statementType} />
+      </div>
       </div>
       </div>
     </main>

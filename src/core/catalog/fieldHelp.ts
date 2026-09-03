@@ -265,6 +265,12 @@ export const FIELD_HELP: Record<FieldHelpKey, FieldHelp> = {
     plain:
       'Free-text notes to the reader: explanations of unusual figures, a change of contact, currency conversion rates used, or anything else that avoids a follow-up email. Keep it factual and brief.',
   },
+  formulaNotes: {
+    standard:
+      'Not a numbered TRRSS field. CLEAR prints the identities behind the figures (life-to-date units, royalty earnings, total earnings, and what the basis amount means) so a licensor can re-derive every number on the statement, which is the transparency the standard is designed to deliver.',
+    plain:
+      'The Formula Transparency bullets under the sales table, one per line. The defaults are the standard identities; edit them when your contract computes earnings differently (escalating rates, net-of-returns basis, a fixed fee per unit) so the printed formulas match what you actually did. A line containing “=” is typeset as a formula; other lines read as plain notes. Leave it blank to omit the section.',
+  },
 
   // --- Product rows ---
   'product.form': {
